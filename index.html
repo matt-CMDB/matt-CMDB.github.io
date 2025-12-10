@@ -1,12 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Judaism and Aritificial Intelligence</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        :root {
+            --sb-blue: #4C72B0; --sb-orange: #DD8452; --sb-green: #55A868;
+            --sb-red: #C44E52; --sb-purple: #8172B3; --sb-brown: #937860;
+            --sb-pink: #DA8BC3; --sb-gray: #8C8C8C; --sb-cyan: #64B5CD;
+        }
+        
+        /* Retaining original styles for consistency */
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .no-select { user-select: none; }
+    </style>
 </head>
-<body>
-    <h1 style="color: navy;">Home Page</h1>
-    <p>About</p>
-    <p>Bibliography</p>
-    <p>Interactive Index</p>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="h-screen flex flex-col">
+        
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="*" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="AI and Judaism.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="bibliography.html" class="text-gray-500 hover:text-gray-900 transition-colors">Research Guides</a>
+        </nav>
+
+        <header class="bg-white border-b border-gray-200 p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-bold tracking-tight text-gray-800">This is the Home page.</h1>
+            </div>
+            </header>
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="px-6 pt-8 pb-12 max-w-4xl text-gray-700 text-base leading-relaxed">
+                    
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
+                    <p class="mb-6">
+                        This library is dedicated to cataloging and exploring the rapidly evolving intersection of Jewish tradition and artificial intelligence. 
+                        As technology reshapes how we study texts, perform mitzvot, and understand our own humanity, we hope that this platform can
+                        serve as a central hub for teachers, scholars, rabbis, technologists, and the curious public.
+                    </p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Something else should go here</h2>
+                    <p class="mb-6">
+                        But I'm not sure what, because there is also an <a href="about.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">About</a> page
+                    </p>
+                    <ul class="list-disc pl-5 mb-6 space-y-2">
+                        <li><b>Maybe:</b> Having a Home page and an <a href="about.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">About</a> page is reduntant.</li>
+                        <li><b>Or maybe:</b> This page should have the mission statement, and the details should be on the <a href="about.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">About</a> page.</li>
+                    </ul>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Contact Us</h2>
+                    <p class="mb-2">
+                        This is a project of <a href="https://sites.google.com/view/rishonim/" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">the Rishonim Podcast</a>. 
+                        Meaning, that the author of the podcast made this website instead of recording a podcast.
+                    </p>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
 </body>
 </html>
