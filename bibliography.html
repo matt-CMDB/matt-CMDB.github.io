@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Guides - AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        :root {
+            --sb-blue: #4C72B0; --sb-orange: #DD8452; --sb-green: #55A868;
+            --sb-red: #C44E52; --sb-purple: #8172B3; --sb-brown: #937860;
+            --sb-pink: #DA8BC3; --sb-gray: #8C8C8C; --sb-cyan: #64B5CD;
+        }
+        
+        /* Retaining original styles for consistency */
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .no-select { user-select: none; }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Entry animations */
+        .entry-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .entry-content.open {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+        
+        .entry-header {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .entry-header:hover {
+            color: #4C72B0;
+        }
+        
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+        
+        .chevron.open {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="h-screen flex flex-col">
+        
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="index.html" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="AI and Judaism.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="*" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Research Guides</a>
+        </nav>
+
+        <header class="bg-white border-b border-gray-200 p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-bold tracking-tight text-gray-800">Research Guides</h1>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="relative flex-1 md:w-80">
+                    <input type="text" id="searchInput" placeholder="Search entries..." 
+                        class="w-full px-3 py-1.5 pl-9 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="px-6 pt-8 pb-12">
+                    
+                    <!-- Introduction -->
+                    <div class="max-w-4xl mb-8 text-gray-700 text-base leading-relaxed">
+                        <p class="mb-4">
+                            These research guides provide in-depth explorations of key topics at the intersection of artificial intelligence and Jewish thought. 
+                            Each entry serves as both an encyclopedia article and an annotated bibliography, offering context, analysis, and resources for further study.
+    
+                        </p>
+                        <p class="mb-6">
+                            Click on any topic below to expand its content, or use the buttons to jump directly to a specific entry.
+                        </p>
+                    </div>
+                    
+                    <!-- Topic Buttons -->
+                    <div class="mb-8 flex flex-wrap gap-2">
+                        <button onclick="scrollToEntry('angels')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Angels, Demons and Monsters</button>
+                        <button onclick="scrollToEntry('animals')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Animals</button>
+                        <button onclick="scrollToEntry('antisemitism')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Anti-Semitism (and AI)</button>
+                        <button onclick="scrollToEntry('consciousness')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Consciousness and Minds</button>
+                        <button onclick="scrollToEntry('creation')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Creation</button>
+                        <button onclick="scrollToEntry('ethics')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Ethics of Artificial Intelligence</button>
+                        <button onclick="scrollToEntry('existential')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Existential Risks (and the Alignment Problem)</button>
+                        <button onclick="scrollToEntry('freewill')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Free Will</button>
+                        <button onclick="scrollToEntry('futurism')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Futurism/Forecasting</button>
+                        <button onclick="scrollToEntry('golems')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Golems</button>
+                        <button onclick="scrollToEntry('halakha')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Halakha (Jewish Law and Custom)</button>
+                        <button onclick="scrollToEntry('psak')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Halakhic Decision-Making (Psak)</button>
+                        <button onclick="scrollToEntry('humans')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Humans</button>
+                        <button onclick="scrollToEntry('humanoid')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Humanoid Monsters (Non-Artificial)</button>
+                        <button onclick="scrollToEntry('idolatry')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Idolatry</button>
+                        <button onclick="scrollToEntry('intentionality')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Intentionality</button>
+                        <button onclick="scrollToEntry('jewishscifi')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Jewish Science Fiction</button>
+                        <button onclick="scrollToEntry('machinelearning')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Machine Learning and Jewish Texts</button>
+                        <button onclick="scrollToEntry('magic')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Magic</button>
+                        <button onclick="scrollToEntry('printing')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Printing Press</button>
+                        <button onclick="scrollToEntry('resurrection')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Resurrection (Artificial)</button>
+                        <button onclick="scrollToEntry('soul')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Soul</button>
+                        <button onclick="scrollToEntry('technology')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Technology and Judaism (General)</button>
+                        <button onclick="scrollToEntry('torahstudy')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Torah Study</button>
+                        <button onclick="scrollToEntry('transhumanism')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Transhumanism</button>
+                    </div>
+                    
+                    <!-- Entries -->
+                    <div class="max-w-4xl space-y-6">
+                    
+                        <!-- Angels, Demons and Monsters -->
+                        <div id="angels" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('angels')">
+                                <h3 class="text-lg font-semibold text-gray-900">Angels, Demons and Monsters</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-angels"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-angels">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <div class="prose prose-sm max-w-none text-gray-700">
+                                        <p class="italic text-gray-500 mb-4">See also: Animals; Free Will; Golems; Intentionality; Souls</p>
+
+                                        <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Overview</h4>
+                                        <p>
+                                            Jewish tradition recognized the existence of various non-human beings that nevertheless seem to possess many human-like characteristics, sometimes including intelligence, speech, and some personal agency. All of these are, in the traditional rabbinic conception, naturally occurring phenomena, as opposed to the <em>golem</em>, which is a product of human artifice.
+                                        </p>
+                                        <p>
+                                            Angels, demons, and other human-like creatures occupy varied positions in Jewish cosmology: angels (<em>mal'akhim</em>, "messengers") typically carry out divine will without physical needs or moral struggle; demons (<em>shedim</em>) in rabbinic literature share surprising affinities with humans, including mortality and subjection to divine law; and humanoid monsters blur the boundary between human and animal.
+                                        </p>
+                                        <p>
+                                            Together, these categories reveal that Jewish thought has long grappled with what David Zvi Kalman calls the "human gradient," the recognition that humanity is not a binary category and that intelligent or quasi-human beings need not threaten humanity's special status (Kalman 2024).
+                                        </p>
+                                        <p>
+                                            The implications for Artificial Intelligence are significant. While AI may lack "posture" (<em>me’halkhim be-kimah zekufah</em>), we must ask if it possesses speech and/or intelligence (<em>da’at</em>) in the way the rabbis are using the term? Angels present a model of intelligence that is powerful, purposive, and aligned with its principal's goals. In the dominant rabbinic conception (cf. BT Shabbat 88b–89a; Bereshit Rabbah 48:11), angels lack <em>beḥirah</em> (freedom of choice) and are merely humanoid tools incapable of deviating from their assigned mission (Ahuvia 2021), or to use the phraseology that is current in AI discourse: they are perfectly <em>aligned</em> agents by design.
+                                        </p>
+                                        <p>
+                                            Later Jewish thinkers largely suppressed or reinterpreted fallen angel traditions, perhaps because rebellious angels threatened the strict monotheism they were constructing: angels capable of defection might suggest competing powers in heaven (Jung 1926, Reed 2005).
+                                        </p>
+                                        <p>
+                                            The demon (<em>sheid</em>) in rabbinic literature occupies a different position. Unlike Christian or Zoroastrian traditions where demons emanate from a dark power, rabbinic demons are not inherently malevolent (Ronis 2022). They are bound by divine law (BT Sanhedrin 44a) and their voice or figure can easily be mistaken for humans (BT Yevamot 122a, BT Gittin 68a). While the Mishnah (Avot 5:6; cf. BT Pesachim 54a, Bereshit Rabbah 7:4) implies that demons were created by God directly as a separate species, some rabbinic traditions indicate that demons originate from mankind (BT Sanhedrin 109a, BT Eruvin 18b).
+                                        </p>
+                                        <p>
+                                            Humanoid monsters present yet another case. The Mishnah rules that the corpse of the <em>adne hasadeh</em> ("men of the field") transmits impurity like a human corpse (M Kilayim 8:5). The Palestinian Talmud identifies these as humanoid creatures tethered to the earth by a cord (PT Kilayim 8:4). Medieval Ashkenazi sources mixed Talmudic monsters with local folklore about vampires and werewolves, which likewise sometimes appear to have been conceptualized as almost human but not entirely so (Shyovitz 2017; Slifkin 2007; Bar-Ilan 1994).
+                                        </p>
+                                        <p>
+                                            Thus, the rabbis appear to have been theologically comfortable with the possibility that non-humans can have intelligence and agency. Yet the rabbis were anxious when it came to similarities between God and angels (cf. BT Ḥagigah 15a); God's uniqueness, unlike humanity's, must go unchallenged (Kalman 2024). The implication for artificial intelligence, then, is that even if we might not hesitate to create artificial semi-humans, we must certainly not construct <em>artificial semi-gods</em>.
+                                        </p>
+
+                                        <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Secondary Sources</h4>
+                                        
+                                        <ul class="list-disc pl-5 space-y-2">
+                                            <li>
+                                                <strong>Ahuvia, Mika.</strong> <em>On My Right Michael, On My Left Gabriel: Angels in Ancient Jewish Culture.</em> University of California Press, 2021. The most comprehensive recent treatment of angels in late antique Judaism.
+                                            </li>
+                                            <li>
+                                                <strong>Ronis, Sara.</strong> <em>Demons in the Details: Demonic Discourse and Rabbinic Culture in Late Antique Babylonia.</em> University of California Press, 2022. The definitive monograph on Babylonian Talmudic demonology.
+                                            </li>
+                                            <li>
+                                                <strong>Jung, Leo.</strong> "Fallen Angels in Jewish, Christian, and Mohammedan Literature." <em>Jewish Quarterly Review</em>, 1926.
+                                            </li>
+                                            <li>
+                                                <strong>Reed, Annette Yoshiko.</strong> <em>Fallen Angels and the History of Judaism and Christianity: The Reception of Enochic Literature.</em> Cambridge University Press, 2005.
+                                            </li>
+                                            <li>
+                                                <strong>Wright, Archie.</strong> <em>The Origin of Evil Spirits: The Reception of Genesis 6.1–4 in Early Jewish Literature.</em> Mohr Siebeck, 2005.
+                                            </li>
+                                            <li>
+                                                <strong>Shyovitz, David I.</strong> <em>A Remembrance of His Wonders: Nature and the Supernatural in Medieval Ashkenaz.</em> University of Pennsylvania Press, 2017.
+                                            </li>
+                                            <li>
+                                                <strong>Kalman, David Zvi.</strong> "Artificial Intelligence and Jewish Thought." In <em>The Cambridge Companion to Religion and Artificial Intelligence</em>, edited by Beth Singler and Fraser Watts, 69–87. Cambridge University Press, 2024.
+                                            </li>
+                                            <li>
+                                                <strong>Lamm, Norman.</strong> "The Religious Implications of Extraterrestrial Life." <em>Tradition</em> 7, no. 4 (1965): 5–56.
+                                            </li>
+                                        </ul>
+                                    </div>                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Animals -->
+                        <div id="animals" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('animals')">
+                                <h3 class="text-lg font-semibold text-gray-900">Animals</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-animals"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-animals">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Overview</h4>
+                                    <p>
+                                        Jewish texts have long been concerned with animal ethics; to cause animal suffering, the Talmud states, is to violate a biblical commandment. Animal welfare is even given as one of the reasons behind the command to keep the Sabbath: “For six days you shall work your work and on the seventh day you shall cease, so that your ox and donkey may rest” (Ex. 23:22).
+                                    </p>
+
+                                    <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Key Resources</h4>
+
+                                    <ul class="list-disc pl-5 space-y-2">
+                                        <li>
+                                            <strong>Rosenblum, Jordan D.</strong> "Dolphins Are Humans of the Sea (Bekhorot 8a): Animals and Legal Categorization in Rabbinic Literature." <em>Animals and the Law in Antiquity</em> (2021): 161–176. Analyzes how rabbis used animal taxonomy to sometimes create flexible legal categories for edge cases; essential for considering how halakha might classify AI agents that blur classical lines.
+                                        </li>
+                                        <li>
+                                            <strong>Wasserman, Mira Beth.</strong> <em>Jews, Gentiles, and Other Animals: The Talmud after the Humanities.</em> University of Pennsylvania Press, 2017. A posthumanist reading of Talmudic texts that deconstructs the human/animal binary.
+                                        </li>
+                                        <li>
+                                            <strong>Balberg, Mira.</strong> "Lekhakh Notzarta: On Jews and Animals." <em>Theory and Criticism</em> 51 (2019): 225–235 [Hebrew]. A critical review of Shyovitz that frames the study of animals in Jewish culture as a means of understanding human self-definition.
+                                        </li>
+                                        <li>
+                                            <strong>Aptowitzer, Victor.</strong> "The Rewarding and Punishing of Animals and Inanimate Objects: On the Aggadic View of the World." <em>Hebrew Union College Annual</em> 3 (1926): 117–155. The classic study on the rabbinic attribution of legal/moral culpability to non-humans; provides a conceptual precedent for holding non-sentient agents (like AI) accountable for harms.
+                                        </li>
+                                        <li>
+                                            <strong>Lawee, Eric.</strong> "The Sins of the Fauna in Midrash, Rashi, and Their Medieval Interlocutors." <em>Jewish Studies Quarterly</em> 17.1 (2010): 56–98. Examines medieval traditions that animals were punished for "sins" during the Flood.
+                                        </li>
+                                        <li>
+                                            <strong>Segal, Eliezer.</strong> <em>Beasts That Teach, Birds That Tell: Animal Language in Rabbinic and Classical Literatures.</em> Alberta Judaic Studies, 2019. Explores Jewish traditions of talking animals which implicitly separates the capacity for language from human consciousness.
+                                        </li>
+                                        <li>
+                                            <strong>Berkowitz, Beth.</strong> "Animal Studies and Ancient Judaism." <em>Currents in Biblical Research</em> 18.1 (2019): 80–111. A comprehensive survey of the field; helps locate AI ethics within the broader spectrum of Jewish thought on non-human life.
+                                        </li>
+                                        <li>
+                                            <strong>Olyan, Saul M.</strong> "Are There Legal Texts in the Hebrew Bible That Evince a Concern for Animal Rights?" <em>Biblical Interpretation</em> 27.3 (2019): 321–339. Pertinent to debates on "Robot Rights" and whether synthetic entities could ever warrant legal protections.
+                                        </li>
+                                        <li>
+                                            <strong>Pines, Noam.</strong> <em>The Infrahuman: Animality in Modern Jewish Literature.</em> SUNY Press, 2018. Uses Derrida to explore the "infrahuman,” the social construction of the "inferior-to-human" that is not a matter of biological fact.
+                                        </li>
+                                        <li>
+                                            <strong>Rosenstock, Bruce.</strong> "The Jew and the Animal Question." <em>Shofar</em> 37.1 (2019): 121–147. Discusses the "anthropological machine"—how definitions of the human are constructed by excluding the animal.
+                                        </li>
+                                        <li>
+                                            <strong>Kalman, David Zvi.</strong> "Artificial Intelligence and Jewish Thought." <em>The Cambridge Companion to Religion and Artificial Intelligence</em> (2024): 69–87. Explicitly links rabbinic damages law (animal liability) to autonomous systems.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Anti-Semitism (an  AI) -->
+                        <div id="antisemitism" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('antisemitism')">
+                                <h3 class="text-lg font-semibold text-gray-900">Anti-Semitism (and AI)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-antisemitism"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-antisemitism">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Consciousness and Minds -->
+                        <div id="consciousness" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('consciousness')">
+                                <h3 class="text-lg font-semibold text-gray-900">Consciousness and Minds</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-consciousness"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-consciousness">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Creation -->
+                        <div id="creation" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('creation')">
+                                <h3 class="text-lg font-semibold text-gray-900">Creation</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-creation"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-creation">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ethics of Artificial Intelligence -->
+                        <div id="ethics" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('ethics')">
+                                <h3 class="text-lg font-semibold text-gray-900">Ethics of Artificial Intelligence</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-ethics"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-ethics">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Existential Risks (and the Alignment Problem) -->
+                        <div id="existential" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('existential')">
+                                <h3 class="text-lg font-semibold text-gray-900">Existential Risks (and the Alignment Problem)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-existential"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-existential">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Free Will -->
+                        <div id="freewill" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('freewill')">
+                                <h3 class="text-lg font-semibold text-gray-900">Free Will</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-freewill"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-freewill">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Futurism/Forecasting -->
+                        <div id="futurism" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('futurism')">
+                                <h3 class="text-lg font-semibold text-gray-900">Futurism/Forecasting</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-futurism"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-futurism">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Golems -->
+                        <div id="golems" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('golems')">
+                                <h3 class="text-lg font-semibold text-gray-900">Golems</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-golems"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-golems">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Halakha (Jewish Law and Custom) -->
+                        <div id="halakha" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('halakha')">
+                                <h3 class="text-lg font-semibold text-gray-900">Halakha (Jewish Law and Custom)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-halakha"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-halakha">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Halakhic Decision-Making (Psak) -->
+                        <div id="psak" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('psak')">
+                                <h3 class="text-lg font-semibold text-gray-900">Halakhic Decision-Making (Psak)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-psak"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-psak">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Humans -->
+                        <div id="humans" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('humans')">
+                                <h3 class="text-lg font-semibold text-gray-900">Humans</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-humans"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-humans">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Idolatry -->
+                        <div id="idolatry" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('idolatry')">
+                                <h3 class="text-lg font-semibold text-gray-900">Idolatry</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-idolatry"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-idolatry">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- intentionality -->
+                        <div id="intentionality" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('intentionality')">
+                                <h3 class="text-lg font-semibold text-gray-900">Intentionality (da'at, kavvanah)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-intentionality"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-intentionality">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <!-- jewishscifi -->
+                        <div id="jewishscifi" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('jewishscifi')">
+                                <h3 class="text-lg font-semibold text-gray-900">Jewish Science-Fiction</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-jewishscifi"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-jewishscifi">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- machinelearning -->
+                        <div id="machinelearning" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('machinelearning')">
+                                <h3 class="text-lg font-semibold text-gray-900">Machine Learning/AI Tools for Torah</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-machinelearning"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-machinelearning">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Magic -->
+                        <div id="magic" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('magic')">
+                                <h3 class="text-lg font-semibold text-gray-900">Magic</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-magic"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-magic">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- printings -->
+                        <div id="printing" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('printings')">
+                                <h3 class="text-lg font-semibold text-gray-900">Printing Press</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-printings"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-printings">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- resurrection -->
+                        <div id="resurrection" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('resurrection')">
+                                <h3 class="text-lg font-semibold text-gray-900">Resurrection (Artificial)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-resurrection"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-resurrection">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- soul -->
+                        <div id="soul" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('soul')">
+                                <h3 class="text-lg font-semibold text-gray-900">Souls</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-soul"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-soul">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- technology -->
+                        <div id="technology" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('technology')">
+                                <h3 class="text-lg font-semibold text-gray-900">Technology and Jewish Thought (Generally)</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-technology"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-technology">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p class="italic text-gray-500 mb-4">See also: Creation; Halakha; Printing Press; Magic</p>
+
+                                    <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Overview</h4>
+                                    <p>
+                                        Jews’ engagement with artificial technologies is, by necessity, as old as Judaism itself; the earliest biblical passages discuss products of human industriousness (e.g., Genesis 4:20-21). Historians may utilize tools such as archeology to understand the material landscape of past Jewish (and non-Jewish) societies to better appreciate the role of technology in their lives and interpret their texts accordingly (Hezser 2010).
+                                    </p>
+                                    <p>
+                                        When it comes to the question of how new technologies impact Jewish law and custom, or <em>halakha</em>, it would not be an exaggeration to say that Jewish legal writings on the topic amount to thousands upon thousands of books. A noteworthy recent addition to this massive library is Ziring's halakhic analysis of communications technology (Ziring 2024), which bears directly on questions relating to modern media and, by extension, AI-mediated communication.
+                                    </p>
+                                    <p>
+                                        The question of how Jews reacted <em>theologically</em> to the innovations that have made our twenty-first-century world unrecognizable to our ancestors is shockingly understudied, even in the context of medieval and early modern attitudes generally (White 1962, 1978). A small number of recent but highly incomplete surveys (Lubin 2016, Perl 2022, Navon 2024) can help guide future scholarship, but substantial work remains to be done, especially as widespread adaptation of Artificial Intelligence makes this discussion more urgent.
+                                    </p>
+                                    <p>
+                                        Exceptions to this general scholarly lacuna are limited to studies of specific innovations, such as the Jewish reception of the <em>printing press</em> or the Copernican Revolution in astronomy (Brown 2014). Another set of useful resources are biographies of figures who engaged substantively with technological and scientific questions, such as Yosef Shlomo Delmedigo, a seventeenth-century rabbi, physician, and polymath (Barzilay 1974; Adler 1997). Other Jewish inventors and tinkerers were mostly less affiliated with the rabbinic elite and therefore have smaller literary legacies, but recent scholarship has brought more of these fascinating figures to light (Patai 1994; Ruderman 1988), and additional material can be found in the growing body of work studying Jews' relationship to the sciences (Ruderman 1995; Efron 2007).
+                                    </p>
+                                    <p>
+                                        Navon (2024) and Goltz, Zeleznikow, and Dowdeswell (2020) offer some examples of how broader treatments of Judaism and technology may be viewed through the lens of AI ethics.
+                                    </p>
+
+                                    <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Bibliography</h4>
+
+                                    <ul class="list-disc pl-5 space-y-2">
+                                        <li>
+                                            <strong>Hezser, Catherine.</strong> "The Material of Ancient Jewish Daily Life." In <em>The Oxford Handbook of Jewish Daily Life in Roman Palestine</em>, edited by Catherine Hezser. Oxford: Oxford University Press, 2010.
+                                        </li>
+                                        <li>
+                                            <strong>White, Lynn, Jr.</strong> <em>Medieval Religion and Technology: Collected Essays.</em> Berkeley: University of California Press, 1978.
+                                        </li>
+                                        <li>
+                                            <strong>Brown, Jeremy.</strong> <em>New Heavens and a New Earth: The Jewish Reception of Copernican Thought.</em> Oxford: Oxford University Press, 2014.
+                                        </li>
+                                        <li>
+                                            <strong>Efron, Noah.</strong> <em>Judaism and Science: A Historical Introduction.</em> Westport, CT: Greenwood Press, 2007.
+                                        </li>
+                                        <li>
+                                            <strong>Ruderman, David B.</strong> <em>Jewish Thought and Scientific Discovery in Early Modern Europe.</em> New Haven: Yale University Press, 1995.
+                                        </li>
+                                        <li>
+                                            <strong>Goltz, Nachshon, John Zeleznikow, and Tracey Dowdeswell.</strong> "From the Tree of Knowledge and the Golem of Prague to Kosher Autonomous Cars: The Ethics of Artificial Intelligence through Jewish Eyes." <em>Oxford Journal of Law and Religion</em> 9 (2020): 132–156.
+                                        </li>
+                                        <li>
+                                            <strong>Navon, Mois.</strong> "A Jewish Theological Perspective on Technology (Orthodox)." <em>St Andrews Encyclopaedia of Theology</em> (2024). https://www.saet.ac.uk/Judaism/AJewishTheologicalPerspectiveonTechnologyOrthodox
+                                        </li>
+                                        <li>
+                                            <strong>Barzilay, Isaac.</strong> <em>Yoseph Shlomo Delmedigo (Yashar of Candia): His Life, Works, and Times.</em> Leiden: Brill, 1974.
+                                        </li>
+                                        <li>
+                                            <strong>Patai, Raphael.</strong> <em>The Jewish Alchemists: A History and Source Book.</em> Princeton, NJ: Princeton University Press, 1994.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- torahstudy -->
+                        <div id="torahstudy" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('torahstudy')">
+                                <h3 class="text-lg font-semibold text-gray-900">Torah Study</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-torahstudy"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-torahstudy">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- transhumanism -->
+                        <div id="transhumanism" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('transhumanism')">
+                                <h3 class="text-lg font-semibold text-gray-900">Transhumanism</h3>
+                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-transhumanism"></i>
+                            </div>
+                            <div class="entry-content px-4 pb-4" id="content-transhumanism">
+                                <div class="prose prose-sm max-w-none text-gray-700">
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleEntry(id) {
+            const content = document.getElementById('content-' + id);
+            const chevron = document.getElementById('chevron-' + id);
+            
+            content.classList.toggle('open');
+            chevron.classList.toggle('open');
+        }
+        
+        function scrollToEntry(id) {
+            // First scroll to the entry
+            const element = document.getElementById(id);
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Then open it after a short delay
+            setTimeout(() => {
+                const content = document.getElementById('content-' + id);
+                const chevron = document.getElementById('chevron-' + id);
+                
+                if (!content.classList.contains('open')) {
+                    content.classList.add('open');
+                    chevron.classList.add('open');
+                }
+            }, 500);
+        }
+        
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const entries = document.querySelectorAll('[id^="content-"]').forEach(entry => {
+                const parent = entry.parentElement;
+                const title = parent.querySelector('h3').textContent.toLowerCase();
+                const content = entry.textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    parent.style.display = 'block';
+                } else {
+                    parent.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
