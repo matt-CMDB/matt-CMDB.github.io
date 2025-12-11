@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
         body { background-color: #f8f9fa; color: #333; }
@@ -55,11 +56,10 @@
         
         <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
             <a href="index.html" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
-            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
-            <a href="#" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Internet Index</a>
-            <a href="bibliography.html" class="text-gray-500 hover:text-gray-900 transition-colors">Research Guides</a>
-            <a href="tools.html" class="text-gray-500 hover:text-gray-900 transition-colors">AI Torah Tools</a>
-
+<a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+<a href="#" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Internet Index</a>
+<a href="bibliography.html" class="text-gray-500 hover:text-gray-900 transition-colors">Research Guides</a>
+<a href="tools.html" class="text-gray-500 hover:text-gray-900 transition-colors">AI Torah Tools</a>
 
         </nav>
 
@@ -105,10 +105,10 @@
                 <div class="px-6 pt-8 pb-2 max-w-4xl text-gray-700 text-base leading-relaxed">
                     
 <p class="mb-2">
-    Welcome to the <b>Internet Index</b> of the <b>AI and Judaism Online Resource Library</b>. This interactive index aggregates tools, 
+    Welcome to the <b>AI and Judaism Online Resource Library</b>. This interactive index aggregates tools, 
     scholarship, and discussions at the intersection of Jewish tradition and modern artificial intelligence.
     While such a list cannot possibly include every internet post on AI and Judaism, it is nevertheless only moderately curated. 
-    If you have written or know of additional references that help move the conversation forward, please contact us with suggestions or any other feedback.
+    If you know of additional references that help move the conversation forward, please contact us with suggestions or any other feedback.
 </p>
 <p>
     You can view the library in either <b>Grid</b> mode to scan data quickly, or switch to <b>Cards</b> for more detailed descriptions of each entry. 
@@ -250,7 +250,6 @@
         const SERVER_DATA = {
     "headers": [
         "Title",
-        "URL",
         "Author",
         "Year",
         "Resource Type",
@@ -296,7 +295,7 @@
             "Title": "AI and Hebrew Manuscripts (Bar-Ilan University)",
             "URL": "https://www.biu.ac.il/en/article/11914",
             "Author": "Bar-Ilan University",
-            "Year": 2022.0,
+            "Year": "2022",
             "Resource Type": "News Article",
             "Area": "Language",
             "Denomination": "Academic",
@@ -307,7 +306,7 @@
             "Title": "Spertus Institute Critical Conversations: AI and Jewish Ethics",
             "URL": "https://www.spertus.edu/critical-conversations-artificial-intelligence/",
             "Author": "Bell, Dean P.; Etzioni, Oren; Goodman, Ellen; Kalman, David Zvi; Lobel, Orly",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Discussion",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -318,7 +317,7 @@
             "Title": "Awesome Hebrew NLP (GitHub)",
             "URL": "https://github.com/iddoberger/awesome-hebrew-nlp",
             "Author": "Berger, Iddo",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Resource Hub, Code",
             "Area": "Language",
             "Denomination": "Non-Denominational",
@@ -329,7 +328,7 @@
             "Title": "An Epoch of Golem-Making: Artificial Intelligence and the Jewish Imaginary (AI Narratives)",
             "URL": "https://www.ainarratives.com/czechia-videos",
             "Author": "Bilski, Emily; Ambros, Veronika; Goldberg, Ken; Ackerman, Ada; Zarum, Raphael",
-            "Year": 2020.0,
+            "Year": "2020",
             "Resource Type": "Discussion",
             "Area": "Ethics",
             "Denomination": "Academic",
@@ -340,7 +339,7 @@
             "Title": "Staying Human: A Jewish Theology for the Age of Artificial Intelligence",
             "URL": "https://www.jewishbookcouncil.org/book/staying-human-a-jewish-theology-for-the-age-of-artificial-intelligence",
             "Author": "Bor, Harris",
-            "Year": 2021.0,
+            "Year": "2021",
             "Resource Type": "Book",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -351,7 +350,7 @@
             "Title": "ChavrutAI | Study Talmud Online",
             "URL": "https://chavrutai.com/",
             "Author": "Brand, Ezra",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "AI Tool",
             "Area": "Torah Study",
             "Denomination": "Non-Denominational",
@@ -362,7 +361,7 @@
             "Title": "Jewish Ethics in an Age of Autonomous Warfare | SAPIR Journal",
             "URL": "https://sapirjournal.org/technology/2023/jewish-ethics-in-an-age-of-autonomous-warfare/",
             "Author": "Brody, Shlomo",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Ethics",
             "Denomination": "Orthodox",
@@ -373,7 +372,7 @@
             "Title": "AI and Jewish Law: Seeing How ChatGPT 4.0 Looks at a Novel Issue (Canopy Forum)",
             "URL": "https://canopyforum.org/2023/10/03/ai-and-jewish-law-seeing-how-chatgpt-4-0-looks-at-a-novel-issue-part-ii/",
             "Author": "Broyde, Michael J.",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Legal Theory",
             "Denomination": "Orthodox",
@@ -384,7 +383,7 @@
             "Title": "Ai Vey!: Jewish Thoughts on Thinking Machines (Amazon)",
             "URL": "https://www.amazon.com/Ai-Vey-Thoughts-Thinking-Machines/dp/0692753885",
             "Author": "Cohen, Jonathan",
-            "Year": 2016.0,
+            "Year": "2016",
             "Resource Type": "Book",
             "Area": "Jewish Thought",
             "Denomination": "Orthodox",
@@ -395,7 +394,7 @@
             "Title": "AlephBertGimmel - Hebrew BERT Model (GitHub)",
             "URL": "https://github.com/Dicta-Israel-Center-for-Text-Analysis/alephbertgimmel",
             "Author": "DICTA",
-            "Year": 2022.0,
+            "Year": "2022",
             "Resource Type": "Code",
             "Area": "Language",
             "Denomination": "Non-Denominational",
@@ -406,7 +405,7 @@
             "Title": "DICTA - The Israel Center for Text Analysis",
             "URL": "https://dicta.org.il/tools",
             "Author": "DICTA, Moshe Koppel, Avi Schmidman",
-            "Year": 2022.0,
+            "Year": "2022",
             "Resource Type": "AI Tool",
             "Area": "Torah Study, Language",
             "Denomination": "Non-Denominational",
@@ -428,7 +427,7 @@
             "Title": "Sofer.ai",
             "URL": "https://sofer.ai",
             "Author": "Fisch, Zachary",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "AI Tool",
             "Area": "Torah Study",
             "Denomination": "Orthodox",
@@ -439,7 +438,7 @@
             "Title": "Artificial Intelligence and Halacha | Rabbi Josh Flug",
             "URL": "https://www.yutorah.org/lectures/1119217/Artificial-Intelligence-and-Halacha",
             "Author": "Flug, Josh",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Article",
             "Area": "Halakha",
             "Denomination": "Orthodox",
@@ -450,7 +449,7 @@
             "Title": "As AI charges ahead, Jewish thinkers are falling behind (AI Part 2)",
             "URL": "https://jweekly.com/2025/03/21/as-ai-charges-ahead-jewish-thinkers-are-falling-behind/",
             "Author": "Friedman, Dan",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "News Article",
             "Area": "Society, Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -461,7 +460,7 @@
             "Title": "From the Tree of Knowledge and the Golem of Prague to Kosher Autonomous Cars (Oxford Journal of Law and Religion)",
             "URL": "https://academic.oup.com/ojlr/article-abstract/9/1/132/5877403",
             "Author": "Goltz, Nachshon (Sean); Zeleznikow, John; Dowdeswell, Tracey",
-            "Year": 2020.0,
+            "Year": "2020",
             "Resource Type": "Article",
             "Area": "Legal Theory",
             "Denomination": "Academic",
@@ -472,7 +471,7 @@
             "Title": "Resources from IAHLT - Israeli Association for Human Language Technologies",
             "URL": "https://www.iahlt.org/resources",
             "Author": "IAHLT",
-            "Year": 2020.0,
+            "Year": "2020",
             "Resource Type": "Resource Hub",
             "Area": "Language",
             "Denomination": "Academic",
@@ -483,7 +482,7 @@
             "Title": "Golem: Jewish Magical and Mystical Traditions (Moshe Idel)",
             "URL": "https://www.amazon.com/Golem-Magical-Mystical-Traditions-Artificial/dp/0791423875",
             "Author": "Idel, Moshe",
-            "Year": 1990.0,
+            "Year": "1990",
             "Resource Type": "Book",
             "Area": "Jewish Thought",
             "Denomination": "Academic",
@@ -494,7 +493,7 @@
             "Title": "Halachic Smarts about Smart Technology | Jewish Action",
             "URL": "https://jewishaction.com/religion/jewish-law/halachic-smarts-about-smart-technology/",
             "Author": "Jachter, Chaim",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Halakha",
             "Denomination": "Orthodox",
@@ -516,7 +515,7 @@
             "Title": "Artificial Intelligence and Jewish Thought | The Cambridge Companion to Religion and Artificial Intelligence",
             "URL": "https://www.cambridge.org/core/books/abs/cambridge-companion-to-religion-and-artificial-intelligence/artificial-intelligence-and-jewish-thought/91E400CCAC8D090B826CCCFBF3E7C519",
             "Author": "Kalman, David Zvi",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "Scholarship",
             "Area": "Jewish Thought",
             "Denomination": "Academic",
@@ -527,7 +526,7 @@
             "Title": "Jews Aren't Loud Enough about AI (Mosaic Magazine)",
             "URL": "https://mosaicmagazine.com/response/politics-current-affairs/2024/03/jews-arent-loud-enough-about-ai/",
             "Author": "Kalman, David Zvi",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Article",
             "Area": "Society",
             "Denomination": "Non-Denominational",
@@ -538,7 +537,7 @@
             "Title": "Judaism at the Speed of Technological Change | SAPIR Journal",
             "URL": "https://sapirjournal.org/technology/2023/judaism-at-the-speed-of-technological-change/",
             "Author": "Kalman, David Zvi",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -549,7 +548,7 @@
             "Title": "On AI, Jewish Thought Has Something Distinct to Say - Future of Life Institute",
             "URL": "https://futureoflife.org/religion/ai-in-jewish-thought/",
             "Author": "Kalman, David Zvi",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Article",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -560,7 +559,7 @@
             "Title": "Staying Human in the Age of AI - with David Zvi Kalman | Hartman Institute",
             "URL": "https://www.timesofisrael.com/spotlight/staying-human-in-the-age-of-ai-with-david-zvi-kalman/",
             "Author": "Kalman, David Zvi",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "Podcast",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -571,7 +570,7 @@
             "Title": "What Will Our Technology Do to Jewish Ethics?",
             "URL": "https://www.hartman.org.il/what-will-our-technology-do-to-jewish-ethics/",
             "Author": "Kalman, David Zvi",
-            "Year": 2021.0,
+            "Year": "2021",
             "Resource Type": "Article",
             "Area": "Ethics, Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -593,7 +592,7 @@
             "Title": "There is no Hasidic ban on tech, but this sect is making an exception for AI (Forward)",
             "URL": "https://forward.com/fast-forward/545347/artificial-intelligence-chatgpt-skverer-ban/",
             "Author": "Kovac, Adam",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "News Article",
             "Area": "Society",
             "Denomination": "Orthodox",
@@ -604,7 +603,7 @@
             "Title": "Shut First Ask Questions Later | Artificial Intelligence & Psak Halacha (Rabbi Shimshon Nadel)",
             "URL": "https://yutorah.org/lectures/1080891/6.-Artificial-Intelligence-&-Psak-HalachaFeat.-Rabbi-Shimshon-Nadel",
             "Author": "Kurtz, Moshe; Nadel, Shimshon",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Podcast",
             "Area": "Halakha",
             "Denomination": "Orthodox",
@@ -615,7 +614,7 @@
             "Title": "The Religious Implications of Extraterrestrial Life | Tradition",
             "URL": "https://traditiononline.org/the-religious-implications-of-extraterrestrial-life/",
             "Author": "Lamm, Norman",
-            "Year": 1965.0,
+            "Year": "1965",
             "Resource Type": "Article",
             "Area": "Jewish Thought",
             "Denomination": "Orthodox",
@@ -626,7 +625,7 @@
             "Title": "Evolve Episode 46: Chat GPT, Artificial Intelligence and Jewish Ethical Wisdom",
             "URL": "https://evolve.fireside.fm/46",
             "Author": "Marcus, Mitch",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Podcast",
             "Area": "Jewish Thought",
             "Denomination": "Reconstructionist",
@@ -648,7 +647,7 @@
             "Title": "Course Syllabus: Ethics in Artificial Intelligence (Yeshiva University)",
             "URL": "https://www.yu.edu/sites/default/files/inline-files/Ethics%20in%20Artificial%20Intelligence.pdf",
             "Author": "Navon, Mois; Weiderblank, Netanel",
-            "Year": 2022.0,
+            "Year": "2022",
             "Resource Type": "Resource Hub",
             "Area": "Ethics, Halakha",
             "Denomination": "Orthodox",
@@ -659,7 +658,7 @@
             "Title": "Halakhic Responses to Artificial Intelligence and Autonomous Machines (Rabbi Daniel Nevins)",
             "URL": "https://www.rabbinicalassembly.org/sites/default/files/nevins_ai_moral_machines_and_halakha-final_1.pdf",
             "Author": "Nevins, Daniel",
-            "Year": 2019.0,
+            "Year": "2019",
             "Resource Type": "Responsum",
             "Area": "Halakha",
             "Denomination": "Conservative",
@@ -670,7 +669,7 @@
             "Title": "Can A Robot Write A Sefer Torah? Interview",
             "URL": "https://www.jewishpress.com/indepth/interviews-and-profiles/can-a-robot-write-a-sefer-torah-an-interview-with-rabbi-menachem-perl-head-of-the-tzomet-institute/2020/01/09/",
             "Author": "Perl, Menachem",
-            "Year": 2020.0,
+            "Year": "2020",
             "Resource Type": "Article",
             "Area": "Halakha",
             "Denomination": "Orthodox",
@@ -681,7 +680,7 @@
             "Title": "Robotics and artificial intelligence: Jewish ethical perspectives",
             "URL": "https://link.springer.com/chapter/10.1007/978-3-211-33303-7_2",
             "Author": "Rappaport, Z. H.",
-            "Year": 2006.0,
+            "Year": "2006",
             "Resource Type": "Article",
             "Area": "Ethics",
             "Denomination": "Academic",
@@ -692,7 +691,7 @@
             "Title": "Like Silicon From Clay: What Ancient Jewish Wisdom Can Teach Us About AI",
             "URL": "https://www.amazon.com/Like-Silicon-Clay-Ancient-Jewish/dp/0844750840/",
             "Author": "Rosen, Michael",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "Book",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -703,7 +702,7 @@
             "Title": "Autonomy, Automatons, Golems, and Dybbuks: Models for AI | American Enterprise Institute - AEI",
             "URL": "https://www.aei.org/articles/autonomy-automatons-golems-and-dybbuks-models-for-ai/",
             "Author": "Rosen, Michael",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Ethics, Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -714,7 +713,7 @@
             "Title": "Religion and the Robot |  Tradition 8",
             "URL": "https://hods.org/pdf/Azriel%20Rosenfeld%20-%20Religion%20and%20the%20Robot.pdf",
             "Author": "Rosenfeld, A",
-            "Year": 1966.0,
+            "Year": "1966",
             "Resource Type": "Article",
             "Area": "Jewish Thought",
             "Denomination": "Orthodox",
@@ -725,7 +724,7 @@
             "Title": "Jewish Technophobia: An Old Story | SAPIR Journal",
             "URL": "Jewish Technophobia: An Old Story \u2013 SAPIR Journal",
             "Author": "Schacter, Jacob J.",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -736,7 +735,7 @@
             "Title": "Sefaria AI Tools",
             "URL": "https://www.sefaria.org/ai",
             "Author": "Sefaria",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "AI Tool",
             "Area": "Torah Study",
             "Denomination": "Non-Denominational",
@@ -747,7 +746,7 @@
             "Title": "Sefaria Models on Hugging Face",
             "URL": "https://huggingface.co/Sefaria",
             "Author": "Sefaria",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Code",
             "Area": "Torah Study",
             "Denomination": "Non-Denominational",
@@ -758,7 +757,7 @@
             "Title": "The Human Condition in An Algorithmized World: A Critique through the Lens of 20th-Century Jewish Thinkers and the Concepts of Rationality, Alterity and History by Nathalie A. Smuha :: SSRN",
             "URL": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4093683",
             "Author": "Smuha, Nathalie",
-            "Year": 2022.0,
+            "Year": "2022",
             "Resource Type": "Scholarship",
             "Area": "Ethics",
             "Denomination": "Academic",
@@ -769,7 +768,7 @@
             "Title": "Rabbi Adin Even-Israel Steinsaltz in dialogue with Ray Kurzweil",
             "URL": "https://www.youtube.com/watch?v=q42F9-F17t8",
             "Author": "Steinsaltz, Adin Even-Israel",
-            "Year": 2014.0,
+            "Year": "2014",
             "Resource Type": "Discussion",
             "Area": "Jewish Thought",
             "Denomination": "Orthodox",
@@ -780,7 +779,7 @@
             "Title": "Essay series on AI in Jewish Thought and Law | TorahMusings",
             "URL": "https://www.torahmusings.com/topics/ai/",
             "Author": "Student, Gil",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "Person",
             "Area": "Jewish Thought, Halakha",
             "Denomination": "Orthodox",
@@ -802,7 +801,7 @@
             "Title": "What's Wrong with Hebrew NLP? And How to Make it Right (ACL Anthology)",
             "URL": "https://aclanthology.org/D19-3044/",
             "Author": "Tsarfaty, Reut; Sadde, Shoval; Klein, Stav; Seker, Amit",
-            "Year": 2019.0,
+            "Year": "2019",
             "Resource Type": "Academic Paper",
             "Area": "Language",
             "Denomination": "Academic",
@@ -813,7 +812,7 @@
             "Title": "Judaism and Artificial Intelligence (Chabad.org)",
             "URL": "https://www.chabad.org/library/article_cdo/aid/6797055/jewish/Judaism-and-Artificial-Intelligence.htm",
             "Author": "Various",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Resource Hub",
             "Area": "Torah Study",
             "Denomination": "Orthodox",
@@ -824,12 +823,12 @@
             "Title": "AI and Avodah Zarah: A Torah-based Discussion of Artificial Intelligence",
             "URL": "AI and Avodah Zarah: A Torah-based Discussion of Artificial Intelligence",
             "Author": "Various",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Discussion",
             "Area": "Jewish Thought",
             "Denomination": "Orthodox",
             "Level/Audience": "Torah-Fluent",
-            "Text": "Orthodox discussion from a wide range of Torah and scientific experts examining the issues Orthodox Jews may have in using AI systems and AI tools, including idolatry (avodah zarah)."
+            "Text": "Orthodox discussion from a range of Torah and scientific experts answering questions about the issues Orthodox Jews may ask in using AI systems and AI tools."
         },
         {
             "Title": "Artificial Intelligence: The New Ethical Frontier (Institute for Jewish Ethics)",
@@ -857,7 +856,7 @@
             "Title": "18Forty Podcast - AI Episodes and Articles",
             "URL": "https://18forty.org/topics/ai/",
             "Author": "Various",
-            "Year": 2025.0,
+            "Year": "2025",
             "Resource Type": "Podcast",
             "Area": "Resource Hub",
             "Denomination": "Orthodox",
@@ -868,7 +867,7 @@
             "Title": "Moment Magazine - Ask the Rabbis on AI",
             "URL": "https://momentmag.com/ask-the-rabbis-what-impact-will-artificial-intelligence-have-on-peoples-spiritual-lives/?srsltid=AfmBOooLcmarojsFh7oa5yDJihTMhwLywzpDMOFscHBDFyKg5rOpv1f0",
             "Author": "Various",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "News Article",
             "Area": "Jewish Thought",
             "Denomination": "Non-Denominational",
@@ -879,7 +878,7 @@
             "Title": "The Golem in the Age of Artificial Intelligence (Academia.edu)",
             "URL": "https://www.academia.edu/43891992/The_Golem_in_the_Age_of_Artificial_Intelligence",
             "Author": "Vudka, Amir",
-            "Year": 2020.0,
+            "Year": "2020",
             "Resource Type": "Academic Paper",
             "Area": "Jewish Thought",
             "Denomination": "Academic",
@@ -901,7 +900,7 @@
             "Title": "Ten Reasons Why We Cannot Turn to AI for Psak: Understanding the Nature and Philosophy of the Halachic Process",
             "URL": "https://www.yutorah.org/lectures/1119225/Ten-Reasons-Why-We-Cannot-Turn-to-AI-for-Psak:-Understanding-the-Nature-and-Philosophy-of-the-Halachic-Process",
             "Author": "Wiederblank, Netanel",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Article",
             "Area": "Halakha",
             "Denomination": "Orthodox",
@@ -912,7 +911,7 @@
             "Title": "What Artificial Intelligence Teaches Us about What it Means to be Human",
             "URL": "https://jewishaction.com/cover-story/what-artificial-intelligence-teaches-us-about-what-it-means-to-be-human/",
             "Author": "Wiederblank, Netanel",
-            "Year": 2023.0,
+            "Year": "2023",
             "Resource Type": "Article",
             "Area": "Jewish Thought",
             "Denomination": "Orthodox",
@@ -923,7 +922,7 @@
             "Title": "God and Golem, Inc. (Norbert Wiener)",
             "URL": "https://mitpress.mit.edu/9780262730112/god-and-golem-inc/",
             "Author": "Wiener, Norbert",
-            "Year": 1966.0,
+            "Year": "1966",
             "Resource Type": "Book",
             "Area": "Ethics",
             "Denomination": "Academic",
@@ -934,7 +933,7 @@
             "Title": "Can an AI Chatbot Answer My Halakhic Questions? | Responsa Radio",
             "URL": "https://podcasts.apple.com/us/podcast/can-i-use-generative-artifical-intelligence/id929388589?i=1000665250193",
             "Author": "Tucker, Ethan",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Podcast",
             "Area": "Ethics",
             "Denomination": "Conservative",
@@ -945,12 +944,23 @@
             "Title": "Can I Use Generative Artifical Intelligence? | Responsa Radio",
             "URL": "https://podcasts.apple.com/us/podcast/can-an-ai-chatbot-answer-my-halakhic-questions/id929388589?i=1000642778203",
             "Author": "Tucker, Ethan",
-            "Year": 2024.0,
+            "Year": "2024",
             "Resource Type": "Podcast",
             "Area": "Torah Study",
             "Denomination": "Conservative",
             "Level/Audience": "Popular",
             "Text": "Takes a Jewish lens to the ethical discussion around AI usage, discussing its environmental impact, potentially stolen intellectual property, and the like."
+        },
+        {
+            "Title": "Jewish Perspectives on Artificial Intelligence and Synthetic Biology ",
+            "URL": "https://hakirah.org/vol35Grossman.pdf",
+            "Author": "Grossman, Yitzhak",
+            "Year": "2024",
+            "Resource Type": "Article",
+            "Area": "Halakha, Jewish Thought",
+            "Denomination": "Orthodox",
+            "Level/Audience": "Torah-Fluent",
+            "Text": "Surveys the halakhic and traditional literature on golems, free will, liability, job losses and other aspects of how technology is creating new \"life\" through computers and biology. "
         }
     ],
     "filterColumn1": "Denomination",
@@ -1067,11 +1077,28 @@
                     
                     if (this.sortKey) {
                         data.sort((a, b) => {
-                            let valA = a[this.sortKey] || '', valB = b[this.sortKey] || '';
-                            const numA = parseFloat(valA), numB = parseFloat(valB);
-                            if (!isNaN(numA) && !isNaN(numB)) { valA = numA; valB = numB; }
-                            else { valA = String(valA).toLowerCase(); valB = String(valB).toLowerCase(); }
-                            return this.sortOrder === 'asc' ? (valA < valB ? -1 : 1) : (valA > valB ? 1 : -1);
+                            let valA = a[this.sortKey];
+                            let valB = b[this.sortKey];
+                            if (valA === undefined || valA === null) valA = '';
+                            if (valB === undefined || valB === null) valB = '';
+
+                            const numA = Number(valA);
+                            const numB = Number(valB);
+                            // Strictly check if it is a valid number and not just an empty string
+                            const isNumA = !isNaN(numA) && String(valA).trim() !== '';
+                            const isNumB = !isNaN(numB) && String(valB).trim() !== '';
+
+                            if (isNumA && isNumB) {
+                                if (numA < numB) return this.sortOrder === 'asc' ? -1 : 1;
+                                if (numA > numB) return this.sortOrder === 'asc' ? 1 : -1;
+                                return 0;
+                            }
+                            
+                            valA = String(valA).toLowerCase();
+                            valB = String(valB).toLowerCase();
+                            if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
+                            if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
+                            return 0;
                         });
                     }
                     return data;
