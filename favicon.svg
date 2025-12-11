@@ -1,0 +1,62 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark blue circular background -->
+  <circle cx="100" cy="100" r="95" fill="#2c3e50" stroke="none"/>
+  
+  <!-- Thin purple connection lines from empty dots to center (drawn first so they're behind) -->
+  <g stroke="#107ea377" stroke-width="3" stroke-linecap="round">
+    <!-- All empty dots connect to center (100, 100) -->
+    <line x1="85" y1="45" x2="100" y2="100"/>
+    <line x1="115" y1="45" x2="100" y2="100"/>
+    <line x1="155" y1="85" x2="100" y2="100"/>
+    <line x1="155" y1="115" x2="100" y2="100"/>
+    <line x1="115" y1="155" x2="100" y2="100"/>
+    <line x1="85" y1="155" x2="100" y2="100"/>
+    <line x1="45" y1="115" x2="100" y2="100"/>
+    <line x1="45" y1="85" x2="100" y2="100"/>
+  </g>
+  
+  <!-- Main aleph structure (thick lines, width=12) - drawn on top -->
+  <g stroke="#00bfff" stroke-width="12" stroke-linecap="round">
+    <!-- Main cross-line: top-left to bottom-right -->
+    <line x1="65" y1="65" x2="135" y2="135"/>
+    <!-- Line from top-right dot to 33% up from bottom on cross-line -->
+    <line x1="135" y1="65" x2="111.9" y2="111.9"/>
+    <!-- Line from bottom-left dot to 33% down from top on cross-line -->
+    <line x1="65" y1="135" x2="88.1" y2="88.1"/>
+  </g>
+  
+  <!-- 8 empty dots evenly spaced around the circle -->
+  <g fill="none" stroke="white" stroke-width="3">
+    <!-- Between top-left and top-right -->
+    <circle cx="85" cy="45" r="8"/>
+    <circle cx="115" cy="45" r="8"/>
+    
+    <!-- Between top-right and bottom-right -->
+    <circle cx="155" cy="85" r="8"/>
+    <circle cx="155" cy="115" r="8"/>
+    
+    <!-- Between bottom-right and bottom-left -->
+    <circle cx="115" cy="155" r="8"/>
+    <circle cx="85" cy="155" r="8"/>
+    
+    <!-- Between bottom-left and top-left -->
+    <circle cx="45" cy="115" r="8"/>
+    <circle cx="45" cy="85" r="8"/>
+  </g>
+  
+  <!-- Original filled dots (corner dots and aleph intersection points) -->
+  <g fill="white" stroke="none">
+    <!-- Top-left corner -->
+    <circle cx="65" cy="65" r="12"/>
+    <!-- Top-right corner -->
+    <circle cx="135" cy="65" r="12"/>
+    <!-- Bottom-left corner -->
+    <circle cx="65" cy="135" r="12"/>
+    <!-- Bottom-right corner -->
+    <circle cx="135" cy="135" r="12"/>
+    <!-- 33% down from top on cross-line -->
+    <circle cx="88.1" cy="88.1" r="10"/>
+    <!-- 33% up from bottom on cross-line -->
+    <circle cx="111.9" cy="111.9" r="10"/>
+  </g>
+</svg>
