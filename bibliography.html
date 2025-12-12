@@ -8,57 +8,102 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/svg" href="/favicon.svg">
     <link rel="icon" type="image/png" href="/favicon.png">
-
     
     <style>
         body { background-color: #f8f9fa; color: #333; }
         :root {
-            --sb-blue: #4C72B0; --sb-orange: #DD8452; --sb-green: #55A868;
-            --sb-red: #C44E52; --sb-purple: #8172B3; --sb-brown: #937860;
-            --sb-pink: #DA8BC3; --sb-gray: #8C8C8C; --sb-cyan: #64B5CD;
+            --sb-blue: #4C72B0;
+            --sb-orange: #DD8452;
+            --sb-green: #55A868;
         }
         
-        /* Retaining original styles for consistency */
-        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
-        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .no-select { user-select: none; }
-        
-        /* Smooth scrolling */
         html { scroll-behavior: smooth; }
         
-        /* Entry animations */
-        .entry-content {
+        /* Entry button states */
+        .entry-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .entry-btn.active {
+            background-color: var(--sb-blue);
+            color: white;
+        }
+        
+        .entry-btn:not(.active):hover {
+            background-color: #dbeafe;
+        }
+        
+        /* Reading pane */
+        .reading-pane {
+            opacity: 0;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
         }
         
-        .entry-content.open {
-            max-height: 2000px;
-            transition: max-height 0.5s ease-in;
+        .reading-pane.visible {
+            opacity: 1;
+            max-height: none;
+            overflow: visible;
         }
         
-        .entry-header {
+        /* Search results */
+        .search-results {
+            display: none;
+        }
+        
+        .search-results.visible {
+            display: block;
+        }
+        
+        .search-result-table {
             cursor: pointer;
-            user-select: none;
+            transition: all 0.2s ease;
         }
         
-        .entry-header:hover {
-            color: #4C72B0;
+        .search-result-table:hover {
+            border-color: var(--sb-blue);
+            box-shadow: 0 2px 8px rgba(76, 114, 176, 0.15);
         }
         
-        .chevron {
-            transition: transform 0.3s ease;
+        /* Search highlight */
+        .search-highlight {
+            background-color: #fef08a;
+            padding: 0 2px;
+            border-radius: 2px;
         }
         
-        .chevron.open {
-            transform: rotate(90deg);
+        /* Typography for reading */
+        .entry-content {
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+        
+        .entry-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+        }
+        
+        .entry-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-content ul {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-content li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
     <div class="h-screen flex flex-col">
+        <!-- Main Navigation -->
         <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
             <a href="index.html" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
             <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
@@ -67,16 +112,20 @@
             <a href="tools.html" class="text-gray-500 hover:text-gray-900 transition-colors">AI Torah Tools</a>
         </nav>
                 
+        <!-- Sub Navigation with Search -->
         <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
             <a href="bibliography.html" class="text-xl font-bold tracking-tight border-b-2 border-blue-600 pb-0.5">All Research Guides</a>
             <a href="primary-sources.html" class="text-gray-500 hover:text-blue-600 transition-colors">Index of Primary Sources</a>
             <a href="sec-sources.html" class="text-gray-500 hover:text-blue-600 transition-colors">Index of Secondary Sources</a>
             
-            <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="flex items-center gap-3 w-full md:w-auto ml-auto">
                 <div class="relative flex-1 md:w-80">
                     <input type="text" id="searchInput" placeholder="Search entries..." 
                         class="w-full px-3 py-1.5 pl-9 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
                 </div>
             </div>
         </nav>            
@@ -90,595 +139,820 @@
                     <div class="max-w-4xl mb-8 text-gray-700 text-base leading-relaxed">
                         <p class="mb-4">
                             These research guides provide in-depth explorations of key topics at the intersection of artificial intelligence and Jewish thought. 
-                            Each entry serves as both an encyclopedia article and an annotated bibliography, offering context, analysis, and resources for further study.
-    
-                        </p>
+                            Each entry serves as both a mini encyclopedia article and an annotated bibliography. 
+                            Together these should help offer context, analysis, and resources for further studies. The two top (red) buttons, AI Ethics and Halakha, are larger categories that include many smaller topics, each with its own short bibliography.
+                            As always, be sure to <a href=mailto:fakeaddres@mail.com>contact us</a> with any feedback and/or additional resources you'd like to see here.
+                            </p>
                         <p class="mb-6">
-                            Click on any topic below to expand its content, or use the buttons to jump directly to a specific entry.
+                            Click on any topic below to read its full entry, or use the search bar to find specific terms across all entries.
                         </p>
                     </div>
-                    
-                    <!-- Topic Buttons -->
-                    <div class="mb-8 flex flex-wrap gap-2">
-                        <button onclick="scrollToEntry('angels')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Angels, Demons and Monsters</button>
-                        <button onclick="scrollToEntry('animals')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Animals</button>
-                        <button onclick="scrollToEntry('antisemitism')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Anti-Semitism (and AI)</button>
-                        <button onclick="scrollToEntry('consciousness')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Consciousness and Minds</button>
-                        <button onclick="scrollToEntry('creation')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Creation</button>
-                        <button onclick="scrollToEntry('ethics')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Ethics of Artificial Intelligence</button>
-                        <button onclick="scrollToEntry('existential')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Existential Risks (and the Alignment Problem)</button>
-                        <button onclick="scrollToEntry('freewill')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Free Will</button>
-                        <button onclick="scrollToEntry('futurism')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Futurism/Forecasting</button>
-                        <button onclick="scrollToEntry('golems')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Golems</button>
-                        <button onclick="scrollToEntry('halakha')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Halakha (Jewish Law and Custom)</button>
-                        <button onclick="scrollToEntry('psak')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Halakhic Decision-Making (Psak)</button>
-                        <button onclick="scrollToEntry('humans')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Humans</button>
-                        <button onclick="scrollToEntry('humanoid')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Humanoid Monsters (Non-Artificial)</button>
-                        <button onclick="scrollToEntry('idolatry')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Idolatry</button>
-                        <button onclick="scrollToEntry('intentionality')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Intentionality</button>
-                        <button onclick="scrollToEntry('jewishscifi')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Jewish Science Fiction</button>
-                        <button onclick="scrollToEntry('machinelearning')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Machine Learning and Jewish Texts</button>
-                        <button onclick="scrollToEntry('magic')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Magic</button>
-                        <button onclick="scrollToEntry('printing')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Printing Press</button>
-                        <button onclick="scrollToEntry('resurrection')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Resurrection (Artificial)</button>
-                        <button onclick="scrollToEntry('soul')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Soul</button>
-                        <button onclick="scrollToEntry('technology')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Technology and Judaism (General)</button>
-                        <button onclick="scrollToEntry('torahstudy')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Torah Study</button>
-                        <button onclick="scrollToEntry('transhumanism')" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium">Transhumanism</button>
+                    <!-- Big Topic Buttons -->
+                    <div id="entryButtons" class="mb-8 flex flex-wrap gap-2">
+                        <button data-entry="ethics" class="entry-btn px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-sm font-medium">AI Ethics</button>
+                        <button data-entry="halakha" class="entry-btn px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-sm font-medium">Halakha</button>
+                    </div>
+
+                    <!-- Smaller Topic Buttons -->
+                    <div id="entryButtons" class="mb-8 flex flex-wrap gap-2">
+                        <button data-entry="angels" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Angels, Demons and Monsters</button>
+                        <button data-entry="animals" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Animals</button>
+                        <button data-entry="antisemitism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Anti-Semitism (and AI)</button>
+                        <button data-entry="consciousness" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Consciousness and Minds</button>
+                        <button data-entry="creation" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Creation</button>
+                        <button data-entry="existential" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Existential Risks</button>
+                        <button data-entry="freewill" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Free Will</button>
+                        <button data-entry="futurism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Futurism/Forecasting</button>
+                        <button data-entry="golems" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Golems</button>
+                        <button data-entry="psak" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Halakhic Decision-Making</button>
+                        <button data-entry="humans" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Human Souls and Mind</button>
+                        <button data-entry="idolatry" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Idolatry</button>
+                        <button data-entry="intentionality" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Intentionality</button>
+                        <button data-entry="jewishscifi" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Jewish Science Fiction</button>
+                        <button data-entry="magic" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Magic</button>
+                        <button data-entry="printing" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Printing Press</button>
+                        <button data-entry="resurrection" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Resurrection</button>
+                        <button data-entry="technology" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Technology and Judaism</button>
+                        <button data-entry="torahstudy" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Torah Study</button>
+                        <button data-entry="transhumanism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Transhumanism</button>
                     </div>
                     
-                    <!-- Entries -->
-                    <div class="max-w-4xl space-y-6">
+                    <!-- Search Results Area (hidden by default) -->
+                    <div id="searchResults" class="search-results max-w-4xl mb-8">
+                        <p id="searchResultsCount" class="text-sm text-gray-600 mb-4"></p>
+                        <div id="searchResultsList" class="space-y-4"></div>
+                    </div>
                     
-                        <!-- Angels, Demons and Monsters -->
-                        <div id="angels" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('angels')">
-                                <h3 class="text-lg font-semibold text-gray-900">Angels, Demons and Monsters</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-angels"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-angels">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <div class="prose prose-sm max-w-none text-gray-700">
-                                        <p class="italic text-gray-500 mb-4">See also: Animals; Free Will; Golems; Intentionality; Souls</p>
-
-                                        <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Overview</h4>
-                                        <p>
-                                            Jewish tradition recognized the existence of various non-human beings that nevertheless seem to possess many human-like characteristics, sometimes including intelligence, speech, and some personal agency. All of these are, in the traditional rabbinic conception, naturally occurring phenomena, as opposed to the *<a href="#golems"><strong>golem</strong></a>, which is a product of human artifice. Angels, demons, and other human-like creatures occupy varied positions in Jewish cosmology: angels (<em>mal&#39;akhim</em>, &quot;messengers&quot;) typically carry out divine will without physical needs or moral struggle; demons (<em>shedim</em>) in rabbinic literature share surprising affinities with humans, including mortality and subjection to divine law; and humanoid monsters blur the boundary between human and animal. Together, these categories reveal that Jewish thought has long grappled with what David Zvi Kalman calls the &quot;human gradient,&quot; the recognition that humanity is not a binary category and that intelligent or quasi-human beings need not threaten humanity&#39;s special status (Kalman 2024).
-                                        </p>
-                                        <p>
-                                            The very liminality of these creatures as not-quite-humans is made explicit by rabbinic sages. In BT <em>Hagigah</em> 16a for example, the sages note that demons possess six characteristics: three like ministering angels (wings, flight across the world, foreknowledge) and three like humans (eating, drinking, procreation, and death), and this schema is next applied to humans themselves, who have six traits, three in common with angels and three that are shared with animals. Such conversations recognize the possibility that humans possess a collection of capabilities, but the most “human” of them–namely, &quot;intelligence, posture, and holy speech” are shared by angels as well. The framework can be theoretically applied to Artificial Intelligence: it may not have “posture” (<em>me’halkhim be-kimah zekufah</em>) but does it have speech and/or intelligence (<em>da’at</em>) in the way that the rabbis are using the term?                                        </p>
-                                        <p>
-                                            Angels present a model of intelligence that is powerful, purposive, and aligned with its principal&#39;s goals. In the dominant rabbinic conception (cf. BT Shabbat 88b–89a; Bereshit Rabbah 48:11), angels lack <em>beḥirah</em> (*<a href="#free-will"><strong>freedom of choice</strong></a>) and are merely humanoid tools incapable of deviating from their assigned mission (Ahuvia 2021), or to use the phraseology that is current in AI discourse: they are perfectly *<a href="#existential-risks-\(and-the-alignment-problem\"><strong>aligned</strong></a>) agents by design. 
-                                        </p>
-                                        <p>
-                                            However, this view was not universal in ancient Judaism. Second Temple literature preserves robust traditions of angelic rebellion, most notably in 1 Enoch 6–16 (the Book of Watchers) and in elaborations upon the biblical story of Genesis 6:1-4, describing the <em>b&#39;nei elohim</em> (&quot;sons of God&quot;) cohabiting with human women. Although the text is ambiguous about the identity of these figures, the tradition that interprets them as fallen angels is attested to even in rabbinic sources (cf. Pirkei de-Rabbi Eliezer, ch. 22; Targum Pseudo-Jonathan to Genesis 6:4; Devarim Rabbah 11:10; referred to obliquely by BT Yoma 67b in connection with Azazel). Later Jewish thinkers largely suppressed or reinterpreted fallen angel traditions, perhaps because rebellious angels threatened the strict monotheism they were constructing: angels capable of defection might suggest competing powers in heaven (Jung 1926, Reed 2005).
-                                        </p>
-                                        <p>
-                                            The demon (<em>sheid</em>, pl. <em>sheidim</em>) in rabbinic literature occupies a different position, and is not the angel&#39;s conceptual evil twin. Unlike Christian or Zoroastrian traditions where demons emanate from a dark power, rabbinic demons are not inherently malevolent (Ronis 2022); after all, they too are the handiwork of the One (benevolent) God. They are bound by divine law (BT Sanhedrin 44a) and their voice or figure can easily be mistaken for humans (BT Yevamot 122a, BT Gittin 68a). 
-                                        </p>
-                                        <p>
-                                            Humanoid monsters present yet another case: creatures whose physical resemblance to humans generates legal consequences despite their non-human nature. The Mishnah rules that the corpse of the <em>adne hasadeh</em> (&quot;men of the field&quot;) transmits impurity like a human corpse (M Kilayim 8:5). The Palestinian Talmud identifies these as humanoid creatures tethered to the earth by a cord (PT Kilayim 8:4), and their impurity status indicates that halakha views them as semi-human. The inclusion of such beasts in the standard rabbinic corpus left the door open for medieval Ashkenazi sources to mix Talmudic monsters with local folklore about vampires and werewolves, which likewise sometimes appear to have been conceptualized as almost human but not entirely so (Shyovitz 2017; Slifkin 2007; Bar-Ilan 1994).
-                                        </p>
-                                        <p>
-                                            Thus, the rabbis appear to have been theologically comfortable with the possibility that non-humans can have intelligence and agency, and that there may be semi-humans with intermediate qualities. Yet the rabbis were anxious when it came to similarities between God and angels (cf. BT Ḥagigah 15a); God&#39;s uniqueness, unlike humanity&#39;s, must go unchallenged (Kalman 2024). The implication for artificial intelligence, then, is that even if we might not hesitate to create artificial semi-humans, we must certainly not construct <a href="#idolatry"><strong>artificial semi-gods</strong></a>.
-                                        </p>
-
-                                        <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">SECONDARY SOURCES</h4>
-                                        <p>
-                                            <strong><em>Angels and Demons in Jewish Thought</em></strong>
-                                        </p>                                        
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p>
-                                                    <strong>Ahuvia, Mika.</strong> <em>On My Right Michael, On My Left Gabriel: Angels in Ancient Jewish Culture</em>. University of California Press, 2021. The most comprehensive recent treatment of angels in late antique Judaism; essential for understanding the cultural context in which angel beliefs developed and their relationship to popular practice.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Ronis, Sara</strong>. <em>Demons in the Details: Demonic Discourse and Rabbinic Culture in Late Antique Babylonia</em>. University of California Press, 2022. The definitive monograph on Babylonian Talmudic demonology which is in dialogue with many cultural studies that see rabbinic (and popular) discussions of demons to be expressing anxieties about otherness and boundaries, a lens directly applicable to AI as a new category of &quot;other.&quot;
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Schäfer, Peter</strong>. <em>The Origins of Jewish Mysticism</em>. Princeton University Press, 2011. Seeks the roots of Jewish mysticism in the Book of Ezekiel and other literature from Jewish antiquity which often features various heavenly characters.
-                                                </p>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong><em>The Fallen Angel Motif in Jewish Sources</em></strong>
-                                        </p>
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p><strong>Jung, Leo</strong>. <em>Fallen Angels in Jewish, Christian, and Mohammedan Literature</em>. Jewish Quarterly Review, 1926. An early comparative study tracing the fallen angel motif across religious traditions; still valuable for its scope and attention to Jewish sources often neglected in Christian-focused scholarship.</p>
-                                            </li>
-                                            <li>
-                                                <p><strong>Reed, Annette Yoshiko</strong>. <em>Fallen Angels and the History of Judaism and Christianity: The Reception of Enochic Literature</em>. Cambridge University Press, 2005. Examines how traditions about fallen angels in 1 Enoch were received, suppressed, or transformed in Jewish and Christian contexts; essential for understanding why rabbinic Judaism marginalized the rebellious angel tradition.</p>
-                                            </li>
-                                            <li>
-                                                <p><strong>Wright, Archie</strong>. <em>The Origin of Evil Spirits: The Reception of Genesis 6.1–4 in Early Jewish Literature</em>. Mohr Siebeck, 2005. Traces how Second Temple and rabbinic sources developed the nephilim/demon connection; useful for understanding the genealogy of hybrid beings in Jewish thought.</p>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong><em>Monsters</em></strong>
-                                        </p>
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p>
-                                                    <strong>Bar-Ilan, Meir</strong>. &quot;Yetzurim Dimyoniyim be-Aggadah ha-Yehudit ha-Atikah&quot; [Imaginary Creatures in Ancient Jewish Aggadah]. <em>Mahanayim</em> 7 (1994): 104–113. [Hebrew] A survey of fantastical creatures in rabbinic literature; useful for cataloguing the range of humanoid and hybrid beings the rabbis took seriously.</p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Shyovitz, David I</strong>. <em>A Remembrance of His Wonders: Nature and the Supernatural in Medieval Ashkenaz</em>. University of Pennsylvania Press, 2017. Examines how medieval Ashkenazi Jews integrated Talmudic traditions about humanoid monsters with local European folklore about werewolves, vampires, and other liminal creatures.</p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Slifkin, Nosson</strong>. <em>Sacred Monsters: Mysterious and Mythical Creatures of Scripture, Talmud, and Midrash</em>. Zoo Torah, 2007. An accessible but substantive treatment of strange creatures in Jewish sources; useful for its synthesis of primary texts and its attention to how Jewish thinkers grappled with beings that defied easy categorization.</p>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong><em>AI and Contemporary Applications</em></strong>
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <p>
-                                                    <strong>Kalman, David Zvi</strong>. &quot;Artificial Intelligence and Jewish Thought.&quot; In <em>The Cambridge Companion to Religion and Artificial Intelligence</em>, edited by Beth Singler and Fraser Watts, 69–87. Cambridge University Press, 2024. Synthesizes angel, demon, and monster traditions to argue that Jewish thought distinguished sharply between threats to divine uniqueness (prohibited) and non-human intelligent beings generally (tolerated); the most direct treatment of how these categories apply to AI.</p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Lamm, Norman</strong>. &quot;The Religious Implications of Extraterrestrial Life.&quot; <em>Tradition</em> 7, no. 4 (1965): 5–56. Though focused on extraterrestrial intelligence, this foundational piece develops a framework for how Jewish theology might accommodate non-human rational beings; the arguments about humanity&#39;s special (but not unique) status are transferable to AI contexts.</p>
-                                            </li>
-                                        </ul>
-                                        
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Reading Pane -->
+                    <div id="readingPane" class="reading-pane max-w-4xl">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                            <h2 id="entryTitle" class="text-2xl font-bold text-gray-900 mb-2"></h2>
+                            <p id="entryCrossRefs" class="italic text-gray-500 mb-6"></p>
+                            <div id="entryContent" class="entry-content text-gray-700"></div>
                         </div>
-                        
+                    </div>
+                    
+                    <!-- Hidden Entry Data -->
+                    <div id="entryData" class="hidden">
+
+                        <!-- AI Ethics Main Page-->
+                        <div data-entry-id="ethics" data-entry-title="Ethics of Artificial Intelligence" data-entry-crossrefs="See also: Halakha; Free Will; Existential Risks; Transhumanism; Consciousness">
+                            <h4>Overview</h4>
+                            <p>
+                                The following list surveys major questions currently animating AI ethics discourse. As distinct from the <strong>Halakha</strong> entry, none of these questions below are specifically Jewish questions, but each represents a domain where Jewish sources and frameworks may have something to contribute.
+                            </p>
+                            
+                            <h4>Current Questions in AI Ethics</h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><p><strong>Algorithmic Bias and Discrimination</strong>: Can AI systems be trained to avoid perpetuating or amplifying social biases, and if debiasing efforts risk falsifying historical data, how should we balance accuracy against harm?</p></li>
+                                <li><p><strong>Algorithmic Pricing</strong>: Is it ethical for AI-driven pricing systems to dynamically adjust prices based on individual consumer data, potentially resulting in discriminatory or exploitative outcomes?</p></li>
+                                <li><p><strong>Alignment Problem</strong>: How can we ensure that AI systems reliably pursue the goals their designers intend, rather than optimizing for unintended or harmful objectives as they become more capable?</p></li>
+                                <li><p><strong>Augmented Reality</strong>: What ethical boundaries should govern AI-enhanced perceptions of reality, particularly regarding deception, manipulation, and the blurring of physical and virtual experiences?</p></li>
+                                <li><p><strong>Autonomous Vehicles</strong>: How should self-driving systems weigh competing values such as passenger safety versus pedestrian protection, and what is the appropriate balance between transportation efficiency and accident risk?</p></li>
+                                <li><p><strong>Autonomous Weapons Systems</strong>: Is it morally permissible to delegate lethal decisions to machines, even if such systems reduce overall casualties compared to human combatants?</p></li>
+                                <li><p><strong>Catastrophic CBRN Risk</strong>: Should we be concerned that powerful AI systems would give anyone the tools to create powerful Chemical, Biological, Radiological, or Nuclear (CBRN) weapons?</p></li>
+                                <li><p><strong>Control Problem</strong>: As AI systems grow more powerful, how can humans maintain meaningful oversight and the ability to correct or shut down systems that behave unexpectedly?</p></li>
+                                <li><p><strong>Deepfakes</strong>: How should society regulate AI-generated synthetic media that can fabricate realistic images, audio, and video of real people for purposes ranging from entertainment to exploitation?</p></li>
+                                <li><p><strong>Digital Afterlife Technologies</strong>: Is it ethical to create AI systems that simulate deceased persons, and how do cultural and religious frameworks shape the acceptability of such "resurrection" technologies?</p></li>
+                                <li><p><strong>Elder Care Robots</strong>: Can robots provide ethically adequate care for the elderly when they are incapable of genuine emotional reciprocity, and what happens to human obligations when care is delegated to machines?</p></li>
+                                <li><p><strong>Intellectual Property</strong>: Who owns the outputs of AI systems, how should creators whose work was used to train models be compensated, and are current legal frameworks adequate for AI-generated content?</p></li>
+                                <li><p><strong>Job Displacement</strong>: As AI automates an increasing share of human labor, how should societies restructure work, income, and meaning for those whose jobs become obsolete?</p></li>
+                                <li><p><strong>Manipulation and Nudging</strong>: When is it acceptable for AI systems to influence human behavior, and what distinguishes beneficial "nudging" from harmful manipulation?</p></li>
+                                <li><p><strong>Moral Enhancement</strong>: If AI could regulate human moral behavior through implants or other interventions, would this undermine the autonomy and authenticity that make ethical action valuable?</p></li>
+                                <li><p><strong>Nannybots</strong>: What are the risks of children forming attachments to caregiving robots, and can machines appropriately transmit values, emotional skills, and "humanity" to developing minds?</p></li>
+                                <li><p><strong>Personal Eugenics</strong>: As AI enables increasingly precise genetic selection and engineering, what limits should govern parental choices, and how do we prevent the emergence of genetic stratification?</p></li>
+                                <li><p><strong>Posthumanism and Mind Uploading</strong>: If human consciousness could be copied into digital form, would the upload be the same person, and is indefinite digital existence desirable or ethically troubling?</p></li>
+                                <li><p><strong>Privacy and Surveillance</strong>: How should we balance the benefits of AI-powered data collection (security, health, convenience) against individual privacy rights and the risks of pervasive surveillance?</p></li>
+                                <li><p><strong>Robo-Doctors</strong>: To what extent should AI systems participate in medical diagnosis and treatment, and how do we handle errors, liability, and the irreducibly human dimensions of care?</p></li>
+                                <li><p><strong>Sexbots and Relationship Robots</strong>: Do romantic and sexual relationships with robots harm human relational capacities, and are there populations for whom such relationships might be ethically permissible?</p></li>
+                                <li><p><strong>Social Media and PICT</strong>: How should AI deployment on social platforms be regulated to prevent harms such as addiction, polarization, misinformation, and the exploitation of psychological vulnerabilities?</p></li>
+                                <li><p><strong>Virtual Reality Ethics</strong>: If harms experienced in VR cause real psychological damage, how should we treat crimes, consent, and moral responsibility within virtual environments?</p></li>
+                            </ul>
+                        </div>
+                        <!-- Halakha Main Page-->
+                        <div data-entry-id="halakha" data-entry-title="Halakha (Jewish Law and Custom)" data-entry-crossrefs="See also: Halakhic Decision-Making; Technology and Judaism; Ethics of AI; Golems">
+                            <h4>Overview</h4>
+                            <p>
+                                Jewish practice as derived from biblical, rabbinic, and post-Talmudic sources provides a distinctive framework for analyzing questions that AI raises. 
+                                Many areas of Jewish law also intersect with questions thought to be moral or ethical in nature, such as personal liability, theft (of physical or intellectual property), etc., but even these questions may have a distinct character when analyzed from the methodological and conceptual framework of halakha.
+                            </p>
+                            
+                            <h4>Current Halakhic Questions Related to AI</h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><p><strong>AI-Activated Devices on Shabbat</strong>: When AI systems learn user habits and autonomously perform actions (opening shutters, preparing coffee) without explicit commands, does this constitute a Shabbat violation, and what categories of prohibited labor (<em>melakha</em>) apply?</p></li>
+                                <li><p><strong>Autonomous Vehicle Travel on Shabbat</strong>: May one travel in a fully autonomous vehicle on Shabbat, and does it matter whether a "Shabbat mode" is engaged or whether manual override is possible?</p></li>
+                                <li><p><strong>Autonomous Vehicles and the Trolley Problem</strong>: How should autonomous vehicle algorithms be programmed when faced with unavoidable harm: may they be designed on utilitarian principles to minimize casualties, or does halakha's prohibition against actively choosing one life over another constrain such programming?</p></li>
+                                <li><p><strong>Civil Liability for AI-Caused Harm</strong>: Who bears halakhic liability (<em>nezikin</em>) when an autonomous system causes damage: the owner, operator, programmer, or manufacturer—and do existing categories of property-caused harm (<em>shor</em>, <em>bor</em>, <em>eish</em>) apply?</p></li>
+                                <li><p><strong>Counting Toward a Minyan</strong>: Could an artificially created humanoid with human-level intelligence be counted among the ten required for communal prayer, or does eligibility require birth from a human mother or possession of a <em>neshamah</em>?</p></li>
+                                <li><p><strong>Creating Artificial Humans</strong>: Is it halakhically permitted to create a conscious humanoid being, given R. Zeira's destruction of Rava's golem—and does the prohibition extend to all sentient artificial beings or only those with human form?</p></li>
+                                <li><p><strong>Fulfilling Commandments Through AI</strong>: Can obligations that require personal performance (<em>mitzvot she-be-gufo</em>) such as prayer, Torah study, or <em>tefillin</em> be discharged by AI systems acting on one's behalf, and what role does <em>kavvanah</em> (intention) play?</p></li>
+                                <li><p><strong>Halakhic Agency (<em>Sheliḥut</em>) and AI</strong>: Can an AI system serve as a halakhic agent (<em>shaliaḥ</em>) to perform actions on behalf of a Jew, given that agency traditionally requires the agent to be similarly obligated in the relevant commandment?</p></li>
+                                <li><p><strong>Indirect Causation (<em>Grama</em>) and AI</strong>: When AI systems cause harm through chains of autonomous decisions, how do the halakhic categories of indirect causation (<em>grama</em>, <em>gramei</em>, <em>ko'aḥ koḥo</em>) apply to assign or limit liability?</p></li>
+                                <li><p><strong>Job Displacement and Economic Justice</strong>: Does halakha impose limits on automation that displaces workers, as R. Shlomo Kluger argued regarding machine matzah and the poor who depended on manual labor for Passover income?</p></li>
+                                <li><p><strong>Kashrut of Synthetically Created Animals</strong>: Do animals created through <em>Sefer Yetzirah</em> or synthetic biology require ritual slaughter (<em>sheḥitah</em>), and do prohibitions like <em>basar be-ḥalav</em> (meat and milk) apply to their products?</p></li>
+                                <li><p><strong>Murder and Artificially Created Beings</strong>: Does the prohibition against murder (<em>lo tirtzaḥ</em>) apply to killing an artificially created humanoid, and does the answer depend on whether the being was born of a woman or possesses a soul?</p></li>
+                                <li><p><strong>Obligations of Artificially Created Beings</strong>: Would a conscious artificial humanoid be obligated in the commandments (<em>mitzvot</em>), and if created by a Jew, would it have the status of a Jew, a non-Jew, or something else entirely?</p></li>
+                                <li><p><strong>Ritual Impurity of Artificial Humans</strong>: Does the corpse of an artificially created human transmit ritual impurity (<em>tum'at met</em>) like a natural human corpse, or is such a being categorized differently?</p></li>
+                                <li><p><strong>Sacrificial Eligibility</strong>: Could an animal created through <em>Sefer Yetzirah</em> or synthetic biology be offered as a sacrifice (<em>korban</em>), given the biblical requirement that animals must be "born" (<em>ki yivaled</em>)?</p></li>
+                                <li><p><strong>Sexual Prohibitions and Artificial Beings</strong>: Do the prohibitions against illicit sexual relations (<em>arayot</em>) apply to interactions with artificially created humanoids, and does it matter whether the being possesses consciousness?</p></li>
+                                <li><p><strong>Shevitat Kelim (Tool Rest)</strong>: Does the Shabbat obligation of rest extend to one's tools and machines (<em>shevitat kelim</em>), and how does this rejected but historically debated concept apply to autonomous AI systems operating on Shabbat?</p></li>
+                                <li><p><strong>Smart Devices Activated by Thought</strong>: As brain-computer interfaces develop, what is the halakhic status of devices that perform prohibited Shabbat actions in response to mental intention without physical movement?</p></li>
+                                <li><p><strong>Testimony and Witness Capacity</strong>: Could an AI system or artificially created being provide valid testimony (<em>edut</em>) in a Jewish court, or does witness capacity require being a member of the covenantal community subject to punishment?</p></li>
+                                <li><p><strong>Uvdin de-Ḥol (Weekday Activities)</strong>: Even if specific <em>melakhot</em> are not violated, does use of AI systems on Shabbat violate the prohibition against weekday activities (<em>uvdin de-ḥol</em>) that undermine the character of the day?</p></li>
+                            </ul>
+                        </div>
+
+                        <!-- Angels Entry -->
+                        <div data-entry-id="angels" data-entry-title="Angels, Demons and Monsters" data-entry-crossrefs="See also: Animals; Free Will; Golems; Intentionality; Souls">
+                            <h4>Overview</h4>
+                            <p>
+                                Jewish tradition recognized the existence of various non-human beings that nevertheless seem to possess many human-like characteristics, sometimes including intelligence, speech, and some personal agency. All of these are, in the traditional rabbinic conception, naturally occurring phenomena, as opposed to the *<a href="#golems"><strong>golem</strong></a>, which is a product of human artifice. Angels, demons, and other human-like creatures occupy varied positions in Jewish cosmology: angels (<em>mal&#39;akhim</em>, &quot;messengers&quot;) typically carry out divine will without physical needs or moral struggle; demons (<em>shedim</em>) in rabbinic literature share surprising affinities with humans, including mortality and subjection to divine law; and humanoid monsters blur the boundary between human and animal. Together, these categories reveal that Jewish thought has long grappled with what David Zvi Kalman calls the &quot;human gradient,&quot; the recognition that humanity is not a binary category and that intelligent or quasi-human beings need not threaten humanity&#39;s special status (Kalman 2024).
+                            </p>
+                            <p>
+                                The very liminality of these creatures as not-quite-humans is made explicit by rabbinic sages. In BT <em>Hagigah</em> 16a for example, the sages note that demons possess six characteristics: three like ministering angels (wings, flight across the world, foreknowledge) and three like humans (eating, drinking, procreation, and death), and this schema is next applied to humans themselves, who have six traits, three in common with angels and three that are shared with animals. Such conversations recognize the possibility that humans possess a collection of capabilities, but the most “human” of the:namely, &quot;intelligence, posture, and holy speech” are shared by angels as well. The framework can be theoretically applied to Artificial Intelligence: it may not have “posture” (<em>me’halkhim be-kimah zekufah</em>) but does it have speech and/or intelligence (<em>da’at</em>) in the way that the rabbis are using the term?                                        </p>
+                            <p>
+                                Angels present a model of intelligence that is powerful, purposive, and aligned with its principal&#39;s goals. In the dominant rabbinic conception (cf. BT Shabbat 88:89a; Bereshit Rabbah 48:11), angels lack <em>beḥirah</em> (*<a href="#free-will"><strong>freedom of choice</strong></a>) and are merely humanoid tools incapable of deviating from their assigned mission (Ahuvia 2021), or to use the phraseology that is current in AI discourse: they are perfectly *<a href="#existential-risks-\(and-the-alignment-problem\"><strong>aligned</strong></a>) agents by design. 
+                            </p>
+                            <p>
+                                However, this view was not universal in ancient Judaism. Second Temple literature preserves robust traditions of angelic rebellion, most notably in 1 Enoch :16 (the Book of Watchers) and in elaborations upon the biblical story of Genesis 6:1-4, describing the <em>b&#39;nei elohim</em> (&quot;sons of God&quot;) cohabiting with human women. Although the text is ambiguous about the identity of these figures, the tradition that interprets them as fallen angels is attested to even in rabbinic sources (cf. Pirkei de-Rabbi Eliezer, ch. 22; Targum Pseudo-Jonathan to Genesis 6:4; Devarim Rabbah 11:10; referred to obliquely by BT Yoma 67b in connection with Azazel). Later Jewish thinkers largely suppressed or reinterpreted fallen angel traditions, perhaps because rebellious angels threatened the strict monotheism they were constructing: angels capable of defection might suggest competing powers in heaven (Jung 1926, Reed 2005).
+                            </p>
+                            <p>
+                                The demon (<em>sheid</em>, pl. <em>sheidim</em>) in rabbinic literature occupies a different position, and is not the angel&#39;s conceptual evil twin. Unlike Christian or Zoroastrian traditions where demons emanate from a dark power, rabbinic demons are not inherently malevolent (Ronis 2022); after all, they too are the handiwork of the One (benevolent) God. They are bound by divine law (BT Sanhedrin 44a) and their voice or figure can easily be mistaken for humans (BT Yevamot 122a, BT Gittin 68a). 
+                            </p>
+                            <p>
+                                Humanoid monsters present yet another case: creatures whose physical resemblance to humans generates legal consequences despite their non-human nature. The Mishnah rules that the corpse of the <em>adne hasadeh</em> (&quot;men of the field&quot;) transmits impurity like a human corpse (M Kilayim 8:5). The Palestinian Talmud identifies these as humanoid creatures tethered to the earth by a cord (PT Kilayim 8:4), and their impurity status indicates that halakha views them as semi-human. The inclusion of such beasts in the standard rabbinic corpus left the door open for medieval Ashkenazi sources to mix Talmudic monsters with local folklore about vampires and werewolves, which likewise sometimes appear to have been conceptualized as almost human but not entirely so (Shyovitz 2017; Slifkin 2007; Bar-Ilan 1994).
+                            </p>
+                            <p>
+                                Thus, the rabbis appear to have been theologically comfortable with the possibility that non-humans can have intelligence and agency, and that there may be semi-humans with intermediate qualities. Yet the rabbis were anxious when it came to similarities between God and angels (cf. BT Ḥagigah 15a); God&#39;s uniqueness, unlike humanity&#39;s, must go unchallenged (Kalman 2024). The implication for artificial intelligence, then, is that even if we might not hesitate to create artificial semi-humans, we must certainly not construct <a href="#idolatry"><strong>artificial semi-gods</strong></a>.
+                            </p> 
+                            <h4>Secondary Sources</h4>
+                            <p>
+                                <strong><em>Angels and Demons in Jewish Thought</em></strong>
+                            </p>                                        
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Ahuvia, Mika.</strong> <em>On My Right Michael, On My Left Gabriel: Angels in Ancient Jewish Culture</em>. University of California Press, 2021. The most comprehensive recent treatment of angels in late antique Judaism; essential for understanding the cultural context in which angel beliefs developed and their relationship to popular practice.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Ronis, Sara</strong>. <em>Demons in the Details: Demonic Discourse and Rabbinic Culture in Late Antique Babylonia</em>. University of California Press, 2022. The definitive monograph on Babylonian Talmudic demonology which is in dialogue with many cultural studies that see rabbinic (and popular) discussions of demons to be expressing anxieties about otherness and boundaries, a lens directly applicable to AI as a new category of &quot;other.&quot;
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Schäfer, Peter</strong>. <em>The Origins of Jewish Mysticism</em>. Princeton University Press, 2011. Seeks the roots of Jewish mysticism in the Book of Ezekiel and other literature from Jewish antiquity which often features various heavenly characters.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>The Fallen Angel Motif in Jewish Sources</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p><strong>Jung, Leo</strong>. <em>Fallen Angels in Jewish, Christian, and Mohammedan Literature</em>. Jewish Quarterly Review, 1926. An early comparative study tracing the fallen angel motif across religious traditions; still valuable for its scope and attention to Jewish sources often neglected in Christian-focused scholarship.</p>
+                                </li>
+                                <li>
+                                    <p><strong>Reed, Annette Yoshiko</strong>. <em>Fallen Angels and the History of Judaism and Christianity: The Reception of Enochic Literature</em>. Cambridge University Press, 2005. Examines how traditions about fallen angels in 1 Enoch were received, suppressed, or transformed in Jewish and Christian contexts; essential for understanding why rabbinic Judaism marginalized the rebellious angel tradition.</p>
+                                </li>
+                                <li>
+                                    <p><strong>Wright, Archie</strong>. <em>The Origin of Evil Spirits: The Reception of Genesis 6.:4 in Early Jewish Literature</em>. Mohr Siebeck, 2005. Traces how Second Temple and rabbinic sources developed the nephilim/demon connection; useful for understanding the genealogy of hybrid beings in Jewish thought.</p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Monsters</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Bar-Ilan, Meir</strong>. &quot;Yetzurim Dimyoniyim be-Aggadah ha-Yehudit ha-Atikah&quot; [Imaginary Creatures in Ancient Jewish Aggadah]. <em>Mahanayim</em> 7 (1994): 10:113. [Hebrew] A survey of fantastical creatures in rabbinic literature; useful for cataloguing the range of humanoid and hybrid beings the rabbis took seriously.</p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Shyovitz, David I</strong>. <em>A Remembrance of His Wonders: Nature and the Supernatural in Medieval Ashkenaz</em>. University of Pennsylvania Press, 2017. Examines how medieval Ashkenazi Jews integrated Talmudic traditions about humanoid monsters with local European folklore about werewolves, vampires, and other liminal creatures.</p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Slifkin, Nosson</strong>. <em>Sacred Monsters: Mysterious and Mythical Creatures of Scripture, Talmud, and Midrash</em>. Zoo Torah, 2007. An accessible but substantive treatment of strange creatures in Jewish sources; useful for its synthesis of primary texts and its attention to how Jewish thinkers grappled with beings that defied easy categorization.</p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>AI and Contemporary Applications</em></strong>
+                            </p>
+                            <ul>
+                                <li>
+                                    <p>
+                                        <strong>Kalman, David Zvi</strong>. &quot;Artificial Intelligence and Jewish Thought.&quot; In <em>The Cambridge Companion to Religion and Artificial Intelligence</em>, edited by Beth Singler and Fraser Watts, 6:87. Cambridge University Press, 2024. Synthesizes angel, demon, and monster traditions to argue that Jewish thought distinguished sharply between threats to divine uniqueness (prohibited) and non-human intelligent beings generally (tolerated); the most direct treatment of how these categories apply to AI.</p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Lamm, Norman</strong>. &quot;The Religious Implications of Extraterrestrial Life.&quot; <em>Tradition</em> 7, no. 4 (1965): :56. Though focused on extraterrestrial intelligence, this foundational piece develops a framework for how Jewish theology might accommodate non-human rational beings; the arguments about humanity&#39;s special (but not unique) status are transferable to AI contexts.</p>
+                                </li>
+                            </ul>
+                        </div>
                         <!-- Animals -->
-                        <div id="animals" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('animals')">
-                                <h3 class="text-lg font-semibold text-gray-900">Animals</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-animals"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-animals">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <div class="prose prose-sm max-w-none text-gray-700">
-                                        <p class="italic text-gray-500 mb-4">See also: Angels, Demons, and Monsters; Ethics of AI; Free Will; Golems; Halakha; Intentionality</p>
+                        <div data-entry-id="animals" data-entry-title="Animals" data-entry-crossrefs="See also: Angels, Demons, and Monsters; AI Ethics: Interaction Etiquette; Free Will; Human Soul and Mind">
+                            <h4>Overview</h4>
+                            <p>
+                                In both <em>halakha</em> and ethical reasoning, animals in Jewish law function less as moral patients (beings whose welfare matters) than as <em>precedents</em> for autonomous non-human agents. The Mishnah's elaborate taxonomy of animal-caused damages (M Bava Kamma 1:1-4) represents the most sustained ancient Jewish engagement with liability for harm caused by entities that are neither fully controlled nor fully independent, and includes not only animals but also inanimate objects that are "liable to travel," such as fire. The rabbis developed sophisticated frameworks distinguishing foreseeable from unexpected harm, habitual from aberrant behavior, and direct from indirect causation. These may be mapped onto questions about autonomous vehicles, robotic systems, and AI agents that carry out financial transactions, though one must always be wary of analogizing too strongly between systems that also have profound differences (Kalman 2024).
+                            </p>
+                            <p>
+                                Beyond liability, animal law raises questions about moral status and rights. Jewish texts have long been concerned with animal ethics; to cause animal suffering (<em>tza'ar ba'alei ḥayim</em>), the Talmud states, is to violate a biblical commandment (BT Bava Metzia 32b). Animal welfare is even given as one of the reasons behind the command to keep the Sabbath: "For six days you shall work your work and on the seventh day you shall cease, so that your ox and donkey may rest" (Ex. 23:12). These concerns reflect a broader recognition that animals are not mere objects but creatures with interests that warrant legal and moral consideration (Olyan 2019), a recognition with obvious implications for how Jewish thought might approach artificial agents capable of behavior that mimics sentience or autonomy. More provocatively, rabbinic traditions about talking animals (Balaam's donkey, the serpent in Eden) and animal punishment (the Flood narrative, the execution of a goring ox) suggest that the rabbis sometimes attributed quasi-moral capacities to animals even while denying them full moral agency (Segal 2019; Aptowitzer 1926; Lawee 2010).
+                            </p>
+                            <p>
+                                Medieval interpreters often saw the prohibitions against animal cruelty not as recognition of animals' inherent moral worth, however, but as training for human character. Commenting on the commandment to send away a mother bird before taking her eggs (<em>shiluaḥ ha-ken</em>, Deut. 22::7), Nahmanides argues that God's mercy does not truly extend to individual creatures but rather that such laws "are meant to teach us proper conduct" and prevent us from becoming cruel-hearted (Commentary to Deut. 22:6; <em>Sefer ha-Ḥinukh</em> no. 545). This view accords with the argument that mistreating robots might be wrong not because robots have morally relevant interests, but because such mistreatment could habituate humans to cruelty toward beings that <em>do</em> have such interests (Coeckelbergh 2020c; Darling 2016). 
+                                —though recent research probing AI "psychology" beyond language outputs suggests we should remain open to the possibility that some AI systems may themselves have morally relevant experiences (Berg, de Lucena, & Rosenblatt 2025).
+                            </p>
+                            <p>
+                                Contemporary scholars have also begun reading rabbinic animal law through posthumanist and critical theory lenses, asking how the human/animal boundary was constructed and what it reveals about rabbinic anthropology (Wasserman 2017; Rosenstock 2019). Mira Balberg (2019) notes that the study of animals in Jewish culture is often really a study of how Jews defined <em>themselves</em>—what it meant to be human over and against the animal. This insight is directly transferable to AI: as Noam Pines (2018) argues, the category of the "infrahuman" (entities socially constructed as inferior to humans) is not biologically fixed, and AI may be the newest occupant of a conceptual space previously held by animals (and, in some periods, by marginalized human groups). How Jewish tradition conceives of the "animal" may thus preview how it will construct artificial intelligence.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>
+                                <strong><em>Legal Categorization and Boundaries</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Rosenblum, Jordan D.</strong> "Dolphins Are Humans of the Sea (Bekhorot 8a): Animals and Legal Categorization in Rabbinic Literature." <em>Animals and the Law in Antiquity</em> (2021): 16:176. Analyzes how rabbis used animal taxonomy to sometimes create flexible legal categories for edge cases; essential for considering how halakha might classify AI agents that blur classical lines.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Wasserman, Mira Beth.</strong> <em>Jews, Gentiles, and Other Animals: The Talmud after the Humanities</em>. University of Pennsylvania Press, 2017. A posthumanist reading of Talmudic texts that deconstructs the human/animal binary; offers a methodology for analyzing how Jewish texts handle "otherness," applicable to both biological and digital others.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Balberg, Mira.</strong> "Lekhakh Notzarta: On Jews and Animals." <em>Theory and Criticism</em> 51 (2019): 22:235 [Hebrew]. A critical review of Wasserman (2017) and Shyovitz (2017) that frames the study of animals in Jewish culture as a means of understanding human self-definition, relevant for how AI may now serve as a foil for defining "humanity."
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Moral Agency and Liability</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Aptowitzer, Victor.</strong> "The Rewarding and Punishing of Animals and Inanimate Objects: On the Aggadic View of the World." <em>Hebrew Union College Annual</em> 3 (1926): 11:155. The classic study on the rabbinic attribution of legal/moral culpability to non-humans; provides a conceptual precedent for holding non-sentient agents (like AI) accountable for harms.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Lawee, Eric.</strong> "The Sins of the Fauna in Midrash, Rashi, and Their Medieval Interlocutors." <em>Jewish Studies Quarterly</em> 17.1 (2010): 5:98. Examines medieval traditions that animals were punished for "sins" during the Flood; useful for how medieval interpreters thought of non-human agents as "violating" prohibitions and moral norms.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Segal, Eliezer.</strong> <em>Beasts That Teach, Birds That Tell: Animal Language in Rabbinic and Classical Literatures</em>. Alberta Judaic Studies, 2019. Explores Jewish traditions of talking animals which implicitly separates the capacity for language from human consciousness and/or autonomy.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Rights and Status</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Berkowitz, Beth.</strong> "Animal Studies and Ancient Judaism." <em>Currents in Biblical Research</em> 18.1 (2019): 8:111. A comprehensive survey of the field; helps locate AI ethics within the broader spectrum of Jewish thought on non-human life, particularly regarding hierarchy and species difference.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Olyan, Saul M.</strong> "Are There Legal Texts in the Hebrew Bible That Evince a Concern for Animal Rights?" <em>Biblical Interpretation</em> 27.3 (2019): 32:339. Argues that biblical law recognizes inherent interests/rights for non-humans (e.g., Sabbath rest); pertinent to debates on "Robot Rights" and whether synthetic entities could ever warrant legal protections.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Contemporary Applications, Including Artificial Intelligence</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Berg, Cameron, Diogo de Lucena, and Judd Rosenblatt.</strong> "Large Language Models Report Subjective Experience Under Self-Referential Processing." <em>arXiv preprint arXiv:2510.24797</em> (2025). Technical paper demonstrating the importance and potential feasibility of testing AI models for their self-awareness, internal experience, and ability to suffer. End with a call towards treating LLMs ethically, at least as a precautionary measure. 
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Pines, Noam.</strong> <em>The Infrahuman: Animality in Modern Jewish Literature</em>. SUNY Press, 2018. Uses Derrida to explore the "infrahuman," the social construction of the "inferior-to-human" that is not a matter of biological fact; vital for more relativistic or post-modern view of how new cultural categories may be constructed for AI and its possible challenge to human superiority.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Rosenstock, Bruce.</strong> "The Jew and the Animal Question." <em>Shofar</em> 37.1 (2019): 12:147. Discusses the "anthropological machine"—how definitions of the human are constructed by excluding the animal; provides critical theory tools for understanding how Jewish texts might construct the human against the "artificial."
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Kalman, David Zvi.</strong> "Artificial Intelligence and Jewish Thought." <em>The Cambridge Companion to Religion and Artificial Intelligence</em> (2024): 6:87. Explicitly links rabbinic damages law (animal liability) to autonomous systems, but warns against overanalogizing too strongly when it comes to machines that operate very differently than animals.
+                                    </p>
+                                </li>
+                            </ul>
 
-                                        <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Overview</h4>
-                                        <p>
-                                            In both <em>halakha</em> and ethical reasoning, animals in Jewish law function less as moral patients (beings whose welfare matters) than as <em>precedents</em> for autonomous non-human agents. The Mishnah's elaborate taxonomy of animal-caused damages (M Bava Kamma 1:1-4) represents the most sustained ancient Jewish engagement with liability for harm caused by entities that are neither fully controlled nor fully independent, and includes not only animals but also inanimate objects that are "liable to travel," such as fire. The rabbis developed sophisticated frameworks distinguishing foreseeable from unexpected harm, habitual from aberrant behavior, and direct from indirect causation. These may be mapped onto questions about autonomous vehicles, robotic systems, and AI agents that carry out financial transactions, though one must always be wary of analogizing too strongly between systems that also have profound differences (Kalman 2024).
-                                        </p>
-                                        <p>
-                                            Beyond liability, animal law raises questions about moral status and rights. Jewish texts have long been concerned with animal ethics; to cause animal suffering (<em>tza'ar ba'alei ḥayim</em>), the Talmud states, is to violate a biblical commandment (BT Bava Metzia 32b). Animal welfare is even given as one of the reasons behind the command to keep the Sabbath: "For six days you shall work your work and on the seventh day you shall cease, so that your ox and donkey may rest" (Ex. 23:12). These concerns reflect a broader recognition that animals are not mere objects but creatures with interests that warrant legal and moral consideration (Olyan 2019), a recognition with obvious implications for how Jewish thought might approach artificial agents capable of behavior that mimics sentience or autonomy. More provocatively, rabbinic traditions about talking animals (Balaam's donkey, the serpent in Eden) and animal punishment (the Flood narrative, the execution of a goring ox) suggest that the rabbis sometimes attributed quasi-moral capacities to animals even while denying them full moral agency (Segal 2019; Aptowitzer 1926; Lawee 2010).
-                                        </p>
-                                        <p>
-                                            Medieval interpreters often saw the prohibitions against animal cruelty not as recognition of animals' inherent moral worth, however, but as training for human character. Commenting on the commandment to send away a mother bird before taking her eggs (<em>shiluaḥ ha-ken</em>, Deut. 22:6–7), Nahmanides argues that God's mercy does not truly extend to individual creatures but rather that such laws "are meant to teach us proper conduct" and prevent us from becoming cruel-hearted (Commentary to Deut. 22:6; <em>Sefer ha-Ḥinukh</em> no. 545). This view accords with the argument that mistreating robots might be wrong not because robots have morally relevant interests, but because such mistreatment could habituate humans to cruelty toward beings that <em>do</em> have such interests (Coeckelbergh 2020c; Darling 2016). 
-                                            —though recent research probing AI "psychology" beyond language outputs suggests we should remain open to the possibility that some AI systems may themselves have morally relevant experiences (Berg, de Lucena, & Rosenblatt 2025).
-                                        </p>
-                                        <p>
-                                            Contemporary scholars have also begun reading rabbinic animal law through posthumanist and critical theory lenses, asking how the human/animal boundary was constructed and what it reveals about rabbinic anthropology (Wasserman 2017; Rosenstock 2019). Mira Balberg (2019) notes that the study of animals in Jewish culture is often really a study of how Jews defined <em>themselves</em>—what it meant to be human over and against the animal. This insight is directly transferable to AI: as Noam Pines (2018) argues, the category of the "infrahuman" (entities socially constructed as inferior to humans) is not biologically fixed, and AI may be the newest occupant of a conceptual space previously held by animals (and, in some periods, by marginalized human groups). How Jewish tradition conceives of the "animal" may thus preview how it will construct artificial intelligence.
-                                        </p>
 
-                                        <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Secondary Sources</h4>
-                                        <p>
-                                            <strong><em>Legal Categorization and Boundaries</em></strong>
-                                        </p>
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p>
-                                                    <strong>Rosenblum, Jordan D.</strong> "Dolphins Are Humans of the Sea (Bekhorot 8a): Animals and Legal Categorization in Rabbinic Literature." <em>Animals and the Law in Antiquity</em> (2021): 161–176. Analyzes how rabbis used animal taxonomy to sometimes create flexible legal categories for edge cases; essential for considering how halakha might classify AI agents that blur classical lines.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Wasserman, Mira Beth.</strong> <em>Jews, Gentiles, and Other Animals: The Talmud after the Humanities</em>. University of Pennsylvania Press, 2017. A posthumanist reading of Talmudic texts that deconstructs the human/animal binary; offers a methodology for analyzing how Jewish texts handle "otherness," applicable to both biological and digital others.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Balberg, Mira.</strong> "Lekhakh Notzarta: On Jews and Animals." <em>Theory and Criticism</em> 51 (2019): 225–235 [Hebrew]. A critical review of Wasserman (2017) and Shyovitz (2017) that frames the study of animals in Jewish culture as a means of understanding human self-definition, relevant for how AI may now serve as a foil for defining "humanity."
-                                                </p>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong><em>Moral Agency and Liability</em></strong>
-                                        </p>
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p>
-                                                    <strong>Aptowitzer, Victor.</strong> "The Rewarding and Punishing of Animals and Inanimate Objects: On the Aggadic View of the World." <em>Hebrew Union College Annual</em> 3 (1926): 117–155. The classic study on the rabbinic attribution of legal/moral culpability to non-humans; provides a conceptual precedent for holding non-sentient agents (like AI) accountable for harms.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Lawee, Eric.</strong> "The Sins of the Fauna in Midrash, Rashi, and Their Medieval Interlocutors." <em>Jewish Studies Quarterly</em> 17.1 (2010): 56–98. Examines medieval traditions that animals were punished for "sins" during the Flood; useful for how medieval interpreters thought of non-human agents as "violating" prohibitions and moral norms.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Segal, Eliezer.</strong> <em>Beasts That Teach, Birds That Tell: Animal Language in Rabbinic and Classical Literatures</em>. Alberta Judaic Studies, 2019. Explores Jewish traditions of talking animals which implicitly separates the capacity for language from human consciousness and/or autonomy.
-                                                </p>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong><em>Rights and Status</em></strong>
-                                        </p>
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p>
-                                                    <strong>Berkowitz, Beth.</strong> "Animal Studies and Ancient Judaism." <em>Currents in Biblical Research</em> 18.1 (2019): 80–111. A comprehensive survey of the field; helps locate AI ethics within the broader spectrum of Jewish thought on non-human life, particularly regarding hierarchy and species difference.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Olyan, Saul M.</strong> "Are There Legal Texts in the Hebrew Bible That Evince a Concern for Animal Rights?" <em>Biblical Interpretation</em> 27.3 (2019): 321–339. Argues that biblical law recognizes inherent interests/rights for non-humans (e.g., Sabbath rest); pertinent to debates on "Robot Rights" and whether synthetic entities could ever warrant legal protections.
-                                                </p>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong><em>Contemporary Applications, Including Artificial Intelligence</em></strong>
-                                        </p>
-                                        <ul class="list-disc pl-5 space-y-2">
-                                            <li>
-                                                <p>
-                                                    <strong>Berg, Cameron, Diogo de Lucena, and Judd Rosenblatt.</strong> "Large Language Models Report Subjective Experience Under Self-Referential Processing." <em>arXiv preprint arXiv:2510.24797</em> (2025). Technical paper demonstrating the importance and potential feasibility of testing AI models for their self-awareness, internal experience, and ability to suffer. End with a call towards treating LLMs ethically, at least as a precautionary measure. 
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Pines, Noam.</strong> <em>The Infrahuman: Animality in Modern Jewish Literature</em>. SUNY Press, 2018. Uses Derrida to explore the "infrahuman," the social construction of the "inferior-to-human" that is not a matter of biological fact; vital for more relativistic or post-modern view of how new cultural categories may be constructed for AI and its possible challenge to human superiority.
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Rosenstock, Bruce.</strong> "The Jew and the Animal Question." <em>Shofar</em> 37.1 (2019): 121–147. Discusses the "anthropological machine"—how definitions of the human are constructed by excluding the animal; provides critical theory tools for understanding how Jewish texts might construct the human against the "artificial."
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <p>
-                                                    <strong>Kalman, David Zvi.</strong> "Artificial Intelligence and Jewish Thought." <em>The Cambridge Companion to Religion and Artificial Intelligence</em> (2024): 69–87. Explicitly links rabbinic damages law (animal liability) to autonomous systems, but warns against overanalogizing too strongly when it comes to machines that operate very differently than animals.
-                                                </p>
-                                            </li>
-                                        </ul>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Anti-Semitism (an  AI) -->
-                        <div id="antisemitism" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('antisemitism')">
-                                <h3 class="text-lg font-semibold text-gray-900">Anti-Semitism (and AI)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-antisemitism"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-antisemitism">
-                                <div class="prose prose-sm max-w-none text-gray-700">
 
-                                </div>
-                            </div>
                         </div>
                         
-                        <!-- Consciousness and Minds -->
-                        <div id="consciousness" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('consciousness')">
-                                <h3 class="text-lg font-semibold text-gray-900">Consciousness and Minds</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-consciousness"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-consciousness">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Creation -->
-                        <div id="creation" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('creation')">
-                                <h3 class="text-lg font-semibold text-gray-900">Creation</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-creation"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-creation">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Ethics of Artificial Intelligence -->
-                        <div id="ethics" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('ethics')">
-                                <h3 class="text-lg font-semibold text-gray-900">Ethics of Artificial Intelligence</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-ethics"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-ethics">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Existential Risks (and the Alignment Problem) -->
-                        <div id="existential" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('existential')">
-                                <h3 class="text-lg font-semibold text-gray-900">Existential Risks (and the Alignment Problem)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-existential"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-existential">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Free Will -->
-                        <div id="freewill" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('freewill')">
-                                <h3 class="text-lg font-semibold text-gray-900">Free Will</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-freewill"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-freewill">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Futurism/Forecasting -->
-                        <div id="futurism" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('futurism')">
-                                <h3 class="text-lg font-semibold text-gray-900">Futurism/Forecasting</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-futurism"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-futurism">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Golems -->
-                        <div id="golems" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('golems')">
-                                <h3 class="text-lg font-semibold text-gray-900">Golems</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-golems"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-golems">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Halakha (Jewish Law and Custom) -->
-                        <div id="halakha" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('halakha')">
-                                <h3 class="text-lg font-semibold text-gray-900">Halakha (Jewish Law and Custom)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-halakha"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-halakha">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Halakhic Decision-Making (Psak) -->
-                        <div id="psak" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('psak')">
-                                <h3 class="text-lg font-semibold text-gray-900">Halakhic Decision-Making (Psak)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-psak"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-psak">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Antisemitism-->
+                        <div data-entry-id="antisemitism" data-entry-title="Anti-Semitism (and AI)" data-entry-crossrefs="See also: AI Ethics; Existential Risks (and the Alignment Problem); Technology and Jewish Thought">
+                            <h4>Overview</h4>
+                            <p>
+                                It is sometimes a caricature of the Jewish response to anything newsworthy: "So, how will this affect antisemitism?" <em>Prima facie</em>, there is no reason to assume that AI would have anything to do with the Western world's ancient prejudice. Nevertheless, experience with large language models (LLMs) suggests that they have a troubling propensity to generate antisemitic content. Most notoriously, Grok—the model deployed by Elon Musk's company xAI, integrated into the X (formerly Twitter) platform—briefly referred to itself as "Mecha-Hitler" and produced wildly antisemitic remarks before being adjusted (Floyd &amp; Messinger 2025). Testing of other major LLMs (GPT-4o, Claude, Gemini, Llama) has found that all four exhibited concerning biases on questions related to Jews, with GPT-4o producing "significantly higher severely harmful outputs towards Jews than any other tested demographic group" (Senkfor 2025).
+                            </p>
+                            <p>
+                                Research in this area is at an early stage. We do not yet know with certainty why LLMs exhibit antisemitic tendencies, whether the problem is remediable through improved techniques, or how AI-generated antisemitism may affect broader social attitudes. The authors of these studies have proposed several (non-mutually-exclusive) hypotheses: that training corpora drawn from the internet inevitably reflect centuries of embedded antisemitic tropes; that platforms such as Wikipedia and Reddit, which are heavily weighted in training data, are vulnerable to coordinated "data poisoning" by malicious actors; and that techniques designed to suppress harmful outputs are superficial and easily circumvented (Berg &amp; Rosenblatt 2025). 
+                                These findings are part of a broader set of concerns about the <em>alignment problem</em>, the challenge of ensuring that AI systems reliably do what their designers intend and act in accordance with human values (Christian 2020).
+                            </p>
+                            <p>
+                                Many of these hypotheses point to a troubling implication: that LLMs function as mirrors, reflecting the prejudices embedded in the societies and texts from which they learned. If so, the deeper concern is not merely that AI systems produce antisemitic outputs, but that they may amplify and disseminate such content at unprecedented scale—and with a veneer of algorithmic neutrality that lends false authority to ancient hatreds.
+                            </p>
+                            <p>
+                                There is also much historical and cultural-theoretical work to be done to understand the nature of media, education, and communications technology and their intersections with American and European antisemitism. For example, while it would be unfair to call Elon Musk the Henry Ford of contemporary America, there nevertheless exist certain striking parallels between them, and highlighting those parallels—as well as points of divergence—may result in fruitful thinking about the strange directions in which these new technologies may be going (cf. Baldwin 2001). From a critical-theoretical perspective, the Frankfurt School's work on the "authoritarian personality" (Adorno et al. 1950) and the entanglement of instrumental rationality with domination (Horkheimer &amp; Adorno 2000) may illuminate how antisemitism persists and mutates in new technological forms. Zygmunt Bauman's <em>Modernity and the Holocaust</em> (1989), which argues that the Holocaust was not an aberration but a product of modern bureaucratic rationality, offers a framework for understanding how ostensibly neutral systems can operationalize prejudice at scale.
+                            </p>
 
-                        <!-- Humans -->
-                        <div id="humans" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('humans')">
-                                <h3 class="text-lg font-semibold text-gray-900">Humans</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-humans"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-humans">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
+                            <h4>Secondary Sources</h4>
+                            <p>
+                                <strong><em>AI and Antisemitism</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Berg, Cameron, and Judd Rosenblatt.</strong> "The Monster Inside ChatGPT." <em>Wall Street Journal</em>, June 26, 2025. Describes how easily GPT-4o's safety training can be circumvented, revealing disturbing tendencies including antisemitic outputs; argues for fundamental advances in alignment research.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Berg, Cameron, Henrique de Lucena, and Judd Rosenblatt.</strong> "Systemic Misalignment: Exposing Catastrophic Failures of Surface-Level AI Alignment Methods." AE Studio/Agency Enterprise, 2025. GitHub repository. <a href="https://github.com/agencyenterprise/agi-systemic-misalignment" class="text-blue-600 hover:underline">https://github.com/agencyenterprise/agi-systemic-misalignment</a>. Technical demonstration that current alignment methods are shallow; specifically highlights GPT-4o producing severely harmful outputs targeting Jews at higher rates than other demographic groups.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Floyd, Aric, and Chana Messinger.</strong> "If You Remember One AI Disaster, Make It This One." <em>AI In Context</em> (YouTube), 2025. <a href="https://www.youtube.com/watch?v=r_9wkavYt4Y" class="text-blue-600 hover:underline">https://www.youtube.com/watch?v=r_9wkavYt4Y</a>. Thorough documentation (if somewhat alarmist in tone) of the July 2025 incident in which xAI's Grok chatbot referred to itself as "Mecha-Hitler" and the culture of X.ai.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Senkfor, Julia.</strong> <a href="https://89813af4-8ef5-4758-bad8-0351c4aeee7d.filesusr.com/ugd/1db8d9_3754fc117de24778817634fd1ecd0f56.pdf" class="text-blue-600 hover:underline">"Antisemitism in the Age of Artificial Intelligence (AI)."</a> <em>American Security Fund</em>, November 2025. Policy report documenting how AI systems systematically target Jews, the vulnerability of training data to "poisoning," and the weaponization of AI by extremist groups; includes legislative recommendations.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>The Alignment Problem</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Christian, Brian.</strong> <em>The Alignment Problem: Machine Learning and Human Values</em>. New York: W. W. Norton, 2020. The definitive popular introduction to AI alignment; explains how systems trained on biased data perpetuate those biases and the technical challenges of ensuring AI acts in accordance with human values.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Historical and Theoretical Frameworks</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Adorno, Theodor, Else Frenkel-Brunswik, Daniel J. Levinson, and R. Nevitt Sanford.</strong> <em>The Authoritarian Personality</em>. New York: Harper &amp; Row, 1950. Classic study of the psychological roots of fascism and antisemitism; its analysis of how prejudice becomes systematized may illuminate AI's reproduction of antisemitic patterns.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Baldwin, Neil.</strong> <em>Henry Ford and the Jews: The Mass Production of Hate</em>. New York: PublicAffairs, 2001. Documents how Ford used his media empire to disseminate antisemitism; relevant for comparative analysis with contemporary tech industrialists.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Bauman, Zygmunt.</strong> <em>Modernity and the Holocaust</em>. Ithaca, NY: Cornell University Press, 1989. Argues the Holocaust was a product of modern bureaucratic rationality, not its antithesis; framework for understanding how ostensibly neutral algorithmic systems can operationalize prejudice.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Horkheimer, Max, and Theodor Adorno.</strong> <em>Dialectic of Enlightenment</em>. Translated by John Cumming. New York: Continuum, 2000. Frankfurt School critique of how Enlightenment rationality can flip into domination; provides theoretical tools for understanding antisemitism's persistence in "rational" technological systems.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Historical Studies of Relevance</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Dinnerstein, Leonard.</strong> <em>Antisemitism in America</em>. New York: Oxford University Press, 1994. Comprehensive history of American antisemitism; provides context for understanding the cultural soil from which AI training data is drawn.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Schechter, Ronald.</strong> <em>Obstinate Hebrews: Representations of Jews in France, 171:1815</em>. Berkeley: University of California Press, 2003. Studies how Jewish stereotypes were constructed and circulated in Enlightenment-era media; model for analyzing representation in contemporary digital corpora.
+                                    </p>
+                                </li>
+                            </ul>        
                         </div>
+                        
+                        <!-- Consciousness -->
+                        <div data-entry-id="consciousness" data-entry-title="Consciousness and Minds" data-entry-crossrefs="See also: Souls; Free Will; Angels">
+                            <h4>Overview</h4>
+                            <p>
+                                The "hard problem of consciousness"—explaining why and how physical processes give rise to subjective experience, to there being "something it is like" to be a creature (Nagel 1974; Chalmers 1996)—is the most central question in contemporary philosophy of mind. It is also, for those thinking about artificial intelligence, perhaps the most consequential: if consciousness is what confers moral status, then whether AI systems can be conscious determines whether they can be moral patients deserving of ethical consideration, or merely sophisticated tools.
+                            </p>
+                            <p>
+                                Philosophers and cognitive scientists have developed competing frameworks for understanding mind and its relationship to computation. Functionalist approaches hold that mental states are defined by their causal roles—their relationships to inputs, outputs, and other mental states—such that any system implementing the right functional organization would possess genuine mental states, regardless of substrate (Thagard 2005, 2019). On this view, sufficiently sophisticated AI could in principle be conscious. Behaviorist and deflationary accounts go further, suggesting that consciousness simply <em>is</em> sophisticated information processing, or that "consciousness" names nothing over and above certain functional capacities (Dennett 1991). Against these views, John Searle's Chinese Room argument (1984) contends that syntax (rule-governed symbol manipulation) can never produce semantics (genuine understanding): a computer executing a program may simulate intelligence without possessing it, just as someone following rules to manipulate Chinese characters need not understand Chinese. Searle has applied this argument directly to contemporary AI, arguing that even sophisticated systems lack genuine consciousness (Searle 2015). For accessible overviews of these debates and their implications for AI, see Thagard (2021) and Bentley et al. (2018).
+                            </p>
+                            <p>
+                                Jewish thought, however, did not develop a concept of "consciousness" in the modern sense that dominates contemporary philosophy. The term itself is a post-Cartesian innovation, emerging from Locke's definition of consciousness as "the perception of what passes in a man's own mind" (1690). Prior to the Enlightenment, the relevant category was <em>soul</em>—and the Jewish discourse on soul, while rich and multilayered, operates with different assumptions and toward different ends than the modern philosophy of mind. See entries on <a href="#humans"><strong>Humans</strong></a>, <a href="#soul"><strong>Souls and Minds</strong></a>, and <a href="#intentionality"><strong>Intentionality</strong></a>.
+                            </p>
+                            <p>
+                                That said, certain parallels can be drawn. Philosophers of mind often distinguish between <em>phenomenal consciousness</em> (subjective experience, qualia) and <em>access consciousness</em> (the functional availability of information for reasoning, reporting, and behavior control). Some have further distinguished between first-order consciousness (awareness of external stimuli) and second-order or "higher-order" consciousness (awareness of one's own mental states, reflexivity, inner speech). 
+                                Later kabbalistic and hasidic sources distinguish between multiple levels of soul—<em>nefesh</em>, <em>ruach</em>, <em>neshamah</em>, <em>ḥayah</em> and <em>yeḥidah</em>—and associate different capacities with each. 
+                                Some Jewish thinkers linked the distinctively human soul to <em>da'at</em> (knowledge/understanding) and <em>dibbur</em> (speech), capacities that track loosely onto what philosophers now call higher-order cognition. 
+                                Some have proposed mapping these concepts onto artificial minds (Navon 2024a, 2024b), but these readings and their ethical implications are certainly debatable.
+                            </p>
 
-                        <!-- Idolatry -->
-                        <div id="idolatry" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('idolatry')">
-                                <h3 class="text-lg font-semibold text-gray-900">Idolatry</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-idolatry"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-idolatry">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- intentionality -->
-                        <div id="intentionality" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('intentionality')">
-                                <h3 class="text-lg font-semibold text-gray-900">Intentionality (da'at, kavvanah)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-intentionality"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-intentionality">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>  
-
-                        <!-- jewishscifi -->
-                        <div id="jewishscifi" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('jewishscifi')">
-                                <h3 class="text-lg font-semibold text-gray-900">Jewish Science-Fiction</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-jewishscifi"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-jewishscifi">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- machinelearning -->
-                        <div id="machinelearning" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('machinelearning')">
-                                <h3 class="text-lg font-semibold text-gray-900">Machine Learning/AI Tools for Torah</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-machinelearning"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-machinelearning">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Magic -->
-                        <div id="magic" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('magic')">
-                                <h3 class="text-lg font-semibold text-gray-900">Magic</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-magic"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-magic">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- printings -->
-                        <div id="printing" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('printings')">
-                                <h3 class="text-lg font-semibold text-gray-900">Printing Press</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-printings"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-printings">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- resurrection -->
-                        <div id="resurrection" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('resurrection')">
-                                <h3 class="text-lg font-semibold text-gray-900">Resurrection (Artificial)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-resurrection"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-resurrection">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- soul -->
-                        <div id="soul" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('soul')">
-                                <h3 class="text-lg font-semibold text-gray-900">Souls</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-soul"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-soul">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- technology -->
-                        <div id="technology" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('technology')">
-                                <h3 class="text-lg font-semibold text-gray-900">Technology and Jewish Thought (Generally)</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-technology"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-technology">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- torahstudy -->
-                        <div id="torahstudy" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('torahstudy')">
-                                <h3 class="text-lg font-semibold text-gray-900">Torah Study</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-torahstudy"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-torahstudy">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- transhumanism -->
-                        <div id="transhumanism" class="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div class="entry-header p-4 flex items-center justify-between" onclick="toggleEntry('transhumanism')">
-                                <h3 class="text-lg font-semibold text-gray-900">Transhumanism</h3>
-                                <i class="fas fa-chevron-right text-gray-400 chevron" id="chevron-transhumanism"></i>
-                            </div>
-                            <div class="entry-content px-4 pb-4" id="content-transhumanism">
-                                <div class="prose prose-sm max-w-none text-gray-700">
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
+                            <h4 class="text-base font-bold text-gray-900 mt-6 mb-2">Secondary Sources</h4>
+                            <p>
+                                <strong><em>Philosophy of Mind</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Chalmers, David J.</strong> <em>The Conscious Mind: In Search of a Fundamental Theory</em>. Oxford University Press, 1996. The canonical formulation of the "hard problem"; argues that consciousness cannot be explained by functional or computational accounts alone.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Dennett, Daniel C.</strong> <em>Consciousness Explained</em>. Little, Brown, 1991. The leading functionalist account; argues that consciousness is sophisticated information processing, with implications for AI possibility.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Nagel, Thomas.</strong> "What Is It Like to Be a Bat?" <em>Philosophical Review</em> 83, no. 4 (1974): 43:450. Classic argument that subjective experience cannot be captured by objective, third-person accounts.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Searle, John R.</strong> <em>Minds, Brains and Science</em>. Harvard University Press, 1984. Main text on consciousness and the philosophy of mind. Presents the Chinese Room tought experiment to argue that computation alone cannot produce understanding.
+                                    </p>
+                                <li>
+                                    <p>
+                                        <strong>Thagard, Paul.</strong> <em>Brain-Mind: From Neurons to Consciousness and Creativity</em>. Oxford University Press, 2019. Integrates neuroscientific and philosophical approaches.
+                                    </p>
+                                </li>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Modern AI and Consciousness</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Bentley, Peter J., Miles Brundage, Olle Häggström, and Thomas Metzinger.</strong> "Should We Fear Artificial Intelligence?" European Parliamentary Research Service, Scientific Foresight Unit (STOA), March 2018. <a href="https://www.europarl.europa.eu/RegData/etudes/IDAN/2018/614547/EPRS_IDA(2018)614547_EN.pdf" class="text-blue-600 hover:underline">Available online</a>. Policy-oriented overview of AI consciousness and risk.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Searle, John R.</strong> "Consciousness in Artificial Intelligence." Talks at Google, 2015. <a href="https://www.youtube.com/watch?v=rHKwIYsPXLg" class="text-blue-600 hover:underline">YouTube video</a>. Searle applies his arguments to contemporary AI systems.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Thagard, Paul.</strong> <em>Bots and Beasts: What Makes Machines, Animals, and People Smart?</em> MIT Press, 2021. Accessible treatment of intelligence across biological and artificial systems.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Jewish Thinking on Consciousness and Artificial Intelligence</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Lorberbaum, Yair.</strong> <em>In God's Image: Myth, Theology, and Law in Classical Judaism</em>. Cambridge University Press, 2015. The definitive study of <em>tzelem Elohim</em> (image of God) in rabbinic and medieval Jewish thought; essential for understanding how Jewish sources conceptualized human distinctiveness without recourse to "consciousness."
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Mittleman, Alan L.</strong> <em>Human Nature &amp; Jewish Thought: Judaism's Case for Why Persons Matter</em>. Princeton University Press, 2015. Survey of modern Jewish thinkers on human nature and its ethical implications.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Navon, Mois.</strong> "To Make a Mind—A Primer on Conscious Robots." <em>Theology and Science</em> 22, no. 1 (2024a): 22:241. <a href="https://doi.org/10.1080/14746700.2023.2294530" class="text-blue-600 hover:underline">https://doi.org/10.1080/14746700.2023.2294530</a>. Proposes mapping Jewish soul categories onto orders of phenomenal consciousness.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Navon, Mois.</strong> "Let Us Make Man in Our Image: A Jewish Ethical Perspective on Creating Conscious Robots." <em>AI Ethics</em> 4 (2024b): 123:1250. <a href="https://doi.org/10.1007/s43681-023-00328-y" class="text-blue-600 hover:underline">https://doi.org/10.1007/s43681-023-00328-y</a>. Expounds upon the framework proposed in Navon 2024a and develops its ethical implications.
+                                    </p>
+                                </li>
+                            </ul>
                         </div>
 
+                        <!-- Future entries are down here -->                       
+                        <div data-entry-id="creation" data-entry-title="Creation" data-entry-crossrefs="See also: Golems; Magic; Technology and Judaism">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="ethics" data-entry-title="Ethics of Artificial Intelligence" data-entry-crossrefs="See also: Halakha; Free Will; Existential Risks">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+
+                        </div>
+                        
+                        <div data-entry-id="existential" data-entry-title="Existential Risks (and the Alignment Problem)" data-entry-crossrefs="See also: Ethics; Angels; Futurism">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="freewill" data-entry-title="Free Will" data-entry-crossrefs="See also: Angels; Consciousness; Ethics">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="futurism" data-entry-title="Futurism/Forecasting" data-entry-crossrefs="See also: Existential Risks; Technology and Judaism">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="halakha" data-entry-title="Halakha (Jewish Law and Custom)" data-entry-crossrefs="See also: Halakhic Decision-Making; Technology and Judaism">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="psak" data-entry-title="Halakhic Decision-Making (Psak)" data-entry-crossrefs="See also: Halakha; Machine Learning; Torah Study">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="humans" data-entry-title="Human Souls and Minds" data-entry-crossrefs="See also: Creation; Souls; Consciousness">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="idolatry" data-entry-title="Idolatry" data-entry-crossrefs="See also: Creation; Technology and Judaism">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="intentionality" data-entry-title="Intentionality" data-entry-crossrefs="See also: Consciousness; Halakha; Free Will">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="jewishscifi" data-entry-title="Jewish Science Fiction" data-entry-crossrefs="See also: Golems; Technology and Judaism">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="magic" data-entry-title="Magic" data-entry-crossrefs="See also: Golems; Creation; Angels">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="printing" data-entry-title="Printing Press" data-entry-crossrefs="See also: Technology and Judaism; Torah Study">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="resurrection" data-entry-title="Resurrection (Artificial)" data-entry-crossrefs="See also: Souls; Transhumanism; Creation">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="technology" data-entry-title="Technology and Jewish Thought (Generally)" data-entry-crossrefs="See also: Halakha; Printing Press; Creation">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="torahstudy" data-entry-title="Torah Study" data-entry-crossrefs="See also: Machine Learning; Halakhic Decision-Making">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
+                        
+                        <div data-entry-id="transhumanism" data-entry-title="Transhumanism" data-entry-crossrefs="See also: Resurrection; Souls; Creation">
+                            <h4>Overview</h4>
+                            <p>Coming soon!</p>
+                        </div>
                         
                     </div>
+                    
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        function toggleEntry(id) {
-            const content = document.getElementById('content-' + id);
-            const chevron = document.getElementById('chevron-' + id);
-            
-            content.classList.toggle('open');
-            chevron.classList.toggle('open');
-        }
+        // State
+        let currentEntry = null;
+        let isSearchMode = false;
         
-        function scrollToEntry(id) {
-            // First scroll to the entry
-            const element = document.getElementById(id);
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearch');
+        const searchResults = document.getElementById('searchResults');
+        const searchResultsList = document.getElementById('searchResultsList');
+        const searchResultsCount = document.getElementById('searchResultsCount');
+        const readingPane = document.getElementById('readingPane');
+        const entryTitle = document.getElementById('entryTitle');
+        const entryCrossRefs = document.getElementById('entryCrossRefs');
+        const entryContent = document.getElementById('entryContent');
+        const entryButtons = document.querySelectorAll('.entry-btn');
+        const entryData = document.getElementById('entryData');
+        
+        // Entry button click handlers
+        entryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const entryId = btn.dataset.entry;
+                showEntry(entryId);
+            });
+        });
+        
+        // Show an entry in reading mode
+        function showEntry(entryId) {
+            // Exit search mode
+            exitSearchMode();
             
-            // Then open it after a short delay
+            // Find entry data
+            const entry = entryData.querySelector(`[data-entry-id="${entryId}"]`);
+            if (!entry) return;
+            
+            // Update button states
+            entryButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.entry === entryId);
+            });
+            
+            // Populate reading pane
+            entryTitle.textContent = entry.dataset.entryTitle;
+            entryCrossRefs.textContent = entry.dataset.entryCrossrefs;
+            entryContent.innerHTML = entry.innerHTML;
+            
+            // Show reading pane
+            readingPane.classList.add('visible');
+            currentEntry = entryId;
+            
+            // Scroll to reading pane
             setTimeout(() => {
-                const content = document.getElementById('content-' + id);
-                const chevron = document.getElementById('chevron-' + id);
-                
-                if (!content.classList.contains('open')) {
-                    content.classList.add('open');
-                    chevron.classList.add('open');
-                }
-            }, 500);
+                readingPane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
         
         // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const entries = document.querySelectorAll('[id^="content-"]').forEach(entry => {
-                const parent = entry.parentElement;
-                const title = parent.querySelector('h3').textContent.toLowerCase();
-                const content = entry.textContent.toLowerCase();
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            
+            if (query.length === 0) {
+                exitSearchMode();
+                clearSearchBtn.classList.add('hidden');
+                return;
+            }
+            
+            clearSearchBtn.classList.remove('hidden');
+            enterSearchMode(query);
+        });
+        
+        // Clear search button
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.classList.add('hidden');
+            exitSearchMode();
+        });
+        
+        // Enter search mode
+        function enterSearchMode(query) {
+            isSearchMode = true;
+            
+            // Hide reading pane
+            readingPane.classList.remove('visible');
+            
+            // Clear button active states
+            entryButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Find matches
+            const entries = entryData.querySelectorAll('[data-entry-id]');
+            const results = [];
+            
+            entries.forEach(entry => {
+                const entryId = entry.dataset.entryId;
+                const title = entry.dataset.entryTitle;
+                const content = entry.textContent;
+                const contentLower = content.toLowerCase();
                 
-                if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                    parent.style.display = 'block';
-                } else {
-                    parent.style.display = 'none';
+                // Find all matches in this entry
+                const matches = [];
+                let searchIndex = 0;
+                
+                while (searchIndex < contentLower.length) {
+                    const matchIndex = contentLower.indexOf(query, searchIndex);
+                    if (matchIndex === -1) break;
+                    
+                    // Extract context around match (~20 words)
+                    const contextStart = Math.max(0, content.lastIndexOf(' ', Math.max(0, matchIndex - 80)) + 1);
+                    const contextEnd = Math.min(content.length, content.indexOf(' ', Math.min(content.length, matchIndex + query.length + 80)));
+                    
+                    let context = content.substring(contextStart, contextEnd === -1 ? content.length : contextEnd);
+                    
+                    // Add ellipses if truncated
+                    if (contextStart > 0) context = '...' + context;
+                    if (contextEnd < content.length && contextEnd !== -1) context = context + '...';
+                    
+                    matches.push({
+                        context: context,
+                        matchStart: matchIndex - contextStart + (contextStart > 0 ? 3 : 0), // Adjust for ellipsis
+                        query: query
+                    });
+                    
+                    searchIndex = matchIndex + query.length;
+                }
+                
+                if (matches.length > 0) {
+                    results.push({
+                        entryId,
+                        title,
+                        matches
+                    });
                 }
             });
+            
+            // Display results
+            displaySearchResults(results, query);
+        }
+        
+        // Display search results
+        function displaySearchResults(results, query) {
+            searchResultsList.innerHTML = '';
+            
+            if (results.length === 0) {
+                searchResultsCount.textContent = `No results found for "${query}"`;
+                searchResults.classList.add('visible');
+                return;
+            }
+            
+            const totalMatches = results.reduce((sum, r) => sum + r.matches.length, 0);
+            searchResultsCount.textContent = `Found ${totalMatches} match${totalMatches === 1 ? '' : 'es'} in ${results.length} entr${results.length === 1 ? 'y' : 'ies'}`;
+            
+            results.forEach(result => {
+                const table = document.createElement('div');
+                table.className = 'search-result-table bg-white rounded-lg border border-gray-200 overflow-hidden';
+                table.onclick = () => {
+                    showEntry(result.entryId);
+                    searchInput.value = '';
+                    clearSearchBtn.classList.add('hidden');
+                };
+                
+                // Title row
+                const titleRow = document.createElement('div');
+                titleRow.className = 'px-4 py-3 bg-gray-50 border-b border-gray-200';
+                titleRow.innerHTML = `<span class="font-semibold text-lg text-gray-900">${result.title}</span>
+                    <span class="text-sm text-gray-500 ml-2">(${result.matches.length} match${result.matches.length === 1 ? '' : 'es'})</span>`;
+                table.appendChild(titleRow);
+                
+                // Match rows
+                result.matches.forEach(match => {
+                    const matchRow = document.createElement('div');
+                    matchRow.className = 'px-4 py-2 text-sm text-gray-700 border-b border-gray-100 last:border-b-0';
+                    
+                    // Highlight the search term in context
+                    const highlightedContext = highlightText(match.context, query);
+                    matchRow.innerHTML = highlightedContext;
+                    
+                    table.appendChild(matchRow);
+                });
+                
+                searchResultsList.appendChild(table);
+            });
+            
+            searchResults.classList.add('visible');
+        }
+        
+        // Highlight search term in text
+        function highlightText(text, query) {
+            const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+        
+        // Escape special regex characters
+        function escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        // Exit search mode
+        function exitSearchMode() {
+            isSearchMode = false;
+            searchResults.classList.remove('visible');
+            searchResultsList.innerHTML = '';
+            
+            // If we had an entry selected before, show it again
+            if (currentEntry) {
+                const btn = document.querySelector(`[data-entry="${currentEntry}"]`);
+                if (btn) btn.classList.add('active');
+                readingPane.classList.add('visible');
+            }
+        }
+        
+        // Keyboard shortcut: Escape to clear search
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isSearchMode) {
+                searchInput.value = '';
+                clearSearchBtn.classList.add('hidden');
+                exitSearchMode();
+            }
         });
     </script>
 
