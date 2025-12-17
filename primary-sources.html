@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Guides - AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .no-select { user-select: none; }
+        
+        .col-wide {
+            width: 350px; min-width: 350px; max-width: 350px;
+            white-space: normal !important; word-wrap: break-word;
+        }
+        
+        .col-medium {
+            width: 200px; min-width: 200px; max-width: 200px;
+            white-space: normal !important; word-wrap: break-word;
+        }
+
+        .col-default { white-space: nowrap; }
+        
+        /* Highlight matching text */
+        .highlight {
+            background-color: #fef08a;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
+        /* Tag badge styling */
+        .tag-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div id="app" class="h-screen flex flex-col">
+        <!-- Main Navigation -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="index.html" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="table.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="#" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Research Guides</a>
+            <a href="tools.html" class="text-gray-500 hover:text-gray-900 transition-colors">AI Torah Tools</a>
+        </nav>
+                
+        <!-- Sub Navigation with Search -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="bibliography.html" class="text-gray-500 hover:text-blue-600 transition-colors">All Research Guides</a>
+            <a href="#" class="text-xl font-bold tracking-tight text-black-600 border-b-2 border-blue-600 pb-0.5">Index of Primary Sources</a>
+            <a href="sec-sources.html" class="text-gray-500 hover:text-blue-600 transition-colors">Index of Secondary Sources</a>
+            
+            <div class="flex items-center gap-3 w-full md:w-auto ml-auto">
+                <div class="relative flex-1 md:w-80">
+                    <input type="text" v-model="searchQuery" placeholder="Search entries..." 
+                        class="w-full px-3 py-1.5 pl-9 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <button v-if="searchQuery" @click="searchQuery = ''" 
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Description Section -->
+                <div class="px-6 pt-8 pb-4 max-w-4xl text-gray-700 text-base leading-relaxed">
+                    <p class="mb-4">
+                        This is an index of primary sources relating to the research guides. Each entry of the research guide has its own associated source sheet; all of those sources are collected here.
+                        Use the search bar (upper right of the screen) to find specific terms across all entries.
+                    </p>
+                    <p>
+                        As always, be sure to <a href="mailto:fakeaddress@mail.com" class="text-blue-600 hover:underline">contact us</a> with any feedback and/or additional resources you'd like to see here.
+                    </p>
+                </div>
+
+                <!-- Table Section -->
+                <div class="px-6 py-6">
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-x-auto table-container">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold border-b border-gray-200">
+                                    <th class="p-3 border-r border-gray-100 w-12 text-center">#</th>
+                                    <th v-for="h in config.headers" :key="h" 
+                                        @click="handleHeaderClick(h)" 
+                                        class="p-3 border-r border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors no-select"
+                                        :class="getColumnClass(h)">
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ h }}</span>
+                                            <i v-if="sortKey === h" 
+                                               :class="sortOrder === 'asc' ? 'fa-sort-up' : 'fa-sort-down'" 
+                                               class="fa-solid text-blue-500"></i>
+                                            <i v-else class="fa-solid fa-sort text-gray-300"></i>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr v-for="(row, idx) in filteredData" :key="idx" 
+                                    class="border-b border-gray-100 hover:bg-blue-50 transition-colors">
+                                    <td class="p-3 text-center text-gray-400 font-mono text-xs">{{ idx + 1 }}</td>
+                                    <td v-for="h in config.headers" :key="h + idx" 
+                                        class="p-3" :class="getColumnClass(h)">
+                                        <!-- Title column -->
+                                        <template v-if="h === config.titleColumn">
+                                            <span class="font-semibold text-gray-900 leading-snug block" 
+                                                  v-html="highlightText(row[h])"></span>
+                                        </template>
+                                        <!-- Tag column with colored badges -->
+                                        <template v-else-if="h === config.tagColumn">
+                                            <span class="tag-badge" :style="getTagStyle(row[h])">
+                                                {{ row[h] }}
+                                            </span>
+                                        </template>
+                                        <!-- Default column -->
+                                        <template v-else>
+                                            <span class="text-gray-700" v-html="highlightText(row[h])"></span>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Results count -->
+                    <div class="mt-4 text-sm text-gray-500">
+                        Showing {{ filteredData.length }} of {{ config.records.length }} records
+                    </div>
+                </div>
+
+                <!-- No results message -->
+                <div v-if="filteredData.length === 0" 
+                     class="flex flex-col items-center justify-center text-gray-400 py-12">
+                    <i class="fa-solid fa-filter-circle-xmark text-4xl mb-4"></i>
+                    <p>No records found matching your search.</p>
+                    <button @click="searchQuery = ''" 
+                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        Clear Search
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="bg-white border-t border-gray-200 px-6 py-3 text-center text-xs text-gray-400">
+            AI and Judaism Resource Library
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const SERVER_DATA = {
+    "headers": [
+        "title",
+        "citation",
+        "author",
+        "time",
+        "era",
+        "entry",
+        "description"
+    ],
+    "records": [
+        {
+            "title": "Mekhilta d'Rabbi Shimon ben Yochai",
+            "citation": "21:19",
+            "author": "Midrash",
+            "time": "~250 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": "Instruction to heal"
+        },
+        {
+            "title": "Babylonian Talmud Bava Kamma",
+            "citation": "85a:3",
+            "author": "Talmud",
+            "time": "~500 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": "Instruction to heal"
+        },
+        {
+            "title": "Babylonian Talmud Berakhot",
+            "citation": "3b:27-29",
+            "author": "Talmud",
+            "time": "~500 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": "David's technological know-how"
+        },
+        {
+            "title": "Babylonian Talmud Pesachim",
+            "citation": "54a:6-16",
+            "author": "Talmud",
+            "time": "~500 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": "Talmudic discussion of inventions of fire, mules, others"
+        },
+        {
+            "title": "Babylonian Talmud Megillah",
+            "citation": "14a:20",
+            "author": "Talmud",
+            "time": "~500 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Babylonian Talmud Kiddushin",
+            "citation": "82b:4",
+            "author": "Talmud",
+            "time": "~500 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Midrash Tanchuma Bereishit",
+            "citation": "11:06",
+            "author": "Midrash",
+            "time": "~500-800 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Bereishit Rabbah",
+            "citation": "11:06",
+            "author": "Midrash",
+            "time": "~400-500 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Kohelet Rabbah",
+            "citation": "7:13:01",
+            "author": "Midrash",
+            "time": "~600-800 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": "Warning that man must not spoil the world God created"
+        },
+        {
+            "title": "Midrash Tanchuma Tazria",
+            "citation": "5",
+            "author": "Midrash",
+            "time": "~500-800 CE",
+            "era": "Classical",
+            "entry": "Technology (General)",
+            "description": "Rabbi Akiva says that the work of man is more beautiful than the works of God"
+        },
+        {
+            "title": "Zikhron LaRishonim v'Gam L'Acharonim Vol. 1 (1887)",
+            "citation": "no. 12, no. 374",
+            "author": "Unkown (Harkavy, ed.)",
+            "time": "~800 CE",
+            "era": "Geonic",
+            "entry": "Technology (General)",
+            "description": "Geonic responsa comparing a timekeeping wheel to divine acts"
+        },
+        {
+            "title": "Chovot HaLevavot",
+            "citation": "Sha'ar 9 Chapter 1",
+            "author": "Bachya ibn Paquda",
+            "time": "~1080 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": "the virtue of working only for needs and otherwise abstaining from materialism and civilization"
+        },
+        {
+            "title": "Rashi on Pesachim",
+            "citation": "56a:2:3",
+            "author": "Rashi (Shlomo Yitzchaki)",
+            "time": "~1100 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": "indicates that it is better to not have medical cures so as to be more dependent upon God"
+        },
+        {
+            "title": "Rambam Commentary on Mishnah Pesachim",
+            "citation": "4:09:02",
+            "author": "Maimonides (Rambam)",
+            "time": "~1168 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": "ridicules those who have religious objections to engaging in medicine"
+        },
+        {
+            "title": "Moreh Nevukhim (Guide for the Perplexed)",
+            "citation": "Part 3 37:12",
+            "author": "Maimonides (Rambam)",
+            "time": "~1190 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": "ridicules those who have religious objections to engaging in medicine"
+        },
+        {
+            "title": "Tosafot on Bava Kamma",
+            "citation": "85a:15:1",
+            "author": "Tosafot",
+            "time": "~1150-1250 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Ibn Ezra on Genesis",
+            "citation": "2:15",
+            "author": "Abraham ibn Ezra",
+            "time": "~1150 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Ibn Ezra on Exodus",
+            "citation": "21:19:04",
+            "author": "Abraham ibn Ezra",
+            "time": "~1150 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Radak on Genesis",
+            "citation": "2",
+            "author": "David Kimchi (Radak)",
+            "time": "~1200 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Ramban on Genesis",
+            "citation": "2:08",
+            "author": "Nachmanides (Ramban)",
+            "time": "~1270 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Torat HaAdam",
+            "citation": "Sha'ar HaMichush - Inyan HaSakanah",
+            "author": "Nachmanides (Ramban)",
+            "time": "~1260 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Ramban on Leviticus",
+            "citation": "26:11:01",
+            "author": "Nachmanides (Ramban)",
+            "time": "~1270 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Ramban on Leviticus",
+            "citation": "19:19",
+            "author": "Nachmanides (Ramban)",
+            "time": "~1270 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Rashba on Bava Kamma",
+            "citation": "85a:4",
+            "author": "Rashba (Shlomo ben Aderet)",
+            "time": "~1280 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Teshuvot HaRashba",
+            "citation": "Part 1 Siman 413:4",
+            "author": "Rashba (Shlomo ben Aderet)",
+            "time": "~1280 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Teshuvot HaRashba",
+            "citation": "Part 1 Siman 418",
+            "author": "Rashba (Shlomo ben Aderet)",
+            "time": "~1280 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Sefer HaChinukh",
+            "citation": "62:2-4",
+            "author": "Anonymous (attributed to R. Aharon HaLevi)",
+            "time": "~1300 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Rabbeinu Bachya on Exodus",
+            "citation": "21:19:01",
+            "author": "Rabbeinu Bachya ben Asher",
+            "time": "~1290 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Shulchan shel Arba",
+            "citation": "4:02",
+            "author": "Rabbeinu Bachya ben Asher",
+            "time": "~1290 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Ra'ah on Berakhot",
+            "citation": "33b:4",
+            "author": "R. Aharon HaLevi (Ra'ah)",
+            "time": "~1290 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Tosafot HaRosh on Berakhot",
+            "citation": "60a:4",
+            "author": "Rabbeinu Asher (Rosh)",
+            "time": "~1300 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Meiri on Pesachim",
+            "citation": "55b:9",
+            "author": "Menachem Meiri",
+            "time": "~1300 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Meiri on Sanhedrin",
+            "citation": "67a:7",
+            "author": "Menachem Meiri",
+            "time": "~1300 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Abarbanel on Torah Genesis",
+            "citation": "11:01:03",
+            "author": "Isaac Abarbanel",
+            "time": "~1500 CE",
+            "era": "Medieval",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Toldot Yitzchak on Torah Exodus",
+            "citation": "21:19:01",
+            "author": "R. Yitzchak Karo",
+            "time": "~1520 CE",
+            "era": "Early Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Gur Aryeh on Leviticus",
+            "citation": "19:19",
+            "author": "Maharal of Prague",
+            "time": "~1580 CE",
+            "era": "Early Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Be'er HaGolah",
+            "citation": "Be'er 2 10:2-6",
+            "author": "Maharal of Prague",
+            "time": "~1600 CE",
+            "era": "Early Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Tosafot Yom Tov on Mishnah Pesachim",
+            "citation": "4:09:03",
+            "author": "R. Yom Tov Lipmann Heller",
+            "time": "~1620 CE",
+            "era": "Early Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Maharsha Chiddushei Aggadot on Berakhot",
+            "citation": "10b:3",
+            "author": "Maharsha (Shmuel Eidels)",
+            "time": "~1610 CE",
+            "era": "Early Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Maharsha Chiddushei Aggadot on Gittin",
+            "citation": "68b:11",
+            "author": "Maharsha (Shmuel Eidels)",
+            "time": "~1610 CE",
+            "era": "Early Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Chiddushei Chatam Sofer on Pesachim",
+            "citation": "56a:2",
+            "author": "Chatam Sofer (Moshe Sofer)",
+            "time": "~1820 CE",
+            "era": "Later Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Binyan Tzion",
+            "citation": "",
+            "author": "R. Yaakov Ettlinger",
+            "time": "~1850 CE",
+            "era": "Later Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Boaz on Mishnah Avot",
+            "citation": "3:01",
+            "author": "R. Yisrael Lipschitz (Tiferet Yisrael)",
+            "time": "~1840 CE",
+            "era": "Later Modern",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Shemonah Kevatzim",
+            "citation": "0.64244213",
+            "author": "Rav Avraham Yitzchak Kook",
+            "time": "~1920 CE",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Shemonah Kevatzim",
+            "citation": "0.215289352",
+            "author": "Rav Avraham Yitzchak Kook",
+            "time": "~1920 CE",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Malki BaKodesh",
+            "citation": "Vol. 2 p. 198",
+            "author": "R. Chaim Hirschensohn",
+            "time": "~1920 CE",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Man is Not Alone",
+            "citation": "pp. 39-40, 146-47",
+            "author": "Abraham Joshua Heschel",
+            "time": "1951",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Man is Not Alone",
+            "citation": "p. 183",
+            "author": "Abraham Joshua Heschel",
+            "time": "1951",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "The Sabbath",
+            "citation": "p. 89",
+            "author": "Abraham Joshua Heschel",
+            "time": "1951",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "The Insecurity of Freedom",
+            "citation": "pp. 216-18",
+            "author": "Abraham Joshua Heschel",
+            "time": "1966",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "The Insecurity of Freedom",
+            "citation": "pp. 24-38",
+            "author": "Abraham Joshua Heschel",
+            "time": "1966",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Lonely Man of Faith",
+            "citation": "Tradition 7:5",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Lonely Man of Faith",
+            "citation": "Tradition 7:5",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Emergence of Ethical Man",
+            "citation": "p. 60",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Emergence of Ethical Man",
+            "citation": "p. 86",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Emergence of Ethical Man",
+            "citation": "p. 151",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Emergence of Ethical Man",
+            "citation": "p. 181",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Confrontation",
+            "citation": "Tradition 6:2 n. 5",
+            "author": "Joseph B. Soloveitchik",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Orthodox Judaism in a World of Revolutionary Transformations",
+            "citation": "Tradition 7:2",
+            "author": "Eliezer Berkovits",
+            "time": "1965",
+            "era": "19-20th Century",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "By His Light",
+            "citation": "Chapter 1",
+            "author": "Aharon Lichtenstein",
+            "time": "~2000 CE",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "By His Light Vol 1",
+            "citation": "\"Get You Wise Men\"",
+            "author": "Aharon Lichtenstein",
+            "time": "~2000 CE",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "A Shabbat Reader",
+            "citation": "",
+            "author": "Walter S. Wurzberger",
+            "time": "1998",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Refuah, Metziut V'Halakhah",
+            "citation": "Siman 24",
+            "author": "R. Mordechai Halperin",
+            "time": "2012",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Covenant and Conversation, Deuteronomy",
+            "citation": "Ha'Azinu The Faith of God 19",
+            "author": "Jonathan Sacks",
+            "time": "Contemporary",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Faith in the Future, Part IV",
+            "citation": "Chapter 29:37",
+            "author": "Jonathan Sacks",
+            "time": "Contemporary",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Peninei Halakhah, Simchat Habayit U'Virkhato",
+            "citation": "6:01:02",
+            "author": "R. Eliezer Melamed",
+            "time": "Contemporary",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        },
+        {
+            "title": "Leadership in the Wilderness, Part III",
+            "citation": "Chapter 14:19",
+            "author": "Erica Brown",
+            "time": "Contemporary",
+            "era": "Contemporary",
+            "entry": "Technology (General)",
+            "description": ""
+        }
+    ],
+    "titleColumn": "title",
+    "wideColumns": [
+        "title"
+    ],
+    "timeColumn": null,
+    "tagColumn": null,
+    "tagValues": []
+};
+        
+        createApp({
+            data() {
+                return {
+                    config: SERVER_DATA,
+                    searchQuery: '',
+                    sortKey: SERVER_DATA.timeColumn || SERVER_DATA.titleColumn || SERVER_DATA.headers[0],
+                    sortOrder: 'asc',
+                    // Color palette for tags
+                    tagColors: {}
+                }
+            },
+            mounted() {
+                // Assign colors to tag values
+                const palette = [
+                    '#4C72B0', '#DD8452', '#55A868', '#C44E52', 
+                    '#8172B3', '#937860', '#DA8BC3', '#64B5CD'
+                ];
+                this.config.tagValues.forEach((tag, i) => {
+                    this.tagColors[tag] = palette[i % palette.length];
+                });
+            },
+            computed: {
+                filteredData() {
+                    let data = [...this.config.records];
+                    
+                    // Search filter
+                    if (this.searchQuery) {
+                        const lower = this.searchQuery.toLowerCase();
+                        data = data.filter(row => 
+                            Object.values(row).some(v => 
+                                String(v).toLowerCase().includes(lower)
+                            )
+                        );
+                    }
+                    
+                    // Sorting
+                    if (this.sortKey) {
+                        const isTimeColumn = this.sortKey === this.config.timeColumn;
+                        
+                        data.sort((a, b) => {
+                            let valA = a[this.sortKey];
+                            let valB = b[this.sortKey];
+                            
+                            if (valA === undefined || valA === null) valA = '';
+                            if (valB === undefined || valB === null) valB = '';
+                            
+                            // Special handling for time column
+                            if (isTimeColumn) {
+                                const timeA = this.parseTimeValue(valA);
+                                const timeB = this.parseTimeValue(valB);
+                                if (timeA < timeB) return this.sortOrder === 'asc' ? -1 : 1;
+                                if (timeA > timeB) return this.sortOrder === 'asc' ? 1 : -1;
+                                return 0;
+                            }
+
+                            // Regular numeric check
+                            const numA = Number(valA);
+                            const numB = Number(valB);
+                            const isNumA = !isNaN(numA) && String(valA).trim() !== '';
+                            const isNumB = !isNaN(numB) && String(valB).trim() !== '';
+
+                            if (isNumA && isNumB) {
+                                if (numA < numB) return this.sortOrder === 'asc' ? -1 : 1;
+                                if (numA > numB) return this.sortOrder === 'asc' ? 1 : -1;
+                                return 0;
+                            }
+                            
+                            // String comparison
+                            valA = String(valA).toLowerCase();
+                            valB = String(valB).toLowerCase();
+                            if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
+                            if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
+                            return 0;
+                        });
+                    }
+                    
+                    return data;
+                }
+            },
+            methods: {
+                // Parse time values like "~500 CE", "~500-800 CE", "1985", "Contemporary"
+                parseTimeValue(val) {
+                    if (!val) return Infinity; // Empty values go to end
+                    
+                    const str = String(val).trim();
+                    
+                    // Handle "Contemporary" specially - put at the end
+                    if (str.toLowerCase() === 'contemporary') return 9999;
+                    
+                    // Remove ~ and CE/BCE markers for parsing
+                    let cleaned = str.replace(/~/g, '').replace(/\s*(CE|AD|BCE|BC)\s*/gi, '').trim();
+                    
+                    // Check for range like "500-800"
+                    const rangeMatch = cleaned.match(/^(\d+)\s*-\s*(\d+)$/);
+                    if (rangeMatch) {
+                        // For ranges, use the start value plus a small offset based on range size
+                        // This ensures ~500-800 comes after ~500 but before ~800
+                        const start = parseInt(rangeMatch[1], 10);
+                        const end = parseInt(rangeMatch[2], 10);
+                        return start + (end - start) * 0.001;
+                    }
+                    
+                    // Check for single number
+                    const numMatch = cleaned.match(/^(\d+)$/);
+                    if (numMatch) {
+                        return parseInt(numMatch[1], 10);
+                    }
+                    
+                    // If can't parse, put at end
+                    return Infinity;
+                },
+                
+                handleHeaderClick(key) {
+                    if (this.sortKey === key) {
+                        this.toggleOrder();
+                    } else {
+                        this.sortKey = key;
+                        this.sortOrder = 'asc';
+                    }
+                },
+                toggleOrder() {
+                    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+                },
+                getColumnClass(h) {
+                    if (this.config.wideColumns && this.config.wideColumns.includes(h)) {
+                        return 'col-wide';
+                    }
+                    return 'col-default whitespace-nowrap';
+                },
+                getTagStyle(tagValue) {
+                    const color = this.tagColors[tagValue] || '#8C8C8C';
+                    return {
+                        backgroundColor: color + '20',
+                        color: color,
+                        borderColor: color + '40'
+                    };
+                },
+                highlightText(text) {
+                    if (!text || !this.searchQuery) return text || '';
+                    const escaped = String(text).replace(/[&<>"']/g, m => ({
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                    })[m]);
+                    const regex = new RegExp(`(${this.escapeRegex(this.searchQuery)})`, 'gi');
+                    return escaped.replace(regex, '<span class="highlight">$1</span>');
+                },
+                escapeRegex(str) {
+                    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
