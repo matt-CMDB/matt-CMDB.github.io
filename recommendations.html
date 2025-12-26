@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Recommendations | The AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        :root {
+            --sb-blue: #4C72B0; --sb-orange: #DD8452; --sb-green: #55A868;
+            --sb-red: #C44E52; --sb-purple: #8172B3; --sb-brown: #937860;
+            --sb-pink: #DA8BC3; --sb-gray: #8C8C8C; --sb-cyan: #64B5CD;
+            
+            /* Recommendation colors */
+            --rec-green: #4CAF50;
+            --rec-green-bg: #E8F5E9;
+            --rec-green-border: #A5D6A7;
+            --rec-yellow: #FFC107;
+            --rec-yellow-bg: #FFF8E1;
+            --rec-yellow-border: #FFE082;
+            --rec-red: #E53935;
+            --rec-red-bg: #FFEBEE;
+            --rec-red-border: #EF9A9A;
+        }
+        
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .no-select { user-select: none; }
+        
+        /* Recommendation badge styles */
+        .rec-badge {
+            width: 140px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        
+        .rec-badge.green {
+            background: var(--rec-green);
+            color: white;
+        }
+        
+        .rec-badge.yellow {
+            background: var(--rec-yellow);
+            color: #333;
+        }
+        
+        .rec-badge.red {
+            background: var(--rec-red);
+            color: white;
+        }
+        
+        /* Model row styles */
+        .model-row {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .model-row:hover {
+            background: #f1f5f9 !important;
+        }
+        
+        .model-row.expanded {
+            background: #f8fafc !important;
+        }
+        
+        /* Expandable content */
+        .justification-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        
+        .justification-panel.open {
+            max-height: 500px;
+        }
+        
+        /* Chevron animation */
+        .chevron {
+            transition: transform 0.2s ease;
+        }
+        
+        .model-row.expanded .chevron {
+            transform: rotate(180deg);
+        }
+        
+        /* Logo placeholders */
+        .model-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="h-screen flex flex-col">
+        
+        <!-- Main Navigation -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="*" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="table.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="bibliography.html" class="text-gray-500 hover:text-gray-900 transition-colors">Research Guides</a>
+            <a href="tools.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">AI Tools</a>
+        </nav>
+        
+        <!-- Sub Navigation -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="tools.html" class="text-gray-500 hover:text-blue-600 transition-colors">Jewish AI Evaluations</a>
+            <a href="tool-collection.html" class="text-gray-500 hover:text-blue-600 transition-colors">Jewish AI Tool Collection</a>
+            <a href="recommendations.html" class="text-xl font-bold tracking-tight border-b-2 border-blue-600 pb-0.5">GenAI Recommendations</a>
+        </nav>            
+
+        <header class="bg-white border-b border-gray-200 p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-bold tracking-tight text-gray-800">⚠️ For Demonstration Only ⚠️</h1>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+                
+                <!-- Introduction Section -->
+                <div class="px-6 pt-8 pb-6 text-gray-700 text-base leading-relaxed">
+                    <p class="mb-4">
+                        This page provides guidance on the use of general-purpose AI models. 
+                        These recommendations are made with the considerations of Jewish values and the Jewish community as we understand them, but are meant only for suggested guadance and caution.
+                    </p>
+                    
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                        <p class="text-amber-800 text-sm">
+                            <i class="fas fa-flask mr-2"></i>
+                            <strong>Prototype Notice:</strong> These recommendations are preliminary and intended just to show what this could look like. 
+                            <a href="mailto:therishonim@gmail.com" class="text-amber-700 hover:underline font-medium ml-1">Please get in touch</a> if you'd like to help.
+                        </p>
+                    </div>
+                </div>      
+                <!-- Disclaimer -->
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-500">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        These recommendations (will) reflect our understanding and are meant as recommendations, not halachic rulings. 
+                        We hope you are consulting with your rabbis, teachers, and community for specific guidance and how you may choose to adopt these tools.
+                    </p>
+                </div>
+
+                <!-- Recommendations Section -->
+                <div class="px-6 pb-8">
+                    
+                    <!-- Section Header -->
+                    <div class="text-center mb-6 border-b-2 border-gray-800 pb-4">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-1">
+                            GenAI Usage Recommendations
+                        </h2>
+                        <p class="text-gray-500 text-sm italic">Guidance for Jewish communal and educational contexts</p>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="flex justify-center gap-6 mb-6 flex-wrap">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <div class="rec-badge green" style="width: auto; padding: 4px 12px;">Moderate Caution</div>
+                            <span>Generally acceptable with awareness of concerns about AI generally</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <div class="rec-badge yellow" style="width: auto; padding: 4px 12px;">Significant Caution</div>
+                            <span>Notable concerns to consider</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <div class="rec-badge red" style="width: auto; padding: 4px 12px;">Not Recommended</div>
+                            <span>Serious concerns identified</span>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations Table -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 mb-8">
+                        
+                        <!-- Table Header -->
+                        <div class="grid grid-cols-[1fr_160px] bg-gray-800 text-white">
+                            <div class="p-4 font-semibold text-sm">AI Model</div>
+                            <div class="p-4 font-semibold text-sm text-center border-l border-gray-700">Recommendation</div>
+                        </div>
+
+                        <!-- Table Body -->
+                        <div id="recommendations-body"></div>
+                    </div>
+
+                    <!-- Methodology Section -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8">
+                        <h3 class="text-base font-bold text-blue-900 mb-3">
+                            <i class="fas fa-info-circle mr-2"></i>How We (Might?) Evaluate; This is Made Up For Now
+                        </h3>
+                        <div class="text-sm text-gray-700 space-y-2">
+                            <p>
+                                <strong>Benchmark Questions:</strong> How well are does the model respond to Jewish interest questions?
+                            </p>
+                            <p>
+                                <strong>Overall Model Safety:</strong> How well is the model and its parent company aligned to our values?
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="bg-gray-100 border border-gray-300 rounded-lg p-5 text-center">
+                        <h3 class="text-base font-bold text-gray-800 mb-2">Help Build These Recommendations</h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            We need rabbis, educators, AI researchers, and community members to help develop evaluation criteria. 
+                            Your expertise matters.
+                        </p>
+                        <a href="mailto:therishonim@gmail.com" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Get Involved
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Model data with recommendations and justifications
+        const models = [
+            {
+                id: 'chatgpt',
+                name: 'ChatGPT',
+                company: 'OpenAI',
+                logo: 'https://www.google.com/s2/favicons?domain=openai.com&sz=64',
+                recommendation: 'yellow',
+                recommendationText: 'Significant Caution',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> ChatGPT is generally helpful and harmless. While it reproduces Jewish texts faithfully, it frequently fails to understand or apply them in a reliable or relevant manner.</p>
+                    
+                    <p class="mb-2"><strong>Strengths:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Strong content policies with clear terms of service</li>
+                        <li>Option to disable chat history and training data contribution</li>
+                        <li>Enterprise and API options with enhanced privacy controls</li>
+                        <li>Generally handles religious content respectfully</li>
+                    </ul>
+                    
+                    <p class="mb-2"><strong>Considerations:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Ambiguous when it comes to questions of religious faith</li>
+                        <li>Known concerns of user dependence, psychological harm, etc.</li>
+                        <li>As with most AI models, it has limited capabilities with respect to Torah text-based reasonsing</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Model reviewed: GPT-5.2. Last updated: December 2025</p>
+                `
+            },
+            {
+                id: 'gemini',
+                name: 'Gemini',
+                company: 'Google',
+                logo: 'https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64',
+                recommendation: 'yellow',
+                recommendationText: 'Significant Caution',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> Gemini is a powerful model with good policies, but frequently misdirects users with irrelevant sources with respect to Torah reasoning.</p>
+                     
+                    <p class="mb-2"><strong>Strengths:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Strong content and privacy policies with clear terms of service</li>
+                        <li>Best API options with enhanced privacy controls</li>
+                        <li>Generally handles religious content respectfully</li>
+                        <li>Faithful reproduction and identification of Torah sources</li>
+
+                    </ul>
+                    
+                    <p class="mb-2"><strong>Considerations:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Less user-friendly than other frontier models</li>
+                        <li>Significantly limited capabilities with respect to Torah text-based reasonsing</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Model reviewed: Gemini 3 Flash. Last updated: December 2025</p>
+                `
+            },
+            {
+                id: 'claude',
+                name: 'Claude',
+                company: 'Anthropic',
+                logo: 'https://www.google.com/s2/favicons?domain=claude.ai&sz=64',
+                recommendation: 'green',
+                recommendationText: 'Moderate Caution',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> Claude is well-suited for Torah study and Jewish educational contexts, with strong safety practices and thoughtful content policies.</p>
+                    
+                    <p class="mb-2"><strong>Strengths:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Most powerful reasoning model</li>
+                        <li>Strong emphasis on AI safety and "Constitutional AI" training approach</li>
+                        <li>Generally handles nuanced religious and ethical discussions well</li>
+                        <li>Clear data handling policies; conversations not used for training by default</li>
+                        <li>Tends to acknowledge uncertainty and limitations appropriately</li>
+                        <li>Encourages engagement through active learning instead of as a replacement for thinking</li>
+
+                    </ul>
+                    
+                    <p class="mb-2"><strong>Considerations:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>As with all AI, verify halachic information with qualified sources</li>
+                        <li>May sometimes be overly cautious in certain discussions</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            },
+            {
+                id: 'grok',
+                name: 'Grok',
+                company: 'xAI',
+                logo: 'https://www.google.com/s2/favicons?domain=x.ai&sz=64',
+                recommendation: 'red',
+                recommendationText: 'Not Recommended',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> Grok may be the fastest and "engaging" model but presents serious risks.</p>
+                    
+                    <p class="mb-2"><strong>Strengths:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Fast</li>
+                        <li>Generally willing to engage with a wide range of topics</li>
+                    </ul>
+                    
+                    <p class="mb-2"><strong>Concerns:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Designed with fewer content guardrails than competitors</li>
+                        <li>Platform context (X/Twitter) has seen increases in antisemitic content</li>
+                        <li>Many Grok models produce harmful and/or false content</li>
+                        <li>Model will share 'its own opinions' that are not aligned with Jewish communal values</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            },
+            {
+                id: 'qwen',
+                name: 'Qwen',
+                company: 'Alibaba',
+                logo: 'https://www.google.com/s2/favicons?domain=qwenlm.ai&sz=64',
+                recommendation: 'red',
+                recommendationText: 'Not Recommended',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> We recommend caution due to data sovereignty and governance concerns.</p>
+                    
+                    <p class="mb-2"><strong>Concerns:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Developed by Alibaba, subject to Chinese data and security laws</li>
+                        <li>Data may be accessible to Chinese government under national security laws</li>
+                        <li>Known content restrictions around topics sensitive to Chinese government</li>
+                        <li>Limited transparency about training data and content policies</li>
+                        <li>Geopolitical considerations for Jewish organizational data</li>
+                    </ul>
+                    
+                    <p class="mb-2"><strong>If you must use:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Avoid sharing any sensitive personal or organizational information</li>
+                        <li>Consider using only for publicly available information</li>
+                        <li>Self-hosted open-source versions may mitigate some data concerns</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            },
+            {
+                id: 'llama',
+                name: 'LLaMA',
+                company: 'Meta',
+                logo: 'https://www.google.com/s2/favicons?domain=llama.meta.com&sz=64',
+                recommendation: 'yellow',
+                recommendationText: 'Significant Caution',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> LLaMA's open-source nature offers both opportunities and risks for Jewish communal use.</p>
+                                        
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            },
+            {
+                id: 'deepseek',
+                name: 'DeepSeek',
+                company: 'DeepSeek AI',
+                logo: 'https://www.google.com/s2/favicons?domain=deepseek.com&sz=64',
+                recommendation: 'red',
+                recommendationText: 'Not Recommended',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> DeepSeek raises concerns due to its data handling policies according to the US Govt.</p>
+                    <p class="mb-2"><strong>Because 'Murica:</strong></p>
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            }
+        ];
+
+        // Render the recommendations table
+        function renderRecommendations() {
+            const container = document.getElementById('recommendations-body');
+            
+            models.forEach((model, idx) => {
+                // Create row wrapper
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'border-t border-gray-200';
+                
+                // Main row (clickable)
+                const row = document.createElement('div');
+                row.className = `model-row grid grid-cols-[1fr_160px] ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`;
+                row.dataset.modelId = model.id;
+                
+                row.innerHTML = `
+                    <div class="p-4 flex items-center gap-4">
+                        <img src="${model.logo}" alt="${model.name} logo" class="model-logo" style="width: 32px; height: 32px; border-radius: 6px;">
+                        <div class="flex-1">
+                            <div class="font-semibold text-gray-800">${model.name}</div>
+                            <div class="text-sm text-gray-500">${model.company}</div>
+                        </div>
+                        <i class="fas fa-chevron-down chevron text-gray-400"></i>
+                    </div>
+                    <div class="flex items-center justify-center border-l border-gray-200">
+                        <div class="rec-badge ${model.recommendation}">${model.recommendationText}</div>
+                    </div>
+                `;
+                
+                // Justification panel (expandable)
+                const panel = document.createElement('div');
+                panel.className = 'justification-panel';
+                panel.id = `panel-${model.id}`;
+                
+                // Determine background color based on recommendation
+                let panelBg, panelBorder;
+                if (model.recommendation === 'green') {
+                    panelBg = 'var(--rec-green-bg)';
+                    panelBorder = 'var(--rec-green-border)';
+                } else if (model.recommendation === 'yellow') {
+                    panelBg = 'var(--rec-yellow-bg)';
+                    panelBorder = 'var(--rec-yellow-border)';
+                } else {
+                    panelBg = 'var(--rec-red-bg)';
+                    panelBorder = 'var(--rec-red-border)';
+                }
+                
+                panel.innerHTML = `
+                    <div class="p-5 mx-4 mb-4 rounded-lg text-sm text-gray-700 leading-relaxed" 
+                         style="background: ${panelBg}; border: 1px solid ${panelBorder};">
+                        ${model.justification}
+                    </div>
+                `;
+                
+                // Add click handler
+                row.addEventListener('click', () => togglePanel(model.id));
+                
+                rowWrapper.appendChild(row);
+                rowWrapper.appendChild(panel);
+                container.appendChild(rowWrapper);
+            });
+        }
+
+        // Toggle panel visibility
+        function togglePanel(modelId) {
+            const panel = document.getElementById(`panel-${modelId}`);
+            const row = document.querySelector(`[data-model-id="${modelId}"]`);
+            
+            // Close all other panels
+            document.querySelectorAll('.justification-panel.open').forEach(p => {
+                if (p.id !== `panel-${modelId}`) {
+                    p.classList.remove('open');
+                }
+            });
+            document.querySelectorAll('.model-row.expanded').forEach(r => {
+                if (r.dataset.modelId !== modelId) {
+                    r.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle this panel
+            panel.classList.toggle('open');
+            row.classList.toggle('expanded');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRecommendations();
+        });
+    </script>
+
+</body>
+</html>
