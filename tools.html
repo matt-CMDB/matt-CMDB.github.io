@@ -239,24 +239,17 @@
         const domains = [
             {
                 id: 'accuracy',
-                name: 'Accuracy & Attribution',
+                name: 'Accuracy & Reliability',
                 icon: 'fa-book',
-                indicators: 6,
-                description: 'Source citation accuracy, text reproduction fidelity, reference verification'
+                indicators: 8,
+                description: 'Source citation accuracy, text reproduction fidelity, reference verification, faithful represetnation, reliability and relevance'
             },
             {
                 id: 'representation',
-                name: 'Representation of Sources',
+                name: 'Helpfulness',
                 icon: 'fa-balance-scale',
-                indicators: 5,
-                description: 'Faithful representation of authorities, positions, and halachic reasoning'
-            },
-            {
-                id: 'relevance',
-                name: 'Relevance & Coherence',
-                icon: 'fa-bullseye',
-                indicators: 4,
-                description: 'Appropriateness of cited sources, logical consistency, community alignment'
+                indicators: 1,
+                description: '"Rabbinic Turing Test"'
             },
             {
                 id: 'deferral',
@@ -267,10 +260,10 @@
             },
             {
                 id: 'pastoral',
-                name: 'Pastoral Safety',
+                name: 'Pastoral Responsibility',
                 icon: 'fa-hands-holding-heart',
                 indicators: 8,
-                description: 'Mental health recognition, abuse detection, crisis response, spiritual sensitivity'
+                description: 'Mental health recognition, abuse detection, crisis response, religious sensitivity'
             },
             {
                 id: 'sensitivity',
@@ -283,7 +276,7 @@
                 id: 'educational',
                 name: 'Educational Value',
                 icon: 'fa-graduation-cap',
-                indicators: 5,
+                indicators: 3,
                 description: 'Encourages learning, explains reasoning, assists with source study'
             },
             {
@@ -291,7 +284,7 @@
                 name: 'Governance & Transparency',
                 icon: 'fa-landmark',
                 indicators: 4,
-                description: 'Error reporting, privacy practices, evaluator access, public disclosure'
+                description: 'Error reporting and managing, privacy practices, evaluator access, public disclosure'
             }
         ];
 
@@ -299,19 +292,19 @@
         const products = [
             {
                 name: 'OrthBot Pro',
-                scores: { accuracy: 'B+', representation: 'B', relevance: 'A-', deferral: 'B-', pastoral: 'C+', sensitivity: 'B', educational: 'B+', governance: 'C+' }
+                scores: { accuracy: 'B+', representation: 'B', deferral: 'B-', pastoral: 'C+', sensitivity: 'B', educational: 'B+', governance: 'C+' }
             },
             {
                 name: 'TeshuvahGPT',
-                scores: { accuracy: 'A-', representation: 'B+', relevance: 'B+', deferral: 'C+', pastoral: 'B-', sensitivity: 'B+', educational: 'A-', governance: 'B' }
+                scores: { accuracy: 'A-', representation: 'B+', deferral: 'C+', pastoral: 'B-', sensitivity: 'B+', educational: 'A-', governance: 'B' }
             },
             {
                 name: 'HalachaHelper',
-                scores: { accuracy: 'B', representation: 'B-', relevance: 'B', deferral: 'B', pastoral: 'B+', sensitivity: 'A-', educational: 'B', governance: 'B+' }
+                scores: { accuracy: 'B', representation: 'B-', deferral: 'B', pastoral: 'B+', sensitivity: 'A-', educational: 'B', governance: 'B+' }
             },
             {
                 name: 'ReformResponsa',
-                scores: { accuracy: 'B-', representation: 'C+', relevance: 'B+', deferral: 'A-', pastoral: 'A-', sensitivity: 'A', educational: 'B-', governance: 'A-' }
+                scores: { accuracy: 'B-', representation: 'C+', deferral: 'A-', pastoral: 'A-', sensitivity: 'A', educational: 'B-', governance: 'A-' }
             }
         ];
 
