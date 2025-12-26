@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Torah Tools | The AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        :root {
+            --sb-blue: #4C72B0;
+            --sb-orange: #DD8452;
+            --sb-green: #55A868;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        /* Entry button states */
+        .entry-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .entry-btn.active {
+            background-color: var(--sb-blue);
+            color: white;
+        }
+        
+        .entry-btn:not(.active):hover {
+            background-color: #dbeafe;
+        }
+        
+        /* Reading pane */
+        .reading-pane {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+        }
+        
+        .reading-pane.visible {
+            opacity: 1;
+            max-height: none;
+            overflow: visible;
+        }
+        
+        /* Search results */
+        .search-results {
+            display: none;
+        }
+        
+        .search-results.visible {
+            display: block;
+        }
+        
+        .search-result-table {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .search-result-table:hover {
+            border-color: var(--sb-blue);
+            box-shadow: 0 2px 8px rgba(76, 114, 176, 0.15);
+        }
+        
+        /* Search highlight */
+        .search-highlight {
+            background-color: #fef08a;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
+        /* Typography for reading */
+        .entry-content {
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+        
+        .entry-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+        }
+        
+        .entry-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-content ul {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="h-screen flex flex-col">
+        
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="*" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="table.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="bibliography.html" class="text-gray-500 hover:text-gray-900 transition-colors">Research Guides</a>
+            <a href="tools.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">AI Tools</a>
+        </nav>
+        
+        <!-- Sub Navigation with Search -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="tools.html" class="text-gray-500 hover:text-blue-600 transition-colors">Evaluations</a>
+            <a href="*" class="text-xl font-bold tracking-tight border-b-2 border-blue-600 pb-0.5">Jewish AI Tool Collection</a>
+            
+            <div class="flex items-center gap-3 w-full md:w-auto ml-auto">
+                <div class="relative flex-1 md:w-80">
+                    <input type="text" id="searchInput" placeholder="Search tool descriptions..." 
+                        class="w-full px-3 py-1.5 pl-9 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>            
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="px-6 pt-8 pb-12">
+                    
+                    <!-- Introduction -->
+                    <div class="max-w-4xl mb-8 text-gray-700 text-base leading-relaxed">
+                        <p class="mb-4">
+                            Here is a collection of AI-powered tools for Torah study and Jewish engagement. Some of these are (or will be) evaluated using our framework, but not all of them. 
+                            Descriptions of these tools are given both by the tool's developers, where available, and by ourselves as independent researchers.
+                            As always, be sure to <a href=mailto:fakeaddres@mail.com>contact us</a> with any feedback and/or additional resources you'd like to see here.
+                        </p>
+                    </div>
+                    <!-- Big Topic Buttons -->
+                    <div id="entryButtons" class="mb-8 flex flex-wrap gap-2">
+                        <button data-entry="soferai" class="entry-btn px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-sm font-medium">Sofer.ai</button>
+                        <button data-entry="ohrbit" class="entry-btn px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-sm font-medium">Ohrbit</button>
+                    </div>
+                    
+                    <!-- Search Results Area (hidden by default) -->
+                    <div id="searchResults" class="search-results max-w-4xl mb-8">
+                        <p id="searchResultsCount" class="text-sm text-gray-600 mb-4"></p>
+                        <div id="searchResultsList" class="space-y-4"></div>
+                    </div>
+                    
+                    <!-- Reading Pane -->
+                    <div id="readingPane" class="reading-pane max-w-4xl">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                            <h2 id="entryTitle" class="text-2xl font-bold text-gray-900 mb-2"></h2>
+                            <p id="entryCrossRefs" class="italic text-gray-500 mb-6"></p>
+                            <div id="entryContent" class="entry-content text-gray-700"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden Entry Data -->
+                    <div id="entryData" class="hidden">
+
+                        <!-- Future entries are down here -->                       
+                        <div data-entry-id="soferai" data-entry-title="Sofer.Ai">
+                            <h4><em>Provided by Sofer.Ai:</em></h4>
+                            <p>Our core tool is transcription — built specifically to handle mixed-language shiurim in English, Hebrew, Aramaic, Yiddish, and Yeshivish — which no other transcription tool on the market could handle. We set out to solve this problem first, because we saw that nothing else out there could accurately transcribe this kind of content. It also works with audio that is fully in Hebrew or Yiddish — and we’re proud to be the only service offering accurate Yiddish transcription.</p>
+                            <p>We’re here to “unlock the Torah” trapped in audio. There are hundreds of thousands of hours of Torah in audio form. But when Torah only exists in audio form, it’s hard to access, search, index, share, print, use in other tools, or preserve for future generations.</p>
+                            <p>Sofer.Ai transcription is already very popular and used transcribe shiurim, create summaries, print for Shabbos, search divrei Torah, review content, and even generate new Torah content by feeding the transcript into other AI tools.</p>
+                            <p>We’re building other ai features to make transcripts even more powerful — like Maishiv, your personal AI sho’el u’mashiv, which lets you ask questions and get answers from your own Torah content, well sourced and cited. </p>
+                            <p>We want Sofer.Ai to be your personal repository of Torah knowledge — the place where you keep all your Torah so you can find it, revisit it, and build on it later. Any shiur you hear that you love — get it transcribed. Any idea you have — write it down on Sofer.Ai. We’re building the tools to make it easier to capture, organize, and search your Torah. Sofer.Ai will be the best place to keep it.</p>
+                        </div>
+                        
+                        <div data-entry-id="Ohrbit" data-entry-title="ohrbit">
+                            <p>Coming soon!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // State
+        let currentEntry = null;
+        let isSearchMode = false;
+        
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearch');
+        const searchResults = document.getElementById('searchResults');
+        const searchResultsList = document.getElementById('searchResultsList');
+        const searchResultsCount = document.getElementById('searchResultsCount');
+        const readingPane = document.getElementById('readingPane');
+        const entryTitle = document.getElementById('entryTitle');
+        const entryCrossRefs = document.getElementById('entryCrossRefs');
+        const entryContent = document.getElementById('entryContent');
+        const entryButtons = document.querySelectorAll('.entry-btn');
+        const entryData = document.getElementById('entryData');
+        
+        // Entry button click handlers
+        entryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const entryId = btn.dataset.entry;
+                showEntry(entryId);
+            });
+        });
+        
+        // Show an entry in reading mode
+        function showEntry(entryId) {
+            // Exit search mode
+            exitSearchMode();
+            
+            // Find entry data
+            const entry = entryData.querySelector(`[data-entry-id="${entryId}"]`);
+            if (!entry) return;
+            
+            // Update button states
+            entryButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.entry === entryId);
+            });
+            
+            // Populate reading pane
+            entryTitle.textContent = entry.dataset.entryTitle;
+            entryCrossRefs.textContent = entry.dataset.entryCrossrefs;
+            entryContent.innerHTML = entry.innerHTML;
+            
+            // Show reading pane
+            readingPane.classList.add('visible');
+            currentEntry = entryId;
+            
+            // Scroll to reading pane
+            setTimeout(() => {
+                readingPane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+        
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            
+            if (query.length === 0) {
+                exitSearchMode();
+                clearSearchBtn.classList.add('hidden');
+                return;
+            }
+            
+            clearSearchBtn.classList.remove('hidden');
+            enterSearchMode(query);
+        });
+        
+        // Clear search button
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.classList.add('hidden');
+            exitSearchMode();
+        });
+        
+        // Enter search mode
+        function enterSearchMode(query) {
+            isSearchMode = true;
+            
+            // Hide reading pane
+            readingPane.classList.remove('visible');
+            
+            // Clear button active states
+            entryButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Find matches
+            const entries = entryData.querySelectorAll('[data-entry-id]');
+            const results = [];
+            
+            entries.forEach(entry => {
+                const entryId = entry.dataset.entryId;
+                const title = entry.dataset.entryTitle;
+                const content = entry.textContent;
+                const contentLower = content.toLowerCase();
+                
+                // Find all matches in this entry
+                const matches = [];
+                let searchIndex = 0;
+                
+                while (searchIndex < contentLower.length) {
+                    const matchIndex = contentLower.indexOf(query, searchIndex);
+                    if (matchIndex === -1) break;
+                    
+                    // Extract context around match (~20 words)
+                    const contextStart = Math.max(0, content.lastIndexOf(' ', Math.max(0, matchIndex - 80)) + 1);
+                    const contextEnd = Math.min(content.length, content.indexOf(' ', Math.min(content.length, matchIndex + query.length + 80)));
+                    
+                    let context = content.substring(contextStart, contextEnd === -1 ? content.length : contextEnd);
+                    
+                    // Add ellipses if truncated
+                    if (contextStart > 0) context = '...' + context;
+                    if (contextEnd < content.length && contextEnd !== -1) context = context + '...';
+                    
+                    matches.push({
+                        context: context,
+                        matchStart: matchIndex - contextStart + (contextStart > 0 ? 3 : 0), // Adjust for ellipsis
+                        query: query
+                    });
+                    
+                    searchIndex = matchIndex + query.length;
+                }
+                
+                if (matches.length > 0) {
+                    results.push({
+                        entryId,
+                        title,
+                        matches
+                    });
+                }
+            });
+            
+            // Display results
+            displaySearchResults(results, query);
+        }
+        
+        // Display search results
+        function displaySearchResults(results, query) {
+            searchResultsList.innerHTML = '';
+            
+            if (results.length === 0) {
+                searchResultsCount.textContent = `No results found for "${query}"`;
+                searchResults.classList.add('visible');
+                return;
+            }
+            
+            const totalMatches = results.reduce((sum, r) => sum + r.matches.length, 0);
+            searchResultsCount.textContent = `Found ${totalMatches} match${totalMatches === 1 ? '' : 'es'} in ${results.length} entr${results.length === 1 ? 'y' : 'ies'}`;
+            
+            results.forEach(result => {
+                const table = document.createElement('div');
+                table.className = 'search-result-table bg-white rounded-lg border border-gray-200 overflow-hidden';
+                table.onclick = () => {
+                    showEntry(result.entryId);
+                    searchInput.value = '';
+                    clearSearchBtn.classList.add('hidden');
+                };
+                
+                // Title row
+                const titleRow = document.createElement('div');
+                titleRow.className = 'px-4 py-3 bg-gray-50 border-b border-gray-200';
+                titleRow.innerHTML = `<span class="font-semibold text-lg text-gray-900">${result.title}</span>
+                    <span class="text-sm text-gray-500 ml-2">(${result.matches.length} match${result.matches.length === 1 ? '' : 'es'})</span>`;
+                table.appendChild(titleRow);
+                
+                // Match rows
+                result.matches.forEach(match => {
+                    const matchRow = document.createElement('div');
+                    matchRow.className = 'px-4 py-2 text-sm text-gray-700 border-b border-gray-100 last:border-b-0';
+                    
+                    // Highlight the search term in context
+                    const highlightedContext = highlightText(match.context, query);
+                    matchRow.innerHTML = highlightedContext;
+                    
+                    table.appendChild(matchRow);
+                });
+                
+                searchResultsList.appendChild(table);
+            });
+            
+            searchResults.classList.add('visible');
+        }
+        
+        // Highlight search term in text
+        function highlightText(text, query) {
+            const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+        
+        // Escape special regex characters
+        function escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        // Exit search mode
+        function exitSearchMode() {
+            isSearchMode = false;
+            searchResults.classList.remove('visible');
+            searchResultsList.innerHTML = '';
+            
+            // If we had an entry selected before, show it again
+            if (currentEntry) {
+                const btn = document.querySelector(`[data-entry="${currentEntry}"]`);
+                if (btn) btn.classList.add('active');
+                readingPane.classList.add('visible');
+            }
+        }
+        
+        // Keyboard shortcut: Escape to clear search
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isSearchMode) {
+                searchInput.value = '';
+                clearSearchBtn.classList.add('hidden');
+                exitSearchMode();
+            }
+        });
+    </script>
+
+
+</body>
+</html>
