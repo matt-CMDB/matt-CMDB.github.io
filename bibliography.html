@@ -109,7 +109,7 @@
             <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
             <a href="table.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
             <a href="*" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Research Guides</a>
-            <a href="tools.html" class="text-gray-500 hover:text-gray-900 transition-colors">AI Torah Tools</a>
+            <a href="tools.html" class="text-gray-500 hover:text-gray-900 transition-colors">AI Tools</a>
         </nav>
                 
         <!-- Sub Navigation with Search -->
@@ -140,39 +140,59 @@
                         <p class="mb-4">
                             These research guides provide in-depth explorations of key topics at the intersection of artificial intelligence and Jewish thought. 
                             Each entry serves as both a mini encyclopedia article and an annotated bibliography. 
-                            Together these should help offer context, analysis, and resources for further studies. The two top (red) buttons, AI Ethics and Halakha, are larger categories that include many smaller topics, each with its own short bibliography.
-                            As always, be sure to <a href=mailto:fakeaddres@mail.com>contact us</a> with any feedback and/or additional resources you'd like to see here.
+                            Each entry is also associated with a Sefaria Source Sheet of primary sources that may be relevant to the question.
+                            Together these should help offer context, analysis, and resources for further studies. 
+                            As always, be sure to <a href="mailto:therishonim@gmail.com" class="text-blue-600">contact us</a> with any feedback and/or additional resources you'd like to see here.
                             </p>
                         <p class="mb-6">
-                            Click on any topic below to read its full entry, or use the search bar to find specific terms across all entries.
+                            Click on any topic below to read its full entry, or use the search bar (top right) to find specific terms across all entries.
                         </p>
                     </div>
-                    <!-- Big Topic Buttons -->
-                    <div id="entryButtons" class="mb-8 flex flex-wrap gap-2">
-                        <button data-entry="ethics" class="entry-btn px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-sm font-medium">AI Ethics</button>
-                        <button data-entry="halakha" class="entry-btn px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-sm font-medium">Halakha</button>
-                    </div>
 
-                    <!-- Smaller Topic Buttons -->
+                    <!-- Entry Buttons -->
                     <div id="entryButtons" class="mb-8 flex flex-wrap gap-2">
-                        <button data-entry="angels" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Angels, Demons and Monsters</button>
+                        <button data-entry="agency" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Agency (Sheliḥut) and AI</button>
+                        <button data-entry="algorithmic-bias" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Algorithmic Bias and Discrimination</button>
+                        <button data-entry="algorithmic-pricing" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Algorithmic Pricing</button>
+                        <button data-entry="alignment" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Alignment and Control Problem</button>
+                        <button data-entry="angels" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Angels, Demons, and Monsters</button>
                         <button data-entry="animals" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Animals</button>
                         <button data-entry="antisemitism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Anti-Semitism (and AI)</button>
+                        <button data-entry="autonomous-vehicles" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Autonomous Vehicles and the Trolley Problem</button>
+                        <button data-entry="autonomous-weapons" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Autonomous Weapons Systems</button>
+                        <button data-entry="bci" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Brain-Computer Interface Devices</button>
+                        <button data-entry="care" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Childcare and Elder Care</button>
+                        <button data-entry="cbrn" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Catastrophic and CBRN Risk</button>
+                        <button data-entry="liability" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Civil Liability for AI-Caused Harm</button>
+                        <button data-entry="commandments" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Commandments, Fulfillment Through AI</button>
                         <button data-entry="consciousness" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Consciousness and Minds</button>
+                        <button data-entry="quorum" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Counting for a Quorum</button>
                         <button data-entry="creation" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Creation</button>
+                        <button data-entry="economic" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Economic Disruption and Job Displacement</button>
                         <button data-entry="existential" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Existential Risks</button>
                         <button data-entry="freewill" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Free Will</button>
                         <button data-entry="futurism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Futurism/Forecasting</button>
                         <button data-entry="golem" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Golems</button>
                         <button data-entry="psak" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Halakhic Decision-Making</button>
-                        <button data-entry="humans" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Human Souls and Mind</button>
+                        <button data-entry="humans" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Human Souls and Minds</button>
                         <button data-entry="idolatry" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Idolatry</button>
+                        <button data-entry="grama" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Indirect Causation (Grama) and AI</button>
                         <button data-entry="intentionality" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Intentionality</button>
+                        <button data-entry="ip" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Intellectual Property</button>
                         <button data-entry="jewishscifi" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Jewish Science Fiction</button>
                         <button data-entry="magic" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Magic</button>
+                        <button data-entry="manipulation" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Manipulation</button>
+                        <button data-entry="medicine" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Medicine and Artificial Intelligence</button>
+                        <button data-entry="murder" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Murder of Artificially Created Beings</button>
+                        <button data-entry="obligations" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Obligations of Artificially Created Beings</button>
                         <button data-entry="printing" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Printing Press</button>
+                        <button data-entry="privacy" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Privacy and Surveillance</button>
                         <button data-entry="resurrection" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Resurrection</button>
+                        <button data-entry="sexbots" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Sexbots and AI Romantic Partners</button>
+                        <button data-entry="shabbat" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Shabbat</button>
+                        <button data-entry="social-media" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Social Media and Psychological Vulnerabilities</button>
                         <button data-entry="technology" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Technology and Judaism</button>
+                        <button data-entry="testimony" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Testimony and Witness Capacity</button>
                         <button data-entry="torahstudy" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Torah Study</button>
                         <button data-entry="transhumanism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Transhumanism</button>
                         <button data-entry="truth" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Truth</button>
@@ -196,76 +216,52 @@
                     
                     <!-- Hidden Entry Data -->
                     <div id="entryData" class="hidden">
-
-                        <!-- AI Ethics Main Page-->
-                        <div data-entry-id="ethics" data-entry-title="Ethics of Artificial Intelligence" data-entry-crossrefs="See also: Halakha; Free Will; Existential Risks; Transhumanism; Consciousness">
+                        <!-- Agency Entry -->
+                        <div data-entry-id="agency" data-entry-title="Agency (Sheliḥut) and AI" data-entry-crossrefs="See also: Commandments, Fulfillment Through AI; Halakhic Decision-Making; Intentionality">
                             <h4>Overview</h4>
                             <p>
-                                The following list surveys major questions currently animating AI ethics discourse. As distinct from the <strong>Halakha</strong> entry, none of these questions below are specifically Jewish questions, but each represents a domain where Jewish sources and frameworks may have something to contribute.
+                                Can an AI system serve as a halakhic agent (<em>shaliaḥ</em>) to perform actions on behalf of a Jew, given that agency traditionally requires the agent to be similarly obligated in the relevant commandment? The principle of <em>sheliḥut</em> (agency) in Jewish law allows one person to act on behalf of another, with the legal effects accruing to the principal. However, classical sources establish that an agent must be a "bar da'at" (possessing understanding) and typically must be similarly obligated in the commandment being performed. These requirements raise significant questions about whether AI systems—which lack consciousness, intention, and religious obligation—can serve as valid agents for ritual or legal purposes.
                             </p>
-                            
-                            <h4>Current Questions in AI Ethics</h4>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li><p><strong>Algorithmic Bias and Discrimination</strong>: Can AI systems be trained to avoid perpetuating or amplifying social biases, and if debiasing efforts risk falsifying historical data, how should we balance accuracy against harm? (Cf. Anti-Semitism)</p></li>
-                                <li><p><strong>Algorithmic Pricing</strong>: Is it ethical for AI-driven pricing systems to dynamically adjust prices based on individual consumer data, potentially resulting in discriminatory or exploitative outcomes?</p></li>
-                                <li><p><strong>Alignment Problem</strong>: How can we ensure that AI systems reliably pursue the goals their designers intend, rather than optimizing for unintended or harmful objectives as they become more capable?</p></li>
-                                <li><p><strong>Augmented Reality</strong>: What ethical boundaries should govern AI-enhanced perceptions of reality, particularly regarding deception, manipulation, and the blurring of physical and virtual experiences?</p></li>
-                                <li><p><strong>Autonomous Vehicles</strong>: How should self-driving systems weigh competing values such as passenger safety versus pedestrian protection, and what is the appropriate balance between transportation efficiency and accident risk?</p></li>
-                                <li><p><strong>Autonomous Weapons Systems</strong>: Is it morally permissible to delegate lethal decisions to machines, even if such systems reduce overall casualties compared to human combatants?</p></li>
-                                <li><p><strong>Catastrophic CBRN Risk</strong>: Should we be concerned that powerful AI systems would give anyone the tools to create powerful Chemical, Biological, Radiological, or Nuclear (CBRN) weapons?</p></li>
-                                <li><p><strong>Control Problem</strong>: As AI systems grow more powerful, how can humans maintain meaningful oversight and the ability to correct or shut down systems that behave unexpectedly?</p></li>
-                                <li><p><strong>Deepfakes</strong>: How should society regulate AI-generated synthetic media that can fabricate realistic images, audio, and video of real people for purposes ranging from entertainment to exploitation?</p></li>
-                                <li><p><strong>Digital Afterlife Technologies</strong>: Is it ethical to create AI systems that simulate deceased persons, and how do cultural and religious frameworks shape the acceptability of such "resurrection" technologies?</p></li>
-                                <li><p><strong>Elder Care Robots</strong>: Can robots provide ethically adequate care for the elderly when they are incapable of genuine emotional reciprocity, and what happens to human obligations when care is delegated to machines?</p></li>
-                                <li><p><strong>Intellectual Property</strong>: Who owns the outputs of AI systems, how should creators whose work was used to train models be compensated, and are current legal frameworks adequate for AI-generated content?</p></li>
-                                <li><p><strong>Job Displacement</strong>: As AI automates an increasing share of human labor, how should societies restructure work, income, and meaning for those whose jobs become obsolete?</p></li>
-                                <li><p><strong>Manipulation and Nudging</strong>: When is it acceptable for AI systems to influence human behavior, and what distinguishes beneficial "nudging" from harmful manipulation?</p></li>
-                                <li><p><strong>Moral Enhancement</strong>: If AI could regulate human moral behavior through implants or other interventions, would this undermine the autonomy and authenticity that make ethical action valuable?</p></li>
-                                <li><p><strong>Nannybots</strong>: What are the risks of children forming attachments to caregiving robots, and can machines appropriately transmit values, emotional skills, and "humanity" to developing minds?</p></li>
-                                <li><p><strong>Personal Eugenics</strong>: As AI enables increasingly precise genetic selection and engineering, what limits should govern parental choices, and how do we prevent the emergence of genetic stratification?</p></li>
-                                <li><p><strong>Posthumanism and Mind Uploading</strong>: If human consciousness could be copied into digital form, would the upload be the same person, and is indefinite digital existence desirable or ethically troubling?</p></li>
-                                <li><p><strong>Privacy and Surveillance</strong>: How should we balance the benefits of AI-powered data collection (security, health, convenience) against individual privacy rights and the risks of pervasive surveillance?</p></li>
-                                <li><p><strong>Robo-Doctors</strong>: To what extent should AI systems participate in medical diagnosis and treatment, and how do we handle errors, liability, and the irreducibly human dimensions of care?</p></li>
-                                <li><p><strong>Sexbots, AI Pornography and AI Romantic-Partners</strong>: Do romantic and sexual relationships with robots harm human relational capacities, and are there populations for whom such relationships might be ethically permissible?</p></li>
-                                <li><p><strong>Social Media and PICT</strong>: How should AI deployment on social platforms be regulated to prevent harms such as addiction, polarization, misinformation, and the exploitation of psychological vulnerabilities?</p></li>
-                                <li><p><strong>Virtual Reality Ethics</strong>: If harms experienced in VR cause real psychological damage, how should we treat crimes, consent, and moral responsibility within virtual environments?</p></li>
-                            </ul>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
-                        <!-- Halakha Main Page-->
-                        <div data-entry-id="halakha" data-entry-title="Halakha (Jewish Law and Custom)" data-entry-crossrefs="See also: Halakhic Decision-Making; Technology and Judaism; Ethics of AI; Golems">
+                        
+                        <!-- Algorithmic Bias Entry -->
+                        <div data-entry-id="algorithmic-bias" data-entry-title="Algorithmic Bias and Discrimination" data-entry-crossrefs="See also: Anti-Semitism (and AI); Truth; AI Ethics">
                             <h4>Overview</h4>
                             <p>
-                                Jewish practice as derived from biblical, rabbinic, and post-Talmudic sources provides a distinctive framework for analyzing questions that AI raises. 
-                                Many areas of Jewish law also intersect with questions thought to be moral or ethical in nature, such as personal liability, theft (of physical or intellectual property), etc., but even these questions may have a distinct character when analyzed from the methodological and conceptual framework of halakha.
+                                Can AI systems be trained to avoid perpetuating or amplifying social biases, and if debiasing efforts risk falsifying historical data, how should we balance accuracy against harm? AI systems trained on historical data inevitably encode the biases present in that data, raising difficult questions about whether and how to intervene. Debiasing techniques may improve fairness in outputs but risk distorting the historical record or creating systems that are less accurate in certain contexts. Jewish ethical frameworks that emphasize both truth (<em>emet</em>) and justice (<em>tzedek</em>) may offer resources for navigating these tensions.
                             </p>
-                            
-                            <h4>Current Halakhic Questions Related to AI</h4>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li><p><strong>AI-Activated Devices on Shabbat</strong>: When AI systems learn user habits and autonomously perform actions (opening shutters, preparing coffee) without explicit commands, does this constitute a Shabbat violation, and what categories of prohibited labor (<em>melakha</em>) apply?</p></li>
-                                <li><p><strong>Autonomous Vehicle Travel on Shabbat</strong>: May one travel in a fully autonomous vehicle on Shabbat, and does it matter whether a "Shabbat mode" is engaged or whether manual override is possible?</p></li>
-                                <li><p><strong>Autonomous Vehicles and the Trolley Problem</strong>: How should autonomous vehicle algorithms be programmed when faced with unavoidable harm: may they be designed on utilitarian principles to minimize casualties, or does halakha's prohibition against actively choosing one life over another constrain such programming?</p></li>
-                                <li><p><strong>Civil Liability for AI-Caused Harm</strong>: Who bears halakhic liability (<em>nezikin</em>) when an autonomous system causes damage: the owner, operator, programmer, or manufacturer—and do existing categories of property-caused harm (<em>shor</em>, <em>bor</em>, <em>eish</em>) apply?</p></li>
-                                <li><p><strong>Counting Toward a Minyan</strong>: Could an artificially created humanoid with human-level intelligence be counted among the ten required for communal prayer, or does eligibility require birth from a human mother or possession of a <em>neshamah</em>?</p></li>
-                                <li><p><strong>Creating Artificial Humans</strong>: Is it halakhically permitted to create a conscious humanoid being, given R. Zeira's destruction of Rava's golem—and does the prohibition extend to all sentient artificial beings or only those with human form?</p></li>
-                                <li><p><strong>Fulfilling Commandments Through AI</strong>: Can obligations that require personal performance (<em>mitzvot she-be-gufo</em>) such as prayer, Torah study, or <em>tefillin</em> be discharged by AI systems acting on one's behalf, and what role does <em>kavvanah</em> (intention) play?</p></li>
-                                <li><p><strong>Halakhic Agency (<em>Sheliḥut</em>) and AI</strong>: Can an AI system serve as a halakhic agent (<em>shaliaḥ</em>) to perform actions on behalf of a Jew, given that agency traditionally requires the agent to be similarly obligated in the relevant commandment?</p></li>
-                                <li><p><strong>Indirect Causation (<em>Grama</em>) and AI</strong>: When AI systems cause harm through chains of autonomous decisions, how do the halakhic categories of indirect causation (<em>grama</em>, <em>gramei</em>, <em>ko'aḥ koḥo</em>) apply to assign or limit liability?</p></li>
-                                <li><p><strong>Job Displacement and Economic Justice</strong>: Does halakha impose limits on automation that displaces workers, as R. Shlomo Kluger argued regarding machine matzah and the poor who depended on manual labor for Passover income?</p></li>
-                                <li><p><strong>Kashrut of Synthetically Created Animals</strong>: Do animals created through <em>Sefer Yetzirah</em> or synthetic biology require ritual slaughter (<em>sheḥitah</em>), and do prohibitions like <em>basar be-ḥalav</em> (meat and milk) apply to their products?</p></li>
-                                <li><p><strong>Murder and Artificially Created Beings</strong>: Does the prohibition against murder (<em>lo tirtzaḥ</em>) apply to killing an artificially created humanoid, and does the answer depend on whether the being was born of a woman or possesses a soul?</p></li>
-                                <li><p><strong>Obligations of Artificially Created Beings</strong>: Would a conscious artificial humanoid be obligated in the commandments (<em>mitzvot</em>), and if created by a Jew, would it have the status of a Jew, a non-Jew, or something else entirely?</p></li>
-                                <li><p><strong>Ritual Impurity of Artificial Humans</strong>: Does the corpse of an artificially created human transmit ritual impurity (<em>tum'at met</em>) like a natural human corpse, or is such a being categorized differently?</p></li>
-                                <li><p><strong>Sacrificial Eligibility</strong>: Could an animal created through <em>Sefer Yetzirah</em> or synthetic biology be offered as a sacrifice (<em>korban</em>), given the biblical requirement that animals must be "born" (<em>ki yivaled</em>)?</p></li>
-                                <li><p><strong>Sexual Prohibitions and Artificial Beings</strong>: Do the prohibitions against illicit sexual relations (<em>arayot</em>) apply to interactions with artificially created humanoids, and does it matter whether the being possesses consciousness?</p></li>
-                                <li><p><strong>Shevitat Kelim (Tool Rest)</strong>: Does the Shabbat obligation of rest extend to one's tools and machines (<em>shevitat kelim</em>), and how does this rejected but historically debated concept apply to autonomous AI systems operating on Shabbat?</p></li>
-                                <li><p><strong>Smart Devices Activated by Thought</strong>: As brain-computer interfaces develop, what is the halakhic status of devices that perform prohibited Shabbat actions in response to mental intention without physical movement?</p></li>
-                                <li><p><strong>Testimony and Witness Capacity</strong>: Could an AI system or artificially created being provide valid testimony (<em>edut</em>) in a Jewish court, or does witness capacity require being a member of the covenantal community subject to punishment?</p></li>
-                                <li><p><strong>Uvdin de-Ḥol (Weekday Activities)</strong>: Even if specific <em>melakhot</em> are not violated, does use of AI systems on Shabbat violate the prohibition against weekday activities (<em>uvdin de-ḥol</em>) that undermine the character of the day?</p></li>
-                            </ul>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
-
+                        
+                        <!-- Algorithmic Pricing Entry -->
+                        <div data-entry-id="algorithmic-pricing" data-entry-title="Algorithmic Pricing" data-entry-crossrefs="See also: Economic Disruption and Job Displacement; Manipulation; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Is it ethical for AI-driven pricing systems to dynamically adjust prices based on individual consumer data, potentially resulting in discriminatory or exploitative outcomes? Algorithmic pricing systems can personalize prices based on a consumer's perceived willingness to pay, location, browsing history, or demographic characteristics. While economically efficient, such practices raise concerns about fairness, exploitation of vulnerable populations, and erosion of trust. Jewish law contains extensive discussions of fair pricing (<em>ona'ah</em>) and the prohibition against taking advantage of another's ignorance or need.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Alignment Entry -->
+                        <div data-entry-id="alignment" data-entry-title="Alignment and Control Problem" data-entry-crossrefs="See also: Existential Risks; Angels; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                How can we ensure that AI systems reliably pursue the goals their designers intend, rather than optimizing for unintended or harmful objectives as they become more capable? As AI systems grow more powerful, how can humans maintain meaningful oversight and the ability to correct or shut down systems that behave unexpectedly? The alignment problem—ensuring AI systems do what we actually want rather than what we literally specified—is one of the central challenges of AI safety. Jewish thought offers relevant analogies in its discussions of angelic agency (perfectly aligned servants of the divine will) and human free will (the capacity for misalignment with divine intention).
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
                         <!-- Angels Entry -->
-                        <div data-entry-id="angels" data-entry-title="Angels, Demons and Monsters" data-entry-crossrefs="See also: Animals; Free Will; Golems; Intentionality; Souls">
+                        <div data-entry-id="angels" data-entry-title="Angels, Demons, and Monsters" data-entry-crossrefs="See also: Animals; Free Will; Golems; Intentionality; Souls">
                             <h4>Overview</h4>
                             <p>
                                 Jewish tradition recognized the existence of various non-human beings that nevertheless seem to possess many human-like characteristics, sometimes including intelligence, speech, and some personal agency. All of these are, in the traditional rabbinic conception, naturally occurring phenomena, as opposed to the *<a href="#golems"><strong>golem</strong></a>, which is a product of human artifice. Angels, demons, and other human-like creatures occupy varied positions in Jewish cosmology: angels (<em>mal&#39;akhim</em>, &quot;messengers&quot;) typically carry out divine will without physical needs or moral struggle; demons (<em>shedim</em>) in rabbinic literature share surprising affinities with humans, including mortality and subjection to divine law; and humanoid monsters blur the boundary between human and animal. Together, these categories reveal that Jewish thought has long grappled with what David Zvi Kalman calls the &quot;human gradient,&quot; the recognition that humanity is not a binary category and that intelligent or quasi-human beings need not threaten humanity&#39;s special status (Kalman 2024).
@@ -352,6 +348,7 @@
                                         <strong>Lamm, Norman</strong>. &quot;The Religious Implications of Extraterrestrial Life.&quot; <em>Tradition</em> 7, no. 4 (1965): :56. Though focused on extraterrestrial intelligence, this foundational piece develops a framework for how Jewish theology might accommodate non-human rational beings; the arguments about humanity&#39;s special (but not unique) status are transferable to AI contexts.</p>
                                 </li>
                             </ul>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         <!-- Animals -->
                         <div data-entry-id="animals" data-entry-title="Animals" data-entry-crossrefs="See also: Angels, Demons, and Monsters; AI Ethics: Interaction Etiquette; Free Will; Human Soul and Mind">
@@ -432,6 +429,7 @@
                                 <li>
                                     <p>
                                         <strong>Berg, Cameron, Diogo de Lucena, and Judd Rosenblatt.</strong> "Large Language Models Report Subjective Experience Under Self-Referential Processing." <em>arXiv preprint arXiv:2510.24797</em> (2025). Technical paper demonstrating the importance and potential feasibility of testing AI models for their self-awareness, internal experience, and ability to suffer. End with a call towards treating LLMs ethically, at least as a precautionary measure. 
+                                    </p>
                                 </li>
                                 <li>
                                     <p>
@@ -452,6 +450,7 @@
 
 
 
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <!-- Antisemitism-->
@@ -547,6 +546,84 @@
                                     </p>
                                 </li>
                             </ul>        
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Autonomous Vehicles Entry -->
+                        <div data-entry-id="autonomous-vehicles" data-entry-title="Autonomous Vehicles and the Trolley Problem" data-entry-crossrefs="See also: Autonomous Weapons Systems; Civil Liability for AI-Caused Harm; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                How should self-driving systems weigh competing values such as passenger safety versus pedestrian protection, and what is the appropriate balance between transportation efficiency and accident risk? Autonomous vehicles must be programmed with decision rules for unavoidable collision scenarios, essentially implementing answers to trolley-problem-style dilemmas. Jewish law has its own extensive discussions of competing obligations, the duty to save life (<em>pikuaḥ nefesh</em>), and the limits of self-sacrifice that may inform these debates.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Autonomous Weapons Entry -->
+                        <div data-entry-id="autonomous-weapons" data-entry-title="Autonomous Weapons Systems" data-entry-crossrefs="See also: Autonomous Vehicles and the Trolley Problem; Murder of Artificially Created Beings; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Is it morally permissible to delegate lethal decisions to machines, even if such systems reduce overall casualties compared to human combatants? Autonomous weapons systems (AWS) raise profound questions about accountability, proportionality, and the meaning of human dignity in warfare. Jewish law of war (<em>hilkhot milḥamah</em>) requires discrimination between combatants and civilians, proportionality in the use of force, and clear chains of command—all of which become complicated when lethal decisions are made by algorithms.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Brain-Computer Interface Entry -->
+                        <div data-entry-id="bci" data-entry-title="Brain-Computer Interface Devices" data-entry-crossrefs="See also: Transhumanism; Human Souls and Minds; Consciousness and Minds">
+                            <h4>Overview</h4>
+                            <p>
+                                Brain-computer interfaces (BCIs) enable direct communication between the brain and external devices, raising questions about the boundaries of the self, cognitive enhancement, and the relationship between mind and soul. As these technologies advance, they may enable restored function for the disabled, enhanced cognition for the healthy, or even new forms of human-machine integration. Jewish thought's rich discourse on the nature of the soul, the permissibility of bodily modification, and the boundaries of human nature offers resources for ethical reflection on these developments.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Childcare and Elder Care Entry -->
+                        <div data-entry-id="care" data-entry-title="Childcare and Elder Care" data-entry-crossrefs="See also: Sexbots and AI Romantic Partners; Manipulation; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Can robots provide ethically adequate care for the elderly when they are incapable of genuine emotional reciprocity, and what happens to human obligations when care is delegated to machines? As AI-powered robots become capable of providing physical assistance, companionship, and monitoring for elderly and vulnerable populations, questions arise about the sufficiency of such care and its effects on human caregiving relationships. Jewish law places significant emphasis on honoring parents (<em>kibbud av va'em</em>) and caring for the vulnerable—obligations that may not be fully dischargeable through technological substitutes.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Catastrophic and CBRN Risk Entry -->
+                        <div data-entry-id="cbrn" data-entry-title="Catastrophic and CBRN Risk" data-entry-crossrefs="See also: Alignment and Control Problem; Existential Risks; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Should we be concerned that powerful AI systems would give anyone the tools to create powerful Chemical, Biological, Radiological, or Nuclear (CBRN) weapons? To what extent must this risk be safeguarded against? As AI systems become more capable, they may lower barriers to developing weapons of mass destruction by providing expertise, automating research, or identifying novel attack vectors. The prevention of catastrophic harm is a significant concern across ethical frameworks, and Jewish law's emphasis on the sanctity of life and the prohibition against enabling harm (<em>lifnei iver</em>) speaks directly to these risks.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Civil Liability Entry -->
+                        <div data-entry-id="liability" data-entry-title="Civil Liability for AI-Caused Harm" data-entry-crossrefs="See also: Animals; Indirect Causation (Grama) and AI; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Who bears halakhic liability (<em>nezikin</em>) when an autonomous system causes damage: the owner, operator, programmer, or manufacturer—and do existing categories of property-caused harm (<em>shor</em>, <em>bor</em>, <em>eish</em>) apply? Jewish tort law developed sophisticated frameworks for assigning liability when one's property causes damage, distinguishing between different categories based on the property's nature and the owner's knowledge. The application of these categories to AI systems that can learn, adapt, and act in unforeseen ways presents significant challenges and opportunities for legal reasoning.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Commandments Entry -->
+                        <div data-entry-id="commandments" data-entry-title="Commandments, Fulfillment Through AI" data-entry-crossrefs="See also: Agency (Sheliḥut) and AI; Intentionality; Halakhic Decision-Making">
+                            <h4>Overview</h4>
+                            <p>
+                                What kinds of commandment (<em>mitzvah</em>) obligations, if any, can be discharged by AI systems acting on one's behalf? Many commandments require specific intention (<em>kavanah</em>), personal action, or particular mental states that AI systems seemingly cannot possess. Yet other obligations focus primarily on outcomes—ensuring that certain actions occur or conditions are maintained. The question of which commandments might be fulfilled through AI assistance, delegation, or automation touches on fundamental issues in the philosophy of Jewish law.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <!-- Consciousness -->
@@ -644,36 +721,57 @@
                                     </p>
                                 </li>
                             </ul>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+
+                        <!-- Counting for a Quorum Entry -->
+                        <div data-entry-id="quorum" data-entry-title="Counting for a Quorum" data-entry-crossrefs="See also: Obligations of Artificially Created Beings; Human Souls and Minds; Testimony and Witness Capacity">
+                            <h4>Overview</h4>
+                            <p>
+                                Could an artificially created humanoid with human-level intelligence be counted among the ten required for communal prayer (<em>minyan</em>) or other instances where halakha requires a human person? The question touches on fundamental issues about what constitutes a person for religious purposes: is it biological origin, possession of a soul, intellectual capacity, or membership in the covenant community? Different answers to these questions would yield different conclusions about whether artificial beings could participate in—or count toward—communal religious obligations.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
 
                         <!-- Future entries are down here -->                       
                         <div data-entry-id="creation" data-entry-title="Creation" data-entry-crossrefs="See also: Golems; Magic; Technology and Judaism">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
-                        <div data-entry-id="ethics" data-entry-title="Ethics of Artificial Intelligence" data-entry-crossrefs="See also: Halakha; Free Will; Existential Risks">
+                        <!-- Economic Disruption Entry -->
+                        <div data-entry-id="economic" data-entry-title="Economic Disruption and Job Displacement" data-entry-crossrefs="See also: Algorithmic Pricing; Technology and Judaism; AI Ethics">
                             <h4>Overview</h4>
+                            <p>
+                                As AI automates an increasing share of human labor, how should societies restructure work, income, and meaning for those whose jobs become obsolete? Does halakha impose limits on automation that displaces workers, as R. Shlomo Kluger argued regarding machine matzah and the poor who depended on manual labor for Passover income? The question of technological unemployment is not new to Jewish thought—debates about labor-saving innovations appear throughout responsa literature—but AI's potential to automate cognitive as well as physical labor raises the stakes considerably.
+                            </p>
+                            <h4>Secondary Sources</h4>
                             <p>Coming soon!</p>
-
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
-                        <div data-entry-id="existential" data-entry-title="Existential Risks (and the Alignment Problem)" data-entry-crossrefs="See also: Ethics; Angels; Futurism">
+                        <div data-entry-id="existential" data-entry-title="Existential Risks (and the Alignment Problem)" data-entry-crossrefs="See also: Alignment and Control Problem; Angels; Futurism">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="freewill" data-entry-title="Free Will" data-entry-crossrefs="See also: Angels; Consciousness; Ethics">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="futurism" data-entry-title="Futurism/Forecasting" data-entry-crossrefs="See also: Existential Risks; Technology and Judaism">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
 
-                        <div data-entry-id="golem" data-entry-title="Futurism/Forecasting" data-entry-crossrefs="See also: Creation; Magic; Human Soul and Mind">
+                        <div data-entry-id="golem" data-entry-title="Golems" data-entry-crossrefs="See also: Creation; Magic; Human Souls and Minds">
                             <h4>Overview</h4>
                             <p>The term "golem" (גולם) appears only once in the Hebrew Bible (Psalms 139:16), where it refers to the Psalmist's unformed substance as seen by God. 
                                 In rabbinic literature, the word denotes a human body or formed—though not yet perfected—entity, as in Mishnah Avot 5:7, where the <em>golem</em> (a person lacking wisdom) is contrasted with the <em>ḥakham</em> (sage). 
@@ -695,46 +793,164 @@
                                 The golem has served as a lens for thinking about artificial intelligence since at least the 1960s, when Norbert Wiener titled his meditation on the ethical implications of cybernetics God & Golem, Inc. (1964), 
                                 and in 1965, Gershom Scholem explicitly compared the golem to the computer in his address at the Weizmann Institute.
                             </p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="psak" data-entry-title="Halakhic Decision-Making (Psak)" data-entry-crossrefs="See also: Halakha; Machine Learning; Torah Study">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="humans" data-entry-title="Human Souls and Minds" data-entry-crossrefs="See also: Creation; Souls; Consciousness">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="idolatry" data-entry-title="Idolatry" data-entry-crossrefs="See also: Creation; Technology and Judaism">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Indirect Causation Entry -->
+                        <div data-entry-id="grama" data-entry-title="Indirect Causation (Grama) and AI" data-entry-crossrefs="See also: Civil Liability for AI-Caused Harm; Animals; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                When AI systems cause harm through chains of autonomous decisions, how do the halakhic categories of indirect causation (<em>grama</em>, <em>gramei</em>, <em>ko'aḥ koḥo</em>) apply to assign or limit liability? Jewish law distinguishes between direct harm and harm caused indirectly or through intermediate causes, with different liability regimes applying to each. AI systems that learn from data, make autonomous decisions, and operate through complex causal chains may strain or require creative extension of these traditional categories.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="intentionality" data-entry-title="Intentionality" data-entry-crossrefs="See also: Consciousness; Halakha; Free Will">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Intellectual Property Entry -->
+                        <div data-entry-id="ip" data-entry-title="Intellectual Property" data-entry-crossrefs="See also: Truth; Economic Disruption and Job Displacement; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Who owns the outputs of AI systems, how should creators whose work was used to train models be compensated, and are current legal frameworks adequate for AI-generated content? AI systems trained on vast corpora of human-created content raise novel questions about authorship, ownership, and fair compensation. Jewish law developed concepts of intellectual property in the context of printing and religious scholarship (<em>hasagat gevul</em>) that may offer resources for thinking about these questions, though significant translation work is required.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="jewishscifi" data-entry-title="Jewish Science Fiction" data-entry-crossrefs="See also: Golems; Technology and Judaism">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="magic" data-entry-title="Magic" data-entry-crossrefs="See also: Golems; Creation; Angels">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Manipulation Entry -->
+                        <div data-entry-id="manipulation" data-entry-title="Manipulation" data-entry-crossrefs="See also: Algorithmic Pricing; Social Media and Psychological Vulnerabilities; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                When is it acceptable for AI systems to influence human behavior, and what distinguishes beneficial "nudging" from harmful manipulation? AI systems can be designed to influence user behavior in subtle ways—through interface design, content curation, personalized recommendations, or persuasive messaging. Jewish ethics has long grappled with questions of deception (<em>geneivat da'at</em>), undue influence, and respect for human autonomy that bear directly on these concerns.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Medicine Entry -->
+                        <div data-entry-id="medicine" data-entry-title="Medicine and Artificial Intelligence" data-entry-crossrefs="See also: Technology and Judaism; Civil Liability for AI-Caused Harm; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                To what extent should AI systems participate in medical diagnosis and treatment, and how do we handle errors, liability, and the irreducibly human dimensions of care? AI is increasingly deployed in medical imaging analysis, diagnostic support, treatment recommendation, and drug discovery. Jewish medical ethics (<em>hilkhot refu'ah</em>) has developed extensive frameworks for physician responsibility, patient autonomy, and the obligation to heal that must be adapted to this new technological context.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Murder Entry -->
+                        <div data-entry-id="murder" data-entry-title="Murder of Artificially Created Beings" data-entry-crossrefs="See also: Obligations of Artificially Created Beings; Golems; Human Souls and Minds">
+                            <h4>Overview</h4>
+                            <p>
+                                Does the prohibition against murder (<em>lo tirtzaḥ</em>) apply to killing an artificially created humanoid, and does the answer depend on whether the being was born of a woman or possesses a soul? This question has ancient roots in the Talmudic story of Rabbi Zeira ordering the golem to "return to dust" (Sanhedrin 65b)—an act that apparently raises no halakhic concern. The implications for potentially conscious AI systems or artificially created biological entities remain to be fully explored.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Obligations Entry -->
+                        <div data-entry-id="obligations" data-entry-title="Obligations of Artificially Created Beings" data-entry-crossrefs="See also: Murder of Artificially Created Beings; Counting for a Quorum; Golems">
+                            <h4>Overview</h4>
+                            <p>
+                                Would a conscious artificial humanoid be obligated in any of the commandments (<em>mitzvot</em>), whether for Jews or for humanity (the Seven Noahide Laws)? If artificial beings could possess souls, understanding, or moral agency, would they thereby become subject to divine command? The question has implications not only for science fiction scenarios but also for how we understand the basis of moral and religious obligation itself.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="printing" data-entry-title="Printing Press" data-entry-crossrefs="See also: Technology and Judaism; Torah Study">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Privacy Entry -->
+                        <div data-entry-id="privacy" data-entry-title="Privacy and Surveillance" data-entry-crossrefs="See also: Manipulation; Social Media and Psychological Vulnerabilities; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                How should we balance the benefits of AI-powered data collection (security, health, convenience) against individual privacy rights and the risks of pervasive surveillance? AI systems can aggregate and analyze vast quantities of personal data, enabling both beneficial applications (personalized medicine, fraud detection) and concerning ones (mass surveillance, predictive policing). Jewish law developed strong protections for privacy (<em>hezek re'iyah</em>, <em>tzniut</em>) and prohibitions against gossip and surveillance that provide resources for ethical analysis.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="resurrection" data-entry-title="Resurrection (Artificial)" data-entry-crossrefs="See also: Souls; Transhumanism; Creation">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Sexbots Entry -->
+                        <div data-entry-id="sexbots" data-entry-title="Sexbots and AI Romantic Partners" data-entry-crossrefs="See also: Childcare and Elder Care; Manipulation; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Are romantic and sexual relationships with robots permitted? Do they harm human relational capacities, and are there populations for whom such relationships might be ethically permissible? To what extent might companies providing AI companions be responsible for safeguards against inappropriate relationships?
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Shevitat Kelim Entry -->
+                        <div data-entry-id="shabbat" data-entry-title="Shabbat" data-entry-crossrefs="See also: Animals; Technology and Judaism; AI Ethics">
+                            <h4>Overview</h4>
+                            <p>
+                                Does the Shabbat obligation of rest extend to one's tools and machines (<em>shevitat kelim</em>), and how does this rejected but historically debated concept apply to autonomous AI systems operating on Shabbat? While mainstream halakha rejected the view that inanimate tools must rest on Shabbat, the debate's existence shows that Jewish law has long grappled with the status of instruments that perform work. Autonomous AI systems that continue operating on Shabbat raise these questions anew, particularly as they become more agent-like.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
+                        <!-- Social Media Entry -->
+                        <div data-entry-id="social-media" data-entry-title="Social Media and Psychological Vulnerabilities" data-entry-crossrefs="See also: Manipulation; Privacy and Surveillance; Anti-Semitism (and AI)">
+                            <h4>Overview</h4>
+                            <p>
+                                AI-powered social media algorithms optimize for engagement in ways that may exploit psychological vulnerabilities, spread misinformation, and exacerbate mental health problems—particularly among youth. The design of these systems raises questions about corporate responsibility, informed consent, and the duty not to cause harm. Jewish ethical categories including <em>lifnei iver</em> (placing a stumbling block), <em>hasagat gevul</em> (unfair competition for attention), and obligations toward vulnerable populations may inform analysis.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="technology" data-entry-title="Technology and Jewish Thought (General)" data-entry-crossrefs="See also: AI Ethics; Halakha; Magic; Printing Press; Creation">
@@ -917,19 +1133,33 @@
                             </ul>
                         </div>
                         
+                        <!-- Testimony Entry -->
+                        <div data-entry-id="testimony" data-entry-title="Testimony and Witness Capacity" data-entry-crossrefs="See also: Counting for a Quorum; Halakhic Decision-Making; Obligations of Artificially Created Beings">
+                            <h4>Overview</h4>
+                            <p>
+                                In what cases, if any, could an AI system or artificially created being provide valid testimony (<em>edut</em>) in a Jewish court? Jewish law has detailed requirements for witness competency, including understanding of the proceedings, capacity for moral responsibility, and freedom from bias. Whether AI systems—which may accurately record and report events but lack subjective experience and moral agency—could ever satisfy these requirements raises fundamental questions about the nature of testimony itself.
+                            </p>
+                            <h4>Secondary Sources</h4>
+                            <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+                        
                         <div data-entry-id="torahstudy" data-entry-title="Torah Study" data-entry-crossrefs="See also: Machine Learning; Halakhic Decision-Making">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="transhumanism" data-entry-title="Transhumanism" data-entry-crossrefs="See also: Resurrection; Souls; Creation">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
                         <div data-entry-id="truth" data-entry-title="Truth" data-entry-crossrefs="See also: AI Ethics; Idolatry">
                             <h4>Overview</h4>
                             <p>Coming soon!</p>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                     </div>
                     
@@ -938,7 +1168,7 @@
         </main>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // State
         let currentEntry = null;
         let isSearchMode = false;
@@ -1150,13 +1380,10 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isSearchMode) {
                 searchInput.value = '';
-                clearSearchBtn.classList.add('hidden');
+                       clearSearchBtn.classList.add('hidden');
                 exitSearchMode();
             }
         });
     </script>
-
 </body>
-
 </html>
-
