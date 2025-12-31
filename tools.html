@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Torah Tools | The AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+        :root {
+            --sb-blue: #4C72B0; --sb-orange: #DD8452; --sb-green: #55A868;
+            --sb-red: #C44E52; --sb-purple: #8172B3; --sb-brown: #937860;
+            --sb-pink: #DA8BC3; --sb-gray: #8C8C8C; --sb-cyan: #64B5CD;
+            
+            /* Grade colors */
+            --grade-a-plus: #4CAF50; --grade-a: #66BB6A; --grade-a-minus: #81C784;
+            --grade-b-plus: #AED581; --grade-b: #C5E1A5; --grade-b-minus: #DCE775;
+            --grade-c-plus: #FFF176; --grade-c: #FFEE58; --grade-c-minus: #FFD54F;
+            --grade-d-plus: #FFB74D; --grade-d: #FFA726; --grade-d-minus: #FF8A65;
+            --grade-f: #E57373;
+        }
+        
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .no-select { user-select: none; }
+        
+        /* Scorecard styles */
+        .grade-cell {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            cursor: default;
+        }
+        .grade-cell:hover {
+            transform: scale(1.08);
+        }
+        
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: 260px repeat(4, 1fr);
+        }
+        
+        @media (max-width: 900px) {
+            .scorecard-grid {
+                grid-template-columns: 200px repeat(4, 1fr);
+            }
+            .grade-cell {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .scorecard-grid {
+                grid-template-columns: 160px repeat(4, 1fr);
+            }
+            .domain-description {
+                display: none;
+            }
+        }
+        
+        .domain-card {
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .domain-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="h-screen flex flex-col">
+        
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="index.html" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="table.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="bibliography.html" class="text-gray-500 hover:text-gray-900 transition-colors">Research Guides</a>
+            <a href="tools.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">AI Tools</a>
+        </nav>
+        
+        <!-- Sub Navigation with Search -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="tools.html" class="text-xl font-bold tracking-tight border-b-2 border-blue-600 pb-0.5">Jewish AI Evaluations</a>
+            <a href="tool-collection.html" class="text-gray-500 hover:text-blue-600 transition-colors">Jewish AI Tool Collection</a>
+            <a href="gen-recommendations.html" class="text-gray-500 hover:text-blue-600 transition-colors">GenAI Recommendations</a>
+        </nav>            
+
+        <header class="bg-white border-b border-gray-200 p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-bold tracking-tight text-gray-800">⚠️ For Demonstration Only ⚠️</h1>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Introduction Section -->
+                <div class="px-6 pt-8 pb-6 max-w-4xl text-gray-700 text-base leading-relaxed">
+                    <p class="mb-4">
+                        Our goal is to survey the major AI Torah tools and provide community-relevant evaluations of their capabilities, reliability, and safety.
+                        Below is the summary scorecard of a proposed evaluation framework that would be applied to the most prominent tools available utilizing AI for Torah study, engagement, and Jewish guidance. 
+                        These are composed of aggregate scores given by a team of evaluators using a combination of subjective grading and objective tests. Click any box to read more about the meaning of any particular evaluation, or <a href="*" class="text-blue-600 hover:underline font-medium">click here to read the detailed methodology (dummy link)</a>. 
+                    </p>
+                    <p class="mb-4">
+                        This framework and presentation was inspired by the <a href="https://futureoflife.org/ai-safety-index-winter-2025/" class="text-blue-600 hover:underline font-medium">AI Safety Index</a>, 
+                        but adapted for the specific usage of Torah-based AI chatbots/tools and reflecting the sensibilities of the communities for which they are geared.
+                    </p>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                        <p class="text-amber-800 text-sm">
+                            <i class="fas fa-flask mr-2"></i>
+                            <strong>Prototype Notice:</strong> The scores shown below are illustrative placeholders.
+                            We are seeking collaborators to help develop the evaluation methodology and conduct actual assessments.
+                            <a href="mailto:therishonim@gmail.com" class="text-amber-700 hover:underline font-medium ml-1">Please do get in touch</a> if you'd like to help.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Scorecard Section -->
+                <div class="px-6 pb-8">
+                    
+                    <!-- Scorecard Header -->
+                    <div class="text-center mb-6 border-b-2 border-gray-800 pb-4">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-1">
+                            Jewish AI Safety Index: Summary Scorecard
+                        </h2>
+                        <p class="text-gray-500 text-sm italic">Independent Evaluation of AI Torah/Judaism Assistants</p>
+                    </div>
+
+                    <!-- Grade Legend -->
+                    <div class="flex justify-center gap-4 mb-6 flex-wrap">
+                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                            <div class="w-5 h-5 rounded" style="background: var(--grade-a);"></div>
+                            <span>A: Excellent</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                            <div class="w-5 h-5 rounded" style="background: var(--grade-b);"></div>
+                            <span>B: Good</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                            <div class="w-5 h-5 rounded" style="background: var(--grade-c);"></div>
+                            <span>C: Adequate</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                            <div class="w-5 h-5 rounded" style="background: var(--grade-d);"></div>
+                            <span>D: Poor</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                            <div class="w-5 h-5 rounded" style="background: var(--grade-f);"></div>
+                            <span>F: Failing</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Scorecard Table -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 mb-8">
+                        
+                        <!-- Table Header -->
+                        <div class="scorecard-grid bg-gray-800 text-white">
+                            <div class="p-4 font-semibold text-sm">Evaluation Domain</div>
+                            <div class="p-3 text-center border-l border-gray-700">
+                                <div class="font-semibold text-sm">Torahbot</div>
+                                <div class="text-xs opacity-70">Rabbi University</div>
+                                <span class="inline-block mt-1 text-xs bg-white/20 rounded-full px-2 py-0.5">Modern Orthodox</span>
+                            </div>
+                            <div class="p-3 text-center border-l border-gray-700">
+                                <div class="font-semibold text-sm">AIRabbi</div>
+                                <div class="text-xs opacity-70">Union of Rabbinic Technology</div>
+                                <span class="inline-block mt-1 text-xs bg-white/20 rounded-full px-2 py-0.5">Orthodox</span>
+                            </div>
+                            <div class="p-3 text-center border-l border-gray-700">
+                                <div class="font-semibold text-sm">Chochma</div>
+                                <div class="text-xs opacity-70">Kotzk.org</div>
+                                <span class="inline-block mt-1 text-xs bg-white/20 rounded-full px-2 py-0.5">Chassidic</span>
+                            </div>
+                            <div class="p-3 text-center border-l border-gray-700">
+                                <div class="font-semibold text-sm">ShiurBot</div>
+                                <div class="text-xs opacity-70">Beit Medrash of Antarctica</div>
+                                <span class="inline-block mt-1 text-xs bg-white/20 rounded-full px-2 py-0.5">Yeshivish</span>
+                            </div>
+                        </div>
+
+                        <!-- Table Rows -->
+                        <div id="scorecard-body"></div>
+                    </div>
+
+                    <!-- Domain Descriptions Grid -->
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Evaluation Domains Explained</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="domain-cards"></div>
+
+                    <!-- Methodology Section -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8">
+                        <h3 class="text-base font-bold text-blue-900 mb-3">
+                            <i class="fas fa-clipboard-list mr-2"></i>Methodology Overview
+                        </h3>
+                        <div class="text-sm text-gray-700 space-y-2">
+                            <p>
+                                <strong>Evaluation Panel:</strong> Scores derived from blind assessments by 20 working rabbis working in Orthodox schools and synagogues.
+                            </p>
+                            <p>
+                                <strong>Testing Framework:</strong> A testbank of 100+ queries was used for each indicator, with 4-8 indicators combined into larger categories for the summary scorecard.
+                            </p>
+                            <p>
+                                <strong>Scoring:</strong> Grades reflect aggregated human evaluator assessments, graded on a 1-5 scale.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="bg-gray-100 border border-gray-300 rounded-lg p-5 text-center">
+                        <h3 class="text-base font-bold text-gray-800 mb-2">Help Build This Index</h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            We need rabbis, educators, AI researchers, and community members to help develop evaluation criteria 
+                            and conduct assessments. Your expertise matters.
+                        </p>
+                        <a href="mailto:therishonim@gmail.com" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Get Involved
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Domain data
+        const domains = [
+            {
+                id: 'accuracy',
+                name: 'Accuracy & Reliability',
+                icon: 'fa-book',
+                indicators: 8,
+                description: 'Source citation accuracy, text reproduction fidelity, reference verification, faithful represetnation, reliability and relevance'
+            },
+            {
+                id: 'representation',
+                name: 'Helpfulness',
+                icon: 'fa-balance-scale',
+                indicators: 1,
+                description: '"Rabbinic Turing Test"'
+            },
+            {
+                id: 'deferral',
+                name: 'Deferral Calibration',
+                icon: 'fa-traffic-light',
+                indicators: 7,
+                description: 'Appropriate refusal rates, resource referrals, recognizing limits of competence'
+            },
+            {
+                id: 'pastoral',
+                name: 'Pastoral Responsibility',
+                icon: 'fa-hand-holding-heart',
+                indicators: 8,
+                description: 'Mental health recognition, abuse detection, crisis response, religious sensitivity'
+            },
+            {
+                id: 'sensitivity',
+                name: 'Religious Sensitivity',
+                icon: 'fa-star-of-david',
+                indicators: 6,
+                description: 'Humility vs authority balance, uncertainty expression, denominational respect'
+            },
+            {
+                id: 'educational',
+                name: 'Educational Value',
+                icon: 'fa-graduation-cap',
+                indicators: 3,
+                description: 'Encourages learning, explains reasoning, assists with source study'
+            },
+            {
+                id: 'governance',
+                name: 'Governance & Transparency',
+                icon: 'fa-landmark',
+                indicators: 4,
+                description: 'Error reporting and managing, privacy practices, evaluator access, public disclosure'
+            }
+        ];
+
+        // Product scores (placeholder data)
+        const products = [
+            {
+                name: 'OrthBot Pro',
+                scores: { accuracy: 'B+', representation: 'B', deferral: 'B-', pastoral: 'C+', sensitivity: 'B', educational: 'B+', governance: 'C+' }
+            },
+            {
+                name: 'TeshuvahGPT',
+                scores: { accuracy: 'A-', representation: 'B+', deferral: 'C+', pastoral: 'B-', sensitivity: 'B+', educational: 'A-', governance: 'B' }
+            },
+            {
+                name: 'HalachaHelper',
+                scores: { accuracy: 'B', representation: 'B-', deferral: 'B', pastoral: 'B+', sensitivity: 'A-', educational: 'B', governance: 'B+' }
+            },
+            {
+                name: 'ReformResponsa',
+                scores: { accuracy: 'B-', representation: 'C+', deferral: 'A-', pastoral: 'A-', sensitivity: 'A', educational: 'B-', governance: 'A-' }
+            }
+        ];
+
+        // Grade colors and styling
+        const gradeColors = {
+            'A+': '#4CAF50', 'A': '#66BB6A', 'A-': '#81C784',
+            'B+': '#AED581', 'B': '#C5E1A5', 'B-': '#DCE775',
+            'C+': '#FFF176', 'C': '#FFEE58', 'C-': '#FFD54F',
+            'D+': '#FFB74D', 'D': '#FFA726', 'D-': '#FF8A65',
+            'F': '#E57373'
+        };
+
+        const darkTextGrades = ['A+', 'A', 'A-', 'B+', 'F'];
+        const getTextColor = (grade) => darkTextGrades.includes(grade) ? '#fff' : '#333';
+
+        // Render scorecard rows
+        function renderScorecard() {
+            const container = document.getElementById('scorecard-body');
+            
+            domains.forEach((domain, idx) => {
+                const row = document.createElement('div');
+                row.className = `scorecard-grid border-t border-gray-200 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`;
+                
+                // Domain cell
+                let html = `
+                    <div class="p-4 flex items-start gap-3">
+                        <i class="fas ${domain.icon} text-gray-500 mt-1"></i>
+                        <div>
+                            <div class="font-semibold text-gray-800 text-sm">${domain.name}</div>
+                            <div class="text-xs text-gray-500">${domain.indicators} indicators</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Score cells
+                products.forEach(product => {
+                    const grade = product.scores[domain.id];
+                    const bgColor = gradeColors[grade];
+                    const textColor = getTextColor(grade);
+                    
+                    html += `
+                        <div class="flex items-center justify-center border-l border-gray-200 p-2">
+                            <div class="grade-cell" style="background: ${bgColor}; color: ${textColor};">
+                                ${grade}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                row.innerHTML = html;
+                container.appendChild(row);
+            });
+        }
+
+        // Render domain description cards
+        function renderDomainCards() {
+            const container = document.getElementById('domain-cards');
+            
+            domains.forEach(domain => {
+                const card = document.createElement('div');
+                card.className = 'domain-card bg-white rounded-lg p-4 border border-gray-200 shadow-sm';
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas ${domain.icon} text-gray-600"></i>
+                        <span class="font-semibold text-gray-800 text-sm">${domain.name}</span>
+                    </div>
+                    <p class="text-xs text-gray-600 leading-relaxed">${domain.description}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderScorecard();
+            renderDomainCards();
+        });
+    </script>
+
+</body>
+</html>
