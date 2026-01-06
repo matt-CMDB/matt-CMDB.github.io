@@ -136,12 +136,20 @@
                     
                     <!-- Introduction -->
                     <div class="max-w-4xl mb-8 text-gray-700 text-base leading-relaxed">
+                        <p>
+                            Welcome to the <b>Online Handbook for Jewish AI Ethics.</b> This is a set of research guides provide in-depth explorations of key topics at the intersection of artificial intelligence and Jewish thought. 
+                            Each entry serves as both a mini encyclopedia article and an annotated bibliography. 
+                            Each entry is also associated with a Sefaria Source Sheet of primary sources that may be relevant to the question.
+                            Together these should help offer context, analysis, and resources for further studies. 
+                            As always, be sure to <a href="/cdn-cgi/l/email-protection#f5819d90879c869d9a9b9c98b59298949c99db969a98" class="text-blue-600">contact us</a> with any feedback and/or additional resources you'd like to see here.
+                            </p>
+            
                         <p class="mb-4">
                             These research guides provide in-depth explorations of key topics at the intersection of artificial intelligence and Jewish thought. 
                             Each entry serves as both a mini encyclopedia article and an annotated bibliography. 
                             Each entry is also associated with a Sefaria Source Sheet of primary sources that may be relevant to the question.
                             Together these should help offer context, analysis, and resources for further studies. 
-                            As always, be sure to <a href="mailto:therishonim@gmail.com" class="text-blue-600">contact us</a> with any feedback and/or additional resources you'd like to see here.
+                            As always, be sure to <a href="/cdn-cgi/l/email-protection#f5819d90879c869d9a9b9c98b59298949c99db969a98" class="text-blue-600">contact us</a> with any feedback and/or additional resources you'd like to see here.
                             </p>
                         <p class="mb-6">
                             Click on any topic below to read its full entry, or use the search bar (top right) to find specific terms across all entries.
@@ -150,8 +158,7 @@
 
                     <!-- Entry Buttons -->
                     <div id="entryButtons" class="mb-8 flex flex-wrap gap-2">
-                        <button data-entry="agency" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Agency (Sheliḥut) and AI</button>
-                        <button data-entry="algorithmic-bias" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Algorithmic Bias and Discrimination</button>
+                        <button data-entry="agency" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Agency (Sheliḥut)</button>
                         <button data-entry="algorithmic-pricing" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Algorithmic Pricing</button>
                         <button data-entry="alignment" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Alignment and Control Problem</button>
                         <button data-entry="angels" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Angels, Demons, and Monsters</button>
@@ -159,6 +166,7 @@
                         <button data-entry="antisemitism" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Anti-Semitism (and AI)</button>
                         <button data-entry="autonomous-vehicles" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Autonomous Vehicles and the Trolley Problem</button>
                         <button data-entry="autonomous-weapons" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Autonomous Weapons Systems</button>
+                        <button data-entry="bias" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Bias and Discrimination</button>                        
                         <button data-entry="bci" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Brain-Computer Interface Devices</button>
                         <button data-entry="care" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Childcare and Elder Care</button>
                         <button data-entry="cbrn" class="entry-btn px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">Catastrophic and CBRN Risk</button>
@@ -216,18 +224,171 @@
                     <!-- Hidden Entry Data -->
                     <div id="entryData" class="hidden">
                         <!-- Agency Entry -->
-                        <div data-entry-id="agency" data-entry-title="Agency (Sheliḥut) and AI" data-entry-crossrefs="See also: Commandments, Fulfillment Through AI; Halakhic Decision-Making; Intentionality">
+                        <div data-entry-id="agency" data-entry-title="Agency (Sheliḥut) and AI" data-entry-crossrefs="See also: Commandments, Fulfillment Through AI; Civil Liability for AI-Caused Harm; Indirect Causation (Grama) and AI; Intentionality">
                             <h4>Overview</h4>
                             <p>
-                                Can an AI system serve as a halakhic agent (<em>shaliaḥ</em>) to perform actions on behalf of a Jew, given that agency traditionally requires the agent to be similarly obligated in the relevant commandment? The principle of <em>sheliḥut</em> (agency) in Jewish law allows one person to act on behalf of another, with the legal effects accruing to the principal. However, classical sources establish that an agent must be a "bar da'at" (possessing understanding) and typically must be similarly obligated in the commandment being performed. These requirements raise significant questions about whether AI systems—which lack consciousness, intention, and religious obligation—can serve as valid agents for ritual or legal purposes.
+                                <em>Sheliḥut</em> (agency) is the halakhic framework by which one person may act on behalf of another. The principle, phrased by the Talmud as "a person's agent is like himself" (שלחו של אדם כמותו, <em>sheluḥo shel adam ke-moto</em>; Berakhot 34b; Kiddushin 41b), allows legally binding actions performed by an agent proxy (<em>shaliaḥ</em>) to be attributed to the principal (<em>meshaleaḥ</em>). This framework governs commercial transactions, marriage contracts, and even some but not all ritual obligations. 
                             </p>
+                            <p>    
+                                The matter of <em>sheliḥut</em> raises the question of whether autonomous or semi-autonomous nonhuman systems can serve as halakhic agents, and whether their actions can be meaningfully attributed to human principals. When it comes to ritual fulfillment of commandments, at least, application to AI is constrained by a fundamental requirement: only one who is <em>bar ḥiyuva</em> (subject to legal obligation) can serve as an agent. Presumably, since an AI is not commanded to observe mitzvot, then under classic halakhic reasoning, “objects can never be proxies” (Kalman 2024). 
+                            </p>
+                            <p>
+                                However, it is possible that this constraint is applicable only to ritual commandments; in fact, the Talmud does suggest some equivalence or at least comparison between a person’s agent and their courtyard, which is able to legally acquire property for its owner within its domain (Bava Metzia 10b-11b, Sefer ha-Mikneh 15:4-8). 
+                                Medieval and modern commentators have discussed to what extent, if any, the rabbis extend the legal principle of shelihut to this specific inanimate object, vis. a person’s real property (Tosafot Rosh and Rashba to Kiddushin 42a). 
+                                While minors and the mentally incompetent are precluded from serving as valid agents due to their insufficient <em>da’at</em> (knowledge or intent), the terminology of <em>sheliḥut</em> used in the context of property indicates some flexibility for applications which are sufficiently dissimilar from human examples (cf. Nimukei Yosef and Pnei Yehoshua to Bava Metzia 11a).
+                            </p>
+                            <p>
+                                Whether or not any vestige of the halakhic concept of <em>sheliḥut</em> applies to artificially constructed agents, the extensive literature on this topic from traditional sources may prove useful for developing theories of AI liability and similar issues. 
+                                For example, the Talmudic (Gittin 29a-b) discusses the case of a principal (specifically, a husband seeking to divorce his wife) who dies before the agent has discharged his duty, and the ensuing discourse shows how halakhic authorities have considered to what extent the principal must be continuously ‘interested’ (even subconsciously) in the agency of his proxy and how completely authority may have been transferred from one person to the other (Klein 2024).
+                            </p>
+                            <h4>Primary Sources</h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Berakhot 34b; Kiddushin 41b.</strong> Locus classicus for <em>sheluḥo shel adam ke-moto</em>.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Gittin 29a-b.</strong> Talmudic discussion of agency when the principal dies before the mission is complete; foundational for debates about whether agency requires the principal's ongoing existence and consent.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Bava Metzia 10a-11b.</strong> Comparisons and contrasts between the acquisition of chattels by real property and the case of agency proper.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Mishneh Torah, Hilkhot Geneivah 1:9.</strong> Maimonides codifies the slave-damage exemption, adding that owners cannot adequately "guard" intelligent beings.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Tosafot Rosh and Rashba to Kiddushin 42a.</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Nimukei Yosef to Bava Metzia 11a.</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Pnei Yehoshua to Bava Metzia 11a.</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Ketzot HaḤoshen, siman 182, 188.</strong> Key discussions of the nature of agency and the authority transferred to agents; analyzes whether the agent acts as an extension of the principal or with independently delegated power.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Sefer ha-Mikneh 15:4-8.</strong>
+                                    </p>
+                                </li>
+                            </ul>
                             <h4>Secondary Sources</h4>
-                            <p>Coming soon!</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Klein, Dov.</strong> "Mingnon HaSheliḥut." [Hebrew] <em>Yarhon Ha-Otzar</em> 105 (2024): 449-464. Extensive treatment of the conceptual underpinnings of <em>shelihut</em> through rabbinic literature; briefly but directly addresses whether AI can fit within these frameworks.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Kalman, David Zvi.</strong> "Artificial Intelligence and Jewish Thought." In <em>The Cambridge Companion to Religion and Artificial Intelligence</em> (2024): 69-87. Argues that <em>sheliḥut</em>, animal-liability, and <em>grama</em> frameworks appear applicable to AI but remain underdetermined; cautions against premature systematization.
+                                    </p>
+                                </li>
+                            </ul>
                             <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
-                        
-                        <!-- Algorithmic Bias Entry -->
-                        <div data-entry-id="algorithmic-bias" data-entry-title="Algorithmic Bias and Discrimination" data-entry-crossrefs="See also: Anti-Semitism (and AI); Truth; AI Ethics">
+                                            
+                        <!-- Algorithmic Pricing Entry -->
+                        <div data-entry-id="algorithmic-pricing" data-entry-title="Algorithmic Pricing" data-entry-crossrefs="See also: Civil Liability for AI-Caused Harm; Economic Disruption and Job Displacement; Manipulation; Privacy and Surveillance; Technology and Judaism (General)">
+                            <h4>Overview</h4>
+                            <p>
+                                Algorithmic pricing refers to the use of automated systems, including machine learning models, to set prices dynamically based on data about consumers, market conditions, inventory levels, and competitor behavior. While such systems can improve economic efficiency and market responsiveness, they raise ethical concerns when they enable forms of price discrimination, especially if those come about through methods that would be impossible for humans to implement or to understand, such that no human has an awareness of the factors that determine the specific price changes. 
+                            </p>
+                            <p>
+                                Typically, Jewish law sees no problem in charging or offering different prices for different buyers and sellers, but there is a large body of literature on fair pricing of market transactions. The Talmud takes a very harsh view against "artificial" price manipulation (Bava Batra 90b; cf. Warhaftig 1987). Legal traditions addressing <em>ona'ah</em> (price fraud/overpricing), <em>hafka'at she'arim</em> (profiteering on essential goods), and communal regulation offer frameworks for evaluating these practices. The halakhic concern with pricing fairness emerges from several related but distinct sources. The Biblical prohibition of <em>ona'ah</em> (Leviticus 25:14) prohibits transactions where the price deviates more than one-sixth from the market price, protecting both buyers and sellers from exploitation through information asymmetry. The Rabbinic ordinance of <em>hafka'at she'arim</em> limits profit margins on essential foodstuffs (<em>hayyei nefesh</em>) reflects concern for ensuring access to necessities. Additionally, the corporate Jewish community possessed authority to regulate prices and wages relatively democratically, with enforcement power backed by penalties and according to some, even police monitors (Bava Batra, Babylonian Talmud 89a and Jerusalem Talmud 5:5). 
+                            </p>
+                            <p>
+                                Applying these rabbinic laws to modern markets, even without consideration of technological advancement in the quantification of market parameters, is not trivial. One consideration is that rabbinic concerns may seem to be, at least on their face, opposed to free market ideals and other principles of modern economic theory (Rakover 2000, Makovi 2016). The scholarly literature reveals some debate about whether these halakhic frameworks constitute "price controls" in the economic sense and whether they remain applicable in modern market conditions (Levine 2012, Makovi 2016).
+                            </p>
+                            <p>
+                                When it comes to price discrimination, it should be noted that the Talmud itself endorses certain forms of differential pricing based on status. Torah scholars (<em>talmidei hakhamim</em>) received special market privileges, including priority to sell their goods first and exemption from restrictions that applied to other traveling merchants (Bava Batra 22a). Jewish tradition does not consider differential treatment as inherently problematic; the legitimacy of preferential pricing depends on whether the basis for differentiation serves a recognized social good (such as supporting Torah study). It is possible that other considerations, such as economic efficiency and supply chain robustness may also constitute sufficient cause for price discrimination. It is also possible that a level of transparency of algorithmic (or AI-assisted) market decisions may be necessary in order to be legitimately relied upon, just as community regulations were typically conducted by deliberations of human leaders. But all of these questions remain largely unexplored.
+                            </p>
+                            <h4>Primary Sources</h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Leviticus 25:14.</strong> The Biblical source for <em>ona'ah</em>.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Mishnah Bava Metzia 4:3-12 and Babylonian Talmud Bava Metzia 40b; Bava Batra 89a-91a.</strong> Discusses market supervision, price commissioners, profit limitations on essential goods, and restrictions on speculation and hoarding.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Tosefta Bava Metzia 11:12 (also 11:23).</strong> "The townspeople may stipulate prices, measures, and the wages of workers. They are permitted to impose penalties."
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Maimonides, Mishneh Torah, Hilkhot Mekhira 12-14.</strong> Codifies the laws of <em>ona'ah</em> (chapters 12-13) and market regulation (chapter 14).
+                                    </p>
+                                </li>
+                            </ul>
+                            <h4>Secondary Sources</h4>
+                            <p>
+                                <strong><em>Conceptual Foundations</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Kleiman, Ephraim.</strong> "'Just Price' in Talmudic Literature." <em>History of Political Economy</em> 19, no. 1 (1987): 23-45. Foundational study arguing that <em>ona'ah</em> is not a price control but a protection against asymmetric information; possibly relevant to cases of inscrutable algorithms.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Rakover, Nahum.</strong> "Price Regulation in Jewish Law." In <em>Ethics in the Market Place: A Jewish Perspective</em>. Jerusalem: Library of Jewish Law, 2000. Accessible summary of Talmudic debates about price supervision.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Tamari, Meir.</strong> <em>In the Marketplace: Jewish Business Ethics.</em> Southfield, MI: Targum/Feldheim, 1991. Accessible presentation on <em>halakhot</em> of market economics, arguing for the relevance even of the enforcement of such laws in modern economies.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Warhaftig, Itamar.</strong> "Consumer Protection: Price and Wage Levels." <em>Crossroads: Halacha and the Modern World</em>, Vol. 1. Alon Shvut-Gush Etzion: Zomet Institute, 1987. Detailed analysis of <em>hafka'at she'arim</em> and prohibitions of "artificial" market manipulation or price inflation, also emphasizing the importance of limiting profit margins.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Economic Analysis</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Levine, Aaron.</strong> <em>Economic Morality and Jewish Law.</em> Oxford: Oxford University Press, 2012. Chapter 4 ("Price Controls in Jewish Law"). Recognizing that modern economic theory holds that external price regulations are self-defeating, Levine argues that halakha is not interested in price controls in the strictly economic sense.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Makovi, Michael.</strong> "Price-Controls in Jewish Law." MPRA Paper No. 72821, 2016. Critical analysis from a free-market economic perspective.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
+                        </div>
+
+                        <!-- Bias and Discriminiation Entry -->
+                        <div data-entry-id="bias" data-entry-title="Bias and Discrimination" data-entry-crossrefs="See also: Anti-Semitism (and AI); Truth; AI Ethics">
                             <h4>Overview</h4>
                             <p>
                                 Can AI systems be trained to avoid perpetuating or amplifying social biases, and if debiasing efforts risk falsifying historical data, how should we balance accuracy against harm? AI systems trained on historical data inevitably encode the biases present in that data, raising difficult questions about whether and how to intervene. Debiasing techniques may improve fairness in outputs but risk distorting the historical record or creating systems that are less accurate in certain contexts. Jewish ethical frameworks that emphasize both truth (<em>emet</em>) and justice (<em>tzedek</em>) may offer resources for navigating these tensions.
@@ -237,25 +398,97 @@
                             <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
-                        <!-- Algorithmic Pricing Entry -->
-                        <div data-entry-id="algorithmic-pricing" data-entry-title="Algorithmic Pricing" data-entry-crossrefs="See also: Economic Disruption and Job Displacement; Manipulation; AI Ethics">
-                            <h4>Overview</h4>
-                            <p>
-                                Is it ethical for AI-driven pricing systems to dynamically adjust prices based on individual consumer data, potentially resulting in discriminatory or exploitative outcomes? Algorithmic pricing systems can personalize prices based on a consumer's perceived willingness to pay, location, browsing history, or demographic characteristics. While economically efficient, such practices raise concerns about fairness, exploitation of vulnerable populations, and erosion of trust. Jewish law contains extensive discussions of fair pricing (<em>ona'ah</em>) and the prohibition against taking advantage of another's ignorance or need.
-                            </p>
-                            <h4>Secondary Sources</h4>
-                            <p>Coming soon!</p>
-                            <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
-                        </div>
-                        
                         <!-- Alignment Entry -->
-                        <div data-entry-id="alignment" data-entry-title="Alignment and Control Problem" data-entry-crossrefs="See also: Existential Risks; Angels; AI Ethics">
+                        <div data-entry-id="alignment" data-entry-title="Alignment and Control Problem" data-entry-crossrefs="See also: Angels, Demons, and Monsters; Creation; Existential Risks; Golems">
                             <h4>Overview</h4>
                             <p>
-                                How can we ensure that AI systems reliably pursue the goals their designers intend, rather than optimizing for unintended or harmful objectives as they become more capable? As AI systems grow more powerful, how can humans maintain meaningful oversight and the ability to correct or shut down systems that behave unexpectedly? The alignment problem—ensuring AI systems do what we actually want rather than what we literally specified—is one of the central challenges of AI safety. Jewish thought offers relevant analogies in its discussions of angelic agency (perfectly aligned servants of the divine will) and human free will (the capacity for misalignment with divine intention).
+                                In contemporary discourse around Artificial Intelligence, the "alignment problem" refers to the challenge of ensuring that artificial intelligence systems reliably act in accordance with human values and intentions. Sometimes this is phrased differently, as a "control" question, which asks whether humans can maintain meaningful oversight of AI systems, particularly as they become more capable and more inscrutable. These intertwined concerns have emerged as central preoccupations of contemporary AI ethics and safety research, and have spawned an active field of both technical AI safety and AI governance from a regulatory or political perspective (Christian 2020; Bostrom 2014; Dafoe 2018).
                             </p>
+                            <p>
+                                Jewish sources offer several frameworks for thinking about these problems, though none map perfectly onto contemporary AI. The most suggestive parallel may be the rabbinic discourse on <em>shedim</em> (demons) and the practice of demon-summoning. Unlike in Christian demonology, rabbinic demons are not inherently evil but are intelligent agents with their own interests and capacities for deception (Ronis 2022). In rabbinic literature, we find discussions about whether and how humans may consult with demons, and notably, a recognition that such entities are fundamentally unreliable (Shabbat 101a, Nahmanides to Shabbat 156).
+                            </p>
+                            <p>
+                                Similar precedent arises from traditions of artificial humanoids; later called "Golems," a common trope regarding these creatures was their resistance to being fully controlled. Rabbi Yaakov Emden (18th c.) records that his ancestor, R. Eliyahu Ba'al Shem, fashioned such a being, but later destroyed his creation because "when the master saw that the Golem was growing larger and larger, he feared that the Golem would destroy the universe;" in the ensuing battle to subdue the creature, "the Golem injured him, scarring him on the face" (She'elat Ya'avetz 2:82). These and similar texts indicate that existential anxieties around the dangers of artificial humanoids are not new, and may point to the importance of maintaining controls over such technologies and the need to have an accessible "kill switch" if necessary. Of course, nearly all such discussions, even when they appear in Jewish legal texts, maintain more of a folkloristic than normative tone. It is unclear to what extent these rabbinic authors considered the control problem in more detail, and how they would determine what are acceptable and unacceptable levels of unpredictability or self-directed behavior in products of human artifice, but a careful reading of these sources may prove fruitful in that regard.
+                            </p>
+                            <h4>Primary Sources</h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>BT Sanhedrin 65b-67b; 101a.</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Nahmanides' responsum on Chaldeans and demons (printed at BT Shabbat 156).</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>She'elat Ya'avetz 2:82.</strong>
+                                    </p>
+                                </li>
+                            </ul>
                             <h4>Secondary Sources</h4>
-                            <p>Coming soon!</p>
+                            <p>
+                                <strong><em>The Alignment Problem in AI</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Bostrom, Nick.</strong> <em>Superintelligence: Paths, Dangers, Strategies.</em> Oxford: Oxford University Press, 2014. One of the earliest and most influential statements of existential risk from advanced AI, including the "control problem" of maintaining human authority over superintelligent systems.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Christian, Brian.</strong> <em>The Alignment Problem: Machine Learning and Human Values.</em> New York: W. W. Norton, 2020. The definitive book on AI alignment through the modern history of Artificial Intelligence; a very accessible but highly detailed study.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Golem Traditions and the Control Problem</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Charpa, Ulrich.</strong> "Synthetic Biology and the Golem of Prague: Philosophical Reflections on a Suggestive Metaphor." <em>Perspectives in Biology and Medicine</em> 55, no. 4 (2012): 554-70. Examines the golem as a metaphor for emerging biotechnology; though focused on synthetic biology, the analysis of control anxieties transfers directly to AI.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Idel, Moshe.</strong> <em>Golem: Jewish Magical and Mystical Traditions on the Artificial Anthropoid.</em> Albany: SUNY Press, 1990. The definitive scholarly treatment of golem traditions; distinguishes between mystical-experiential and practical-magical interpretations and traces the development of control anxieties in later golem narratives.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Scholem, Gershom.</strong> "The Idea of the Golem." In <em>On the Kabbalah and Its Symbolism</em>, 158-204. New York: Schocken Books, 1965. Foundational essay on golem symbolism, including discussion of thirteenth-century German legends in which the golem warns against its own creation.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>Jewish Demonology and Agent Reliability</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Ronis, Sara.</strong> <em>Demons in the Details: Demonic Discourse and Rabbinic Culture in Late Antique Babylonia.</em> University of California Press, 2022. The most comprehensive recent study of Babylonian Talmudic demonology; argues that demons served as a conceptual space for exploring boundaries and anxieties, directly applicable to understanding AI as a new liminal category.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Bohak, Gideon.</strong> <em>Ancient Jewish Magic: A History.</em> Cambridge: Cambridge University Press, 2008. Survey of Jewish magical practices including demon adjuration; useful for understanding the techniques by which practitioners attempted to bind and control supernatural entities.
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                <strong><em>AI and Contemporary Jewish Ethics</em></strong>
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>
+                                    <p>
+                                        <strong>Grossman, Yitzhak.</strong> "Jewish Perspectives on Artificial Intelligence and Synthetic Biology." <em>Ḥakirah</em> 35 (2024): 61-92. Surveys rabbinic sources on artificial creation, including the fear that golems might "become harmful to people" if left to grow; connects classical concerns to contemporary AI.
+                                    </p>
+                                </li>
+                            </ul>
                             <p class="mt-6 text-sm"><a href="#entryButtons" class="text-blue-600 hover:underline">↑ Return to top</a></p>
                         </div>
                         
@@ -1167,7 +1400,7 @@
         </main>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // State
         let currentEntry = null;
         let isSearchMode = false;
@@ -1379,7 +1612,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isSearchMode) {
                 searchInput.value = '';
-                       clearSearchBtn.classList.add('hidden');
+                clearSearchBtn.classList.add('hidden');
                 exitSearchMode();
             }
         });
