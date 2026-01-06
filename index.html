@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,38 +40,60 @@
             <div class="flex items-center gap-2">
                 <h1 class="text-xl font-bold tracking-tight text-gray-800">Welcome!</h1>
             </div>
-            </header>
+        </header>
 
         <main class="flex-1 overflow-y-auto">
             <div class="max-w-7xl mx-auto">
                 
-                <div class="px-6 pt-8 pb-12 max-w-4xl text-gray-700 text-base leading-relaxed">
-                    
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
+                <div class="flex flex-col md:flex-row gap-6 items-center">
+
+                    <!-- Logo video -->
+                    <video
+                    class="w-32 h-32 md:w-40 md:h-40 opacity-90 flex-shrink-0"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    >
+                    <source src="logo-only_square.mp4" type="video/mp4">
+                    <img src="logo-static.svg" alt="AI and Judaism logo">
+                    </video>
+
+                    <!-- Text block -->
+                    <div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        Our Mission
+                    </h2>
                     <p class="mb-6">
                         This resource is dedicated to cataloging and exploring the rapidly evolving intersection of Jewish tradition and artificial intelligence. 
                         As technology reshapes how we study texts, perform mitzvot, and understand our own humanity, we hope that this platform can
-                        serve as a central hub for teachers, scholars, rabbis, technologists, and the curious public. This is also a place for demonstrating what 
-                        is intended to be a suite of evaluations and recommendations for AI use within the Jewish community.
-                    <!-- Call to Action -->
-                    <div class="bg-gray-100 border border-gray-300 rounded-lg p-5 text-center">
-                        <h3 class="text-base font-bold text-gray-800 mb-2">Help Build This</h3>
-                        <p class="text-sm text-gray-600 mb-4">
-                            This is still in "prototype" phase. Barely a baby. Or a beta. Please talk to me to help build it up. 
-                            We need rabbis, educators, AI researchers, and community members to help develop evaluation criteria. 
-                            Your expertise matters.
-                        </p>
-                        <a href="mailto:therishonim@gmail.com" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-envelope mr-2"></i>Get Involved
-                        </a>
-                    </div>
-
+                        serve as a central hub for teachers, scholars, rabbis, technologists, and the curious public.
+                    </p>
                 </div>
+            </div>
+                    <!-- Call to Action -->
+            <div class="bg-gray-100 border border-gray-300 rounded-lg p-5 text-center">
+                <h3 class="text-base font-bold text-gray-800 mb-2">Help Build This</h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    This is still in "prototype" phase. Barely a baby. Or a beta. Please talk to me to help build it up. 
+                    We need rabbis, educators, AI researchers, and community members to help develop evaluation criteria. 
+                    Your expertise matters.
+                </p>
+                <a href="mailto:therishonim@gmail.com" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-envelope mr-2"></i>Get Involved
+                </a>
             </div>
         </main>
     </div>
-
 </body>
+
+<style>
+@media (prefers-reduced-motion: reduce) {
+  video {
+    display: none;
+  }
+}
+</style>
 
 </html>
 
