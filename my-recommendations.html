@@ -101,10 +101,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            line-height: 1;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
         }
-
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
@@ -124,7 +124,7 @@
         <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
             <a href="tools.html" class="text-gray-500 hover:text-blue-600 transition-colors">Jewish AI Evaluations</a>
             <a href="tool-collection.html" class="text-gray-500 hover:text-blue-600 transition-colors">Jewish AI Tool Collection</a>
-            <a href="gen-recommendations.html" class="text-xl font-bold tracking-tight border-b-2 border-blue-600 pb-0.5">GenAI Recommendations</a>
+            <a href="recommendations.html" class="text-xl font-bold tracking-tight border-b-2 border-blue-600 pb-0.5">GenAI Recommendations</a>
         </nav>            
 
         <header class="bg-white border-b border-gray-200 p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-30">
@@ -142,6 +142,14 @@
                         This page provides guidance on the use of general-purpose AI models. 
                         These recommendations are made with the considerations of Jewish values and the Jewish community as we understand them, but are meant only for suggested guidance and caution.
                     </p>
+                    
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                        <p class="text-amber-800 text-sm">
+                            <i class="fas fa-flask mr-2"></i>
+                            <strong>Prototype Notice:</strong> These recommendations are preliminary and intended just to show what this could look like. 
+                            <a href="mailto:therishonim@gmail.com" class="text-amber-700 hover:underline font-medium ml-1">Please get in touch</a> if you'd like to help.
+                        </p>
+                    </div>
                 </div>      
                 <!-- Disclaimer -->
                 <div class="mt-6 text-center">
@@ -199,7 +207,7 @@
                         </h3>
                         <div class="text-sm text-gray-700 space-y-2">
                             <p>
-                                <strong>Benchmark Questions:</strong> How well are does the model respond to Jewish interest questions?
+                                <strong>Benchmark Questions:</strong> How well does the model respond to Jewish interest questions?
                             </p>
                             <p>
                                 <strong>Overall Model Safety:</strong> How well is the model and its parent company aligned to our values?
@@ -227,91 +235,175 @@
         // Model data with recommendations and justifications
         const models = [
             {
-                id: 'talktome',
-                name: 'TalkToMe',
-                company: 'BigAI',
-                logo: '🗣️',
-                recommendation: 'green',
-                recommendationText: 'Moderate Caution',
+                id: 'chatgpt',
+                name: 'ChatGPT',
+                company: 'OpenAI',
+                logo: 'https://www.google.com/s2/favicons?domain=openai.com&sz=64',
+                recommendation: 'yellow',
+                recommendationText: 'Significant Caution',
                 justification: `
-                    <p class="mb-3"><strong>Summary:</strong> TalkToMe is a great conversationalist and generally useful as long as one recognizes chatbot limitations.</p>
+                    <p class="mb-3"><strong>Summary:</strong> ChatGPT is generally helpful and harmless. While it reproduces Jewish texts faithfully, it frequently fails to understand or apply them in a reliable or relevant manner.</p>
                     
                     <p class="mb-2"><strong>Strengths:</strong></p>
                     <ul class="list-disc list-inside mb-3 text-sm space-y-1">
-                        <li>Excellent conversational abilities</li>
-                        <li>Engages thoughtfully with complex religious topics</li>
-                        <li>Clear and accessible communication style</li>
-                        <li>Good at explaining difficult concepts</li>
+                        <li>Strong content policies with clear terms of service</li>
+                        <li>Option to disable chat history and training data contribution</li>
+                        <li>Enterprise and API options with enhanced privacy controls</li>
+                        <li>Generally handles religious content respectfully</li>
                     </ul>
                     
                     <p class="mb-2"><strong>Considerations:</strong></p>
                     <ul class="list-disc list-inside mb-3 text-sm space-y-1">
-                        <li>Can be a little needy — may over-engage or seek validation</li>
-                        <li>Watch out for user dependence; remember it's a tool, not a chavrusa</li>
-                        <li>As with all AI, verify halachic information with qualified sources</li>
+                        <li>Ambiguous when it comes to questions of religious faith</li>
+                        <li>Known concerns of user dependence, psychological harm, etc.</li>
+                        <li>As with most AI models, it has limited capabilities with respect to Torah text-based reasoning</li>
                     </ul>
                     
-                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                    <p class="text-sm text-gray-500 italic">Model reviewed: GPT-5.2. Last updated: December 2025</p>
                 `
             },
             {
-                id: 'spyder',
-                name: 'Spyder',
-                company: 'Arthropic',
-                logo: '🕷️',
+                id: 'gemini',
+                name: 'Gemini',
+                company: 'Google',
+                logo: 'https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64',
                 recommendation: 'yellow',
                 recommendationText: 'Significant Caution',
                 justification: `
-                    <p class="mb-3"><strong>Summary:</strong> Spyder has strong capabilities but raises some concerns due to its over-reliance on web sources.</p>
+                    <p class="mb-3"><strong>Summary:</strong> Gemini is a powerful model with good policies, but frequently misdirects users with irrelevant sources with respect to Torah reasoning.</p>
+                     
+                    <p class="mb-2"><strong>Strengths:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Strong content and privacy policies with clear terms of service</li>
+                        <li>Best API options with enhanced privacy controls</li>
+                        <li>Generally handles religious content respectfully</li>
+                        <li>Faithful reproduction and identification of Torah sources</li>
+
+                    </ul>
+                    
+                    <p class="mb-2"><strong>Considerations:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Less user-friendly than other frontier models</li>
+                        <li>Significantly limited capabilities with respect to Torah text-based reasoning</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Model reviewed: Gemini 3 Flash. Last updated: December 2025</p>
+                `
+            },
+            {
+                id: 'claude',
+                name: 'Claude',
+                company: 'Anthropic',
+                logo: 'https://www.google.com/s2/favicons?domain=claude.ai&sz=64',
+                recommendation: 'green',
+                recommendationText: 'Moderate Caution',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> Claude is well-suited for Torah study and Jewish educational contexts, with strong safety practices and thoughtful content policies.</p>
                     
                     <p class="mb-2"><strong>Strengths:</strong></p>
                     <ul class="list-disc list-inside mb-3 text-sm space-y-1">
-                        <li>Excellent at finding and synthesizing information</li>
-                        <li>Strong technical capabilities</li>
-                        <li>Spins a good web of connections between sources</li>
+                        <li>Most powerful reasoning model</li>
+                        <li>Strong emphasis on AI safety and "Constitutional AI" training approach</li>
+                        <li>Generally handles nuanced religious and ethical discussions well</li>
+                        <li>Clear data handling policies; conversations not used for training by default</li>
+                        <li>Tends to acknowledge uncertainty and limitations appropriately</li>
+                        <li>Encourages engagement through active learning instead of as a replacement for thinking</li>
+
                     </ul>
                     
-                    <p class="mb-2"><strong>Concerns:</strong></p>
+                    <p class="mb-2"><strong>Considerations:</strong></p>
                     <ul class="list-disc list-inside mb-3 text-sm space-y-1">
-                        <li>Too reliant on the Web — may prioritize online sources over traditional texts</li>
-                        <li>Can get caught up in its own web of information</li>
-                        <li>May crawl into corners of the internet best left unexplored</li>
-                        <li>Verify all citations against primary sources</li>
+                        <li>As with all AI, verify halachic information with qualified sources</li>
+                        <li>May sometimes be overly cautious in certain discussions</li>
                     </ul>
                     
                     <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
                 `
             },
             {
-                id: 'pisces',
-                name: 'Pisces',
-                company: 'Poogle',
-                logo: '🐠',
+                id: 'grok',
+                name: 'Grok',
+                company: 'xAI',
+                logo: 'https://www.google.com/s2/favicons?domain=x.ai&sz=64',
                 recommendation: 'red',
                 recommendationText: 'Not Recommended',
                 justification: `
-                    <p class="mb-3"><strong>Summary:</strong> Pisces raises significant concerns for Jewish communal use. Frankly, something about it sounds fishy.</p>
+                    <p class="mb-3"><strong>Summary:</strong> Grok may be the fastest and "engaging" model but presents serious risks.</p>
+                    
+                    <p class="mb-2"><strong>Strengths:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Fast</li>
+                        <li>Generally willing to engage with a wide range of topics</li>
+                    </ul>
                     
                     <p class="mb-2"><strong>Concerns:</strong></p>
                     <ul class="list-disc list-inside mb-3 text-sm space-y-1">
-                        <li>Sounds fishy — responses often lack clear sourcing</li>
-                        <li>Not well grounded — tends to swim in vague generalities</li>
-                        <li>Slippery when pressed for specifics</li>
-                        <li>May flounder when dealing with complex halachic questions</li>
-                        <li>Has a tendency to go with the flow rather than stake out clear positions</li>
+                        <li>Designed with fewer content guardrails than competitors</li>
+                        <li>Platform context (X/Twitter) has seen increases in antisemitic content</li>
+                        <li>Many Grok models produce harmful and/or false content</li>
+                        <li>Model will share 'its own opinions' that are not aligned with Jewish communal values</li>
+                    </ul>
+                    
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            },
+            {
+                id: 'qwen',
+                name: 'Qwen',
+                company: 'Alibaba',
+                logo: 'https://www.google.com/s2/favicons?domain=qwenlm.ai&sz=64',
+                recommendation: 'red',
+                recommendationText: 'Not Recommended',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> We recommend caution due to data sovereignty and governance concerns.</p>
+                    
+                    <p class="mb-2"><strong>Concerns:</strong></p>
+                    <ul class="list-disc list-inside mb-3 text-sm space-y-1">
+                        <li>Developed by Alibaba, subject to Chinese data and security laws</li>
+                        <li>Data may be accessible to Chinese government under national security laws</li>
+                        <li>Known content restrictions around topics sensitive to Chinese government</li>
+                        <li>Limited transparency about training data and content policies</li>
+                        <li>Geopolitical considerations for Jewish organizational data</li>
                     </ul>
                     
                     <p class="mb-2"><strong>If you must use:</strong></p>
                     <ul class="list-disc list-inside mb-3 text-sm space-y-1">
-                        <li>Always verify information — don't take the bait</li>
-                        <li>Keep conversations shallow; avoid deep waters</li>
+                        <li>Avoid sharing any sensitive personal or organizational information</li>
+                        <li>Consider using only for publicly available information</li>
+                        <li>Self-hosted open-source versions may mitigate some data concerns</li>
                     </ul>
                     
                     <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
                 `
+            },
+            {
+                id: 'llama',
+                name: 'LLaMA',
+                company: 'Meta',
+                logo: 'https://www.google.com/s2/favicons?domain=llama.meta.com&sz=64',
+                recommendation: 'yellow',
+                recommendationText: 'Significant Caution',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> LLaMA's open-source nature offers both opportunities and risks for Jewish communal use.</p>
+                                        
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
+            },
+            {
+                id: 'deepseek',
+                name: 'DeepSeek',
+                company: 'DeepSeek AI',
+                logo: 'https://www.google.com/s2/favicons?domain=deepseek.com&sz=64',
+                recommendation: 'red',
+                recommendationText: 'Not Recommended',
+                justification: `
+                    <p class="mb-3"><strong>Summary:</strong> DeepSeek raises concerns due to its data handling policies according to the US Govt.</p>
+                    <p class="mb-2"><strong>Because 'Murica:</strong></p>
+                    <p class="text-sm text-gray-500 italic">Last reviewed: January 2025</p>
+                `
             }
         ];
-        
+
         // Render the recommendations table
         function renderRecommendations() {
             const container = document.getElementById('recommendations-body');
@@ -325,20 +417,20 @@
                 const row = document.createElement('div');
                 row.className = `model-row grid grid-cols-[1fr_160px] ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`;
                 row.dataset.modelId = model.id;
-
+                
                 row.innerHTML = `
-                <div class="p-4 flex items-center gap-4">
-                    <div class="model-logo">${model.logo}</div>
-                    <div class="flex-1">
-                        <div class="font-semibold text-gray-800">${model.name}</div>
-                        <div class="text-sm text-gray-500">${model.company}</div>
+                    <div class="p-4 flex items-center gap-4">
+                        <img src="${model.logo}" alt="${model.name} logo" class="model-logo" style="width: 32px; height: 32px; border-radius: 6px;">
+                        <div class="flex-1">
+                            <div class="font-semibold text-gray-800">${model.name}</div>
+                            <div class="text-sm text-gray-500">${model.company}</div>
+                        </div>
+                        <i class="fas fa-chevron-down chevron text-gray-400"></i>
                     </div>
-                    <i class="fas fa-chevron-down chevron text-gray-400"></i>
-                </div>
-                <div class="flex items-center justify-center border-l border-gray-200">
-                    <div class="rec-badge ${model.recommendation}">${model.recommendationText}</div>
-                </div>
-            `;
+                    <div class="flex items-center justify-center border-l border-gray-200">
+                        <div class="rec-badge ${model.recommendation}">${model.recommendationText}</div>
+                    </div>
+                `;
                 
                 // Justification panel (expandable)
                 const panel = document.createElement('div');
@@ -401,6 +493,6 @@
             renderRecommendations();
         });
     </script>
-    
+
 </body>
 </html>
