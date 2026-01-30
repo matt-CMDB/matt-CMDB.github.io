@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secondary Sources Index | The AI and Judaism Resource Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <style>
+        body { background-color: #f8f9fa; color: #333; }
+
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .no-select { user-select: none; }
+
+        .col-wide {
+            width: 350px; min-width: 350px; max-width: 350px;
+            white-space: normal !important; word-wrap: break-word;
+        }
+
+        .col-medium {
+            width: 200px; min-width: 200px; max-width: 200px;
+            white-space: normal !important; word-wrap: break-word;
+        }
+
+        .col-default { white-space: nowrap; }
+
+        /* Highlight matching text */
+        .highlight {
+            background-color: #fef08a;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* Tag badge styling */
+        .tag-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div id="app" class="h-screen flex flex-col">
+        <!-- Main Navigation -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="index.html" class="text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+            <a href="table.html" class="text-gray-500 hover:text-gray-900 transition-colors">Internet Index</a>
+            <a href="bibliography.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-0.5">Research Guides</a>
+        </nav>
+
+        <!-- Sub Navigation with Search -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8 text-sm font-medium z-40">
+            <a href="bibliography.html" class="text-gray-500 hover:text-blue-600 transition-colors">All Research Guides</a>
+            <a href="primary-sources.html" class="text-gray-500 hover:text-blue-600 transition-colors">Index of Primary Sources</a>
+            <a href="sec-sources.html" class="text-xl font-bold tracking-tight text-gray-800 border-b-2 border-blue-600 pb-0.5">Index of Secondary Sources</a>
+
+            <div class="flex items-center gap-3 w-full md:w-auto ml-auto">
+                <div class="relative flex-1 md:w-80">
+                    <input type="text" v-model="searchQuery" placeholder="Search entries..."
+                        class="w-full px-3 py-1.5 pl-9 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <button v-if="searchQuery" @click="searchQuery = ''"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Description Section -->
+                <div class="px-6 pt-8 pb-4 max-w-4xl text-gray-700 text-base leading-relaxed">
+                    <p class="mb-4">
+                        This is an index of secondary sources from the <b>Handbook of Jewish AI Ethics</b>. These scholarly works, articles, and books provide context, analysis, and further reading for each topic in the handbook.
+                        Use the search bar (upper right of the screen) to find specific terms across all entries.
+                    </p>
+                    <p>
+                        As always, be sure to <a href="mailto:therishonim@gmail.com" class="text-blue-600 hover:underline">contact us</a> with any feedback and/or additional resources you'd like to see here.
+                    </p>
+                </div>
+
+                <!-- Table Section -->
+                <div class="px-6 py-6">
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-x-auto table-container">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold border-b border-gray-200">
+                                    <th class="p-3 border-r border-gray-100 w-12 text-center">#</th>
+                                    <th v-for="h in config.headers" :key="h"
+                                        @click="handleHeaderClick(h)"
+                                        class="p-3 border-r border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors no-select"
+                                        :class="getColumnClass(h)">
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ h }}</span>
+                                            <i v-if="sortKey === h"
+                                               :class="sortOrder === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"
+                                               class="fa-solid text-blue-500"></i>
+                                            <i v-else class="fa-solid fa-sort text-gray-300"></i>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr v-for="(row, idx) in filteredData" :key="idx"
+                                    class="border-b border-gray-100 hover:bg-blue-50 transition-colors">
+                                    <td class="p-3 text-center text-gray-400 font-mono text-xs">{{ idx + 1 }}</td>
+                                    <td v-for="h in config.headers" :key="h + idx"
+                                        class="p-3" :class="getColumnClass(h)">
+                                        <!-- Title column -->
+                                        <template v-if="h === config.titleColumn">
+                                            <span class="font-semibold text-gray-900 leading-snug block"
+                                                  v-html="highlightText(row[h])"></span>
+                                        </template>
+                                        <!-- Tag column with colored badges -->
+                                        <template v-else-if="h === config.tagColumn">
+                                            <span class="tag-badge" :style="getTagStyle(row[h])">
+                                                {{ row[h] }}
+                                            </span>
+                                        </template>
+                                        <!-- Default column -->
+                                        <template v-else>
+                                            <span class="text-gray-700" v-html="highlightText(row[h])"></span>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Results count -->
+                    <div class="mt-4 text-sm text-gray-500">
+                        Showing {{ filteredData.length }} of {{ config.records.length }} records
+                    </div>
+                </div>
+
+                <!-- No results message -->
+                <div v-if="filteredData.length === 0"
+                     class="flex flex-col items-center justify-center text-gray-400 py-12">
+                    <i class="fa-solid fa-filter-circle-xmark text-4xl mb-4"></i>
+                    <p>No records found matching your search.</p>
+                    <button @click="searchQuery = ''"
+                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        Clear Search
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-white border-t border-gray-200 px-6 py-3 text-center text-xs text-gray-400">
+            AI and Judaism Resource Library: Secondary Source Index
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const SERVER_DATA = {
+    "headers": [
+        "author",
+        "title",
+        "publication",
+        "year",
+        "entry"
+    ],
+    "records": [
+        {
+            "author": "Klein, Dov",
+            "title": "Mingnon HaSheliḥut",
+            "publication": "Yarhon Ha-Otzar 105 (2024): 449-464",
+            "year": "2024",
+            "entry": "Agency (Sheliḥut) and AI"
+        },
+        {
+            "author": "Kalman, David Zvi",
+            "title": "Artificial Intelligence and Jewish Thought",
+            "publication": "The Cambridge Companion to Religion and Artificial Intelligence (2024): 69-87",
+            "year": "2024",
+            "entry": "Agency (Sheliḥut) and AI; Animals; Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Kleiman, Ephraim",
+            "title": "'Just Price' in Talmudic Literature",
+            "publication": "History of Political Economy 19, no. 1 (1987): 23-45",
+            "year": "1987",
+            "entry": "Algorithmic Pricing"
+        },
+        {
+            "author": "Rakover, Nahum",
+            "title": "Price Regulation in Jewish Law",
+            "publication": "Ethics in the Market Place: A Jewish Perspective. Jerusalem: Library of Jewish Law, 2000",
+            "year": "2000",
+            "entry": "Algorithmic Pricing"
+        },
+        {
+            "author": "Tamari, Meir",
+            "title": "In the Marketplace: Jewish Business Ethics",
+            "publication": "Southfield, MI: Targum/Feldheim, 1991",
+            "year": "1991",
+            "entry": "Algorithmic Pricing"
+        },
+        {
+            "author": "Warhaftig, Itamar",
+            "title": "Consumer Protection: Price and Wage Levels",
+            "publication": "Crossroads: Halacha and the Modern World, Vol. 1. Alon Shvut-Gush Etzion: Zomet Institute, 1987",
+            "year": "1987",
+            "entry": "Algorithmic Pricing"
+        },
+        {
+            "author": "Levine, Aaron",
+            "title": "Economic Morality and Jewish Law",
+            "publication": "Oxford: Oxford University Press, 2012",
+            "year": "2012",
+            "entry": "Algorithmic Pricing"
+        },
+        {
+            "author": "Makovi, Michael",
+            "title": "Price-Controls in Jewish Law",
+            "publication": "MPRA Paper No. 72821, 2016",
+            "year": "2016",
+            "entry": "Algorithmic Pricing"
+        },
+        {
+            "author": "Bostrom, Nick",
+            "title": "Superintelligence: Paths, Dangers, Strategies",
+            "publication": "Oxford: Oxford University Press, 2014",
+            "year": "2014",
+            "entry": "Alignment and Control Problem; Existential Risks"
+        },
+        {
+            "author": "Christian, Brian",
+            "title": "The Alignment Problem: Machine Learning and Human Values",
+            "publication": "New York: W. W. Norton, 2020",
+            "year": "2020",
+            "entry": "Alignment and Control Problem; Anti-Semitism (and AI)"
+        },
+        {
+            "author": "Charpa, Ulrich",
+            "title": "Synthetic Biology and the Golem of Prague: Philosophical Reflections on a Suggestive Metaphor",
+            "publication": "Perspectives in Biology and Medicine 55, no. 4 (2012): 554-70",
+            "year": "2012",
+            "entry": "Alignment and Control Problem; Golems"
+        },
+        {
+            "author": "Idel, Moshe",
+            "title": "Golem: Jewish Magical and Mystical Traditions on the Artificial Anthropoid",
+            "publication": "Albany: SUNY Press, 1990",
+            "year": "1990",
+            "entry": "Alignment and Control Problem; Golems"
+        },
+        {
+            "author": "Scholem, Gershom",
+            "title": "The Idea of the Golem",
+            "publication": "On the Kabbalah and Its Symbolism, 158-204. New York: Schocken Books, 1965",
+            "year": "1965",
+            "entry": "Alignment and Control Problem; Golems"
+        },
+        {
+            "author": "Ronis, Sara",
+            "title": "Demons in the Details: Demonic Discourse and Rabbinic Culture in Late Antique Babylonia",
+            "publication": "University of California Press, 2022",
+            "year": "2022",
+            "entry": "Alignment and Control Problem; Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Bohak, Gideon",
+            "title": "Ancient Jewish Magic: A History",
+            "publication": "Cambridge: Cambridge University Press, 2008",
+            "year": "2008",
+            "entry": "Alignment and Control Problem"
+        },
+        {
+            "author": "Grossman, Yitzhak",
+            "title": "Jewish Perspectives on Artificial Intelligence and Synthetic Biology",
+            "publication": "Ḥakirah 35 (2024): 61-92",
+            "year": "2024",
+            "entry": "Alignment and Control Problem; Golems"
+        },
+        {
+            "author": "Ahuvia, Mika",
+            "title": "On My Right Michael, On My Left Gabriel: Angels in Ancient Jewish Culture",
+            "publication": "University of California Press, 2021",
+            "year": "2021",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Schäfer, Peter",
+            "title": "The Origins of Jewish Mysticism",
+            "publication": "Princeton University Press, 2011",
+            "year": "2011",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Jung, Leo",
+            "title": "Fallen Angels in Jewish, Christian, and Mohammedan Literature",
+            "publication": "Philadelphia: Dropsie College, 1926",
+            "year": "1926",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Reed, Annette Yoshiko",
+            "title": "Fallen Angels and the History of Judaism and Christianity",
+            "publication": "Cambridge University Press, 2005",
+            "year": "2005",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Wright, Archie",
+            "title": "The Origin of Evil Spirits: The Reception of Genesis 6:1-4 in Early Jewish Literature",
+            "publication": "Mohr Siebeck, 2005",
+            "year": "2005",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Bar-Ilan, Meir",
+            "title": "Yetzurim Dimyoniyim be-Aggadah ha-Yehudit ha-Atikah",
+            "publication": "Mahanayim 7 (1994): 104-113",
+            "year": "1994",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Shyovitz, David I",
+            "title": "A Remembrance of His Wonders: Nature and the Supernatural in Medieval Ashkenaz",
+            "publication": "University of Pennsylvania Press, 2017",
+            "year": "2017",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Slifkin, Nosson",
+            "title": "Sacred Monsters: Mysterious and Mythical Creatures of Scripture, Talmud, and Midrash",
+            "publication": "Zoo Torah, 2007",
+            "year": "2007",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Lamm, Norman",
+            "title": "The Religious Implications of Extraterrestrial Life",
+            "publication": "Tradition 7, no. 4 (1965): 5-56",
+            "year": "1965",
+            "entry": "Angels, Demons, and Monsters"
+        },
+        {
+            "author": "Rosenblum, Jordan D.",
+            "title": "Dolphins Are Humans of the Sea (Bekhorot 8a): Animals and Legal Categorization in Rabbinic Literature",
+            "publication": "Animals and the Law in Antiquity (2021): 161-176",
+            "year": "2021",
+            "entry": "Animals"
+        },
+        {
+            "author": "Wasserman, Mira Beth",
+            "title": "Jews, Gentiles, and Other Animals: The Talmud after the Humanities",
+            "publication": "University of Pennsylvania Press, 2017",
+            "year": "2017",
+            "entry": "Animals"
+        },
+        {
+            "author": "Balberg, Mira",
+            "title": "Lekhakh Notzarta: On Jews and Animals",
+            "publication": "Theory and Criticism 51 (2019): 221-235",
+            "year": "2019",
+            "entry": "Animals"
+        },
+        {
+            "author": "Aptowitzer, Victor",
+            "title": "The Rewarding and Punishing of Animals and Inanimate Objects",
+            "publication": "Hebrew Union College Annual 3 (1926): 117-155",
+            "year": "1926",
+            "entry": "Animals"
+        },
+        {
+            "author": "Lawee, Eric",
+            "title": "The Sins of the Fauna in Midrash, Rashi, and Their Medieval Interlocutors",
+            "publication": "Jewish Studies Quarterly 17.1 (2010): 55-98",
+            "year": "2010",
+            "entry": "Animals"
+        },
+        {
+            "author": "Segal, Eliezer",
+            "title": "Beasts That Teach, Birds That Tell: Animal Language in Rabbinic and Classical Literatures",
+            "publication": "Alberta Judaic Studies, 2019",
+            "year": "2019",
+            "entry": "Animals"
+        },
+        {
+            "author": "Berkowitz, Beth",
+            "title": "Animal Studies and Ancient Judaism",
+            "publication": "Currents in Biblical Research 18.1 (2019): 80-111",
+            "year": "2019",
+            "entry": "Animals"
+        },
+        {
+            "author": "Olyan, Saul M.",
+            "title": "Are There Legal Texts in the Hebrew Bible That Evince a Concern for Animal Rights?",
+            "publication": "Biblical Interpretation 27.3 (2019): 322-339",
+            "year": "2019",
+            "entry": "Animals"
+        },
+        {
+            "author": "Berg, Cameron, Diogo de Lucena, and Judd Rosenblatt",
+            "title": "Large Language Models Report Subjective Experience Under Self-Referential Processing",
+            "publication": "arXiv preprint arXiv:2510.24797 (2025)",
+            "year": "2025",
+            "entry": "Animals; Consciousness and Minds"
+        },
+        {
+            "author": "Pines, Noam",
+            "title": "The Infrahuman: Animality in Modern Jewish Literature",
+            "publication": "SUNY Press, 2018",
+            "year": "2018",
+            "entry": "Animals"
+        },
+        {
+            "author": "Rosenstock, Bruce",
+            "title": "The Jew and the Animal Question",
+            "publication": "Shofar 37.1 (2019): 121-147",
+            "year": "2019",
+            "entry": "Animals"
+        },
+        {
+            "author": "Berg, Cameron, and Judd Rosenblatt",
+            "title": "The Monster Inside ChatGPT",
+            "publication": "Wall Street Journal, June 26, 2025",
+            "year": "2025",
+            "entry": "Anti-Semitism (and AI)"
+        },
+        {
+            "author": "Senkfor, Julia",
+            "title": "Antisemitism in the Age of Artificial Intelligence (AI)",
+            "publication": "American Security Fund, November 2025",
+            "year": "2025",
+            "entry": "Anti-Semitism (and AI)"
+        }
+    ],
+    "titleColumn": "title",
+    "wideColumns": [
+        "title",
+        "publication"
+    ],
+    "timeColumn": null,
+    "timeSortKey": null,
+    "tagColumn": null,
+    "tagValues": []
+};
+
+        createApp({
+            data() {
+                return {
+                    config: SERVER_DATA,
+                    searchQuery: '',
+                    sortKey: SERVER_DATA.titleColumn || SERVER_DATA.headers[0],
+                    sortOrder: 'asc',
+                    // Color palette for tags
+                    tagColors: {}
+                }
+            },
+            mounted() {
+                // Assign colors to tag values
+                const palette = [
+                    '#4C72B0', '#DD8452', '#55A868', '#C44E52',
+                    '#8172B3', '#937860', '#DA8BC3', '#64B5CD'
+                ];
+                this.config.tagValues.forEach((tag, i) => {
+                    this.tagColors[tag] = palette[i % palette.length];
+                });
+            },
+            computed: {
+                filteredData() {
+                    let data = [...this.config.records];
+
+                    // Search filter
+                    if (this.searchQuery) {
+                        const lower = this.searchQuery.toLowerCase();
+                        data = data.filter(row =>
+                            Object.values(row).some(v =>
+                                String(v).toLowerCase().includes(lower)
+                            )
+                        );
+                    }
+
+                    // Sorting
+                    if (this.sortKey) {
+                        data.sort((a, b) => {
+                            let valA = a[this.sortKey];
+                            let valB = b[this.sortKey];
+
+                            if (valA === undefined || valA === null) valA = '';
+                            if (valB === undefined || valB === null) valB = '';
+
+                            // Numeric comparison for year
+                            if (this.sortKey === 'year') {
+                                const numA = Number(valA);
+                                const numB = Number(valB);
+                                if (!isNaN(numA) && !isNaN(numB)) {
+                                    if (numA < numB) return this.sortOrder === 'asc' ? -1 : 1;
+                                    if (numA > numB) return this.sortOrder === 'asc' ? 1 : -1;
+                                    return 0;
+                                }
+                            }
+
+                            // String comparison
+                            valA = String(valA).toLowerCase();
+                            valB = String(valB).toLowerCase();
+                            if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
+                            if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
+                            return 0;
+                        });
+                    }
+
+                    return data;
+                }
+            },
+            methods: {
+                handleHeaderClick(key) {
+                    if (this.sortKey === key) {
+                        this.toggleOrder();
+                    } else {
+                        this.sortKey = key;
+                        this.sortOrder = 'asc';
+                    }
+                },
+                toggleOrder() {
+                    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+                },
+                getColumnClass(h) {
+                    if (this.config.wideColumns && this.config.wideColumns.includes(h)) {
+                        return 'col-wide';
+                    }
+                    if (h === 'author') {
+                        return 'col-medium';
+                    }
+                    return 'col-default whitespace-nowrap';
+                },
+                getTagStyle(tagValue) {
+                    const color = this.tagColors[tagValue] || '#8C8C8C';
+                    return {
+                        backgroundColor: color + '20',
+                        color: color,
+                        borderColor: color + '40'
+                    };
+                },
+                highlightText(text) {
+                    if (!text || !this.searchQuery) return text || '';
+                    const escaped = String(text).replace(/[&<>"']/g, m => ({
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                    })[m]);
+                    const regex = new RegExp(`(${this.escapeRegex(this.searchQuery)})`, 'gi');
+                    return escaped.replace(regex, '<span class="highlight">$1</span>');
+                },
+                escapeRegex(str) {
+                    return str.replace(/[.*+?^${}()|\[\]\\]/g, '\\$&');
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
